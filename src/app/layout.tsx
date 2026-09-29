@@ -26,10 +26,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ro" className={`${inter.variable} ${playfair.variable} antialiased`}>
-      <body>
-        <main className="mx-auto flex min-h-dvh w-full max-w-6xl flex-col px-4 py-8 sm:px-6 lg:px-10 lg:py-12">{children}</main>
-      </body>
+    <html lang="ro" className={`${inter.variable} ${playfair.variable} scroll-smooth antialiased`}>
+      <body>{children}</body>
     </html>
   );
 }

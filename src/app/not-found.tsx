@@ -2,7 +2,7 @@ import { BrandHeader } from "@/components/BrandMark";
 
 export default function NotFound() {
   return (
-    <div className="flex flex-1 flex-col gap-10">
+    <main className="mx-auto flex min-h-dvh w-full max-w-6xl flex-col gap-10 px-4 py-8 sm:px-6 lg:px-10 lg:py-12">
       <BrandHeader />
       <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
         <p className="text-5xl" aria-hidden="true">✉️</p>
@@ -12,6 +12,6 @@ export default function NotFound() {
           cere-i organizatorului un link nou.
         </p>
       </div>
-    </div>
+    </main>
   );
 }
