@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+/* Warm Story tokens, mirrored from the app's utils/themeTokens.ts. */
+:root {
+  --bg-from: #fff8f1;
+  --bg-to: #fbeae0;
+  --surface: #ffffff;
+  --surface-border: rgba(43, 39, 64, 0.06);
+  --ink: #2b2740;
+  --muted: #8a8496;
+  --accent: #7f77dd;
+  --accent-soft: rgba(127, 119, 221, 0.12);
+  --gold: #f5c36b;
+  --pink: #e8779e;
+  --danger: #d9534f;
+  --surface-muted: #fbeae0;
+  --confirmed: #2e9e6b;
+  --confirmed-soft: rgba(46, 158, 107, 0.12);
+  --declined: #786fa0;
+  --declined-soft: rgba(120, 111, 160, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-from: #1e1a30;
+    --bg-to: #171325;
+    --surface: #2a2440;
+    --surface-border: rgba(255, 255, 255, 0.08);
+    --ink: #f3f1f8;
+    --muted: #9b93b8;
+    --accent: #9b93f0;
+    --accent-soft: rgba(155, 147, 240, 0.16);
+    --gold: #f0c97d;
+    --pink: #ee93b4;
+    --danger: #e8726e;
+    --surface-muted: #1e1a30;
+    --confirmed: #5cc896;
+    --confirmed-soft: rgba(92, 200, 150, 0.14);
+    --declined: #a79ed0;
+    --declined-soft: rgba(167, 158, 208, 0.14);
+  }
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-border: var(--surface-border);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-gold: var(--gold);
+  --color-pink: var(--pink);
+  --color-danger: var(--danger);
+  --color-surface-muted: var(--surface-muted);
+  --color-confirmed: var(--confirmed);
+  --color-confirmed-soft: var(--confirmed-soft);
+  --color-declined: var(--declined);
+  --color-declined-soft: var(--declined-soft);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-playfair);
+}
+
+body {
+  min-height: 100dvh;
+  background: linear-gradient(180deg, var(--bg-from), var(--bg-to));
+  color: var(--ink);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
