@@ -95,7 +95,7 @@ export function ChatRoom({
   };
 
   return (
-    <div className="flex h-[calc(100dvh-21rem)] min-h-[380px] flex-col overflow-hidden rounded-3xl border border-surface-border bg-surface shadow-xl shadow-black/5 md:h-[calc(100dvh-24rem)]">
+    <div className="flex h-[calc(100dvh-21rem)] min-h-[380px] flex-col overflow-hidden rounded-3xl border border-surface-border bg-surface shadow-card md:h-[calc(100dvh-24rem)]">
       <div ref={listRef} className="flex flex-1 flex-col gap-3 overflow-y-auto p-4 sm:p-6">
         {messages.length === 0 ? (
           <p className="m-auto text-center text-muted">Niciun mesaj încă. Scrie primul!</p>
@@ -113,7 +113,7 @@ export function ChatRoom({
                   <p
                     className={`max-w-[80vw] whitespace-pre-wrap break-words rounded-3xl px-4 py-2.5 sm:max-w-md ${
                       organizer
-                        ? "bg-accent text-white"
+                        ? "bg-accent-fill text-on-accent"
                         : own
                           ? "bg-accent-soft"
                           : "bg-surface-muted"
@@ -156,7 +156,7 @@ export function ChatRoom({
         <button
           type="submit"
           disabled={pending || draft.trim().length === 0}
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent text-white transition disabled:opacity-50"
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent-fill text-on-accent transition disabled:opacity-50"
           aria-label="Trimite"
         >
           <Send size={18} aria-hidden="true" />

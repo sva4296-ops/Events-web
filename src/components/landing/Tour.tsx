@@ -133,7 +133,7 @@ export function Tour() {
             aria-live="polite"
             className="fixed bottom-7 left-1/2 z-[2410] w-[min(420px,calc(100vw-32px))] -translate-x-1/2 rounded-2xl bg-white p-5 text-[#2B2740] shadow-2xl shadow-black/40"
           >
-            <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wider text-accent">Pasul {index + 1}</p>
+            <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wider text-accent-text">Pasul {index + 1}</p>
             <p className="mb-1.5 font-display text-[21px] font-bold">{step.title}</p>
             <p className="text-[14.5px] leading-normal text-[#5F5E5A]">{step.text}</p>
             <div className="mt-4 flex items-center gap-2.5">
@@ -144,7 +144,7 @@ export function Tour() {
               <button
                 type="button"
                 onClick={nextStep}
-                className="rounded-full bg-accent px-5 py-2.5 text-[13.5px] font-semibold text-white hover:brightness-105"
+                className="rounded-full bg-accent-fill px-5 py-2.5 text-[13.5px] font-semibold text-on-accent hover:brightness-105"
               >
                 {isLast ? "Gata ✓" : "Următorul →"}
               </button>

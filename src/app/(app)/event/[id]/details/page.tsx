@@ -31,7 +31,7 @@ export default async function DetaliiPage({ params }: PageProps<"/event/[id]/det
           <>
             <span
               className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
-                locked ? "bg-gold/20 text-[#B7862A] dark:text-gold" : "bg-accent-soft text-accent"
+                locked ? "bg-gold/20 text-[#B7862A] dark:text-gold" : "bg-accent-soft text-accent-text"
               }`}
             >
               <Icon size={20} aria-hidden="true" />

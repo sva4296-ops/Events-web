@@ -70,7 +70,7 @@ function Role({ who, children }: { who: "org" | "inv"; children: React.ReactNode
     <div className="flex items-start gap-3">
       <span
         className={`mt-0.5 min-w-[92px] shrink-0 rounded-full px-3 py-1 text-center text-[11px] font-bold ${
-          who === "org" ? "bg-accent-soft text-accent" : "bg-surface-muted text-[#B5683E]"
+          who === "org" ? "bg-accent-soft text-accent-text" : "bg-surface-muted text-[#B5683E]"
         }`}
       >
         {who === "org" ? "Organizator" : "Invitat"}
@@ -491,14 +491,14 @@ export function CreateContent({ startHref }: { startHref: string }) {
           visual={
             <div className={`${formBox} text-center`} aria-hidden="true">
               <p className="mb-3 text-[13px] font-semibold">Pagina ta e gata de trimis</p>
-              <div className="mb-3.5 rounded-lg border border-[#EFE6DD] bg-[#FFF8F1] p-3 text-[13px] font-semibold text-accent">
+              <div className="mb-3.5 rounded-lg border border-[#EFE6DD] bg-[#FFF8F1] p-3 text-[13px] font-semibold text-accent-text">
                 povesteanoastra.ro/maria-andrei
               </div>
               <div className="mx-auto mb-3.5 size-[120px] rounded-xl border border-[#EFE6DD] bg-white p-3">
                 <QrMark className="size-full" />
               </div>
               <div className="flex justify-center gap-2">
-                <span className="rounded-full bg-accent px-4.5 py-2 text-xs font-semibold text-white">Copiază linkul</span>
+                <span className="rounded-full bg-accent-fill px-4.5 py-2 text-xs font-semibold text-on-accent">Copiază linkul</span>
                 <span className="rounded-full bg-gold px-4.5 py-2 text-xs font-semibold">Trimite pe WhatsApp</span>
               </div>
             </div>

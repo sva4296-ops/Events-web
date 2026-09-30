@@ -48,7 +48,7 @@ export function UserRsvpForm({
             Deschide pagina evenimentului
           </Link>
         ) : null}
-        <button type="button" onClick={() => setEditing(true)} className="text-sm font-semibold text-accent">
+        <button type="button" onClick={() => setEditing(true)} className="text-sm font-semibold text-accent-text">
           Schimbă răspunsul
         </button>
       </div>

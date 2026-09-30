@@ -80,14 +80,14 @@ export function CodeForm({ phone, nextPath }: { phone: string; nextPath: string 
       </button>
 
       <div className="flex items-center justify-between text-sm">
-        <Link href={`/login?next=${encodeURIComponent(nextPath)}`} className="text-muted hover:text-accent">
+        <Link href={`/login?next=${encodeURIComponent(nextPath)}`} className="text-muted hover:text-accent-text">
           Alt număr
         </Link>
         <button
           type="button"
           onClick={resend}
           disabled={cooldown > 0}
-          className="font-semibold text-accent disabled:text-muted"
+          className="font-semibold text-accent-text disabled:text-muted"
         >
           {cooldown > 0 ? `Retrimite codul (${cooldown}s)` : "Retrimite codul"}
         </button>

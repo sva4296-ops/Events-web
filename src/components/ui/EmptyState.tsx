@@ -15,7 +15,7 @@ export function EmptyState({
   return (
     <div className={`${ui.cardPadded} flex flex-col items-center gap-4 py-10 text-center`}>
       {Icon !== undefined ? (
-        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-accent-soft text-accent">
+        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-accent-soft text-accent-text">
           <Icon size={22} aria-hidden="true" />
         </span>
       ) : null}

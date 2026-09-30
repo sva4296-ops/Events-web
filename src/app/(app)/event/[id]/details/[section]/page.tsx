@@ -60,7 +60,7 @@ export default async function DetaliiSectionPage({ params }: PageProps<"/event/[
                 {index < details.schedule.length - 1 ? (
                   <span className="absolute left-[3.35rem] top-8 h-[calc(100%-1.5rem)] w-px bg-surface-border" aria-hidden="true" />
                 ) : null}
-                <span className="w-12 shrink-0 pt-0.5 text-right font-display text-lg font-bold text-accent">
+                <span className="w-12 shrink-0 pt-0.5 text-right font-display text-lg font-bold text-accent-text">
                   {item.time}
                 </span>
                 <span className="mt-2 h-3 w-3 shrink-0 rounded-full bg-accent ring-4 ring-accent-soft" aria-hidden="true" />
@@ -83,7 +83,7 @@ export default async function DetaliiSectionPage({ params }: PageProps<"/event/[
       ) : (
         <div className={`${ui.cardPadded} flex flex-col gap-5`}>
           <div className="flex items-start gap-3">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent-text">
               <MapPin size={20} aria-hidden="true" />
             </span>
             <div className="flex flex-col">
@@ -95,7 +95,7 @@ export default async function DetaliiSectionPage({ params }: PageProps<"/event/[
             <ul className="flex flex-col gap-2">
               {notes.map((note) => (
                 <li key={note} className="flex gap-2 text-sm">
-                  <span className="text-accent" aria-hidden="true">•</span>
+                  <span className="text-accent-text" aria-hidden="true">•</span>
                   {note}
                 </li>
               ))}
@@ -166,7 +166,7 @@ export default async function DetaliiSectionPage({ params }: PageProps<"/event/[
                 <div className="flex items-center justify-between gap-2">
                   <span className="truncate text-lg font-bold">{table.name}</span>
                   {mine ? (
-                    <span className="shrink-0 rounded-full bg-accent px-2.5 py-0.5 text-xs font-semibold text-white">
+                    <span className="shrink-0 rounded-full bg-accent-fill px-2.5 py-0.5 text-xs font-semibold text-on-accent">
                       Ești aici
                     </span>
                   ) : null}
@@ -176,7 +176,7 @@ export default async function DetaliiSectionPage({ params }: PageProps<"/event/[
                   {table.seatCount} {pluralRo(table.seatCount, "loc", "locuri", "de locuri")}
                 </span>
                 {owner && assigned > 0 ? (
-                  <span className="text-sm font-semibold text-accent">
+                  <span className="text-sm font-semibold text-accent-text">
                     {assigned} / {table.seatCount} locuri ocupate
                   </span>
                 ) : null}
@@ -202,7 +202,7 @@ export default async function DetaliiSectionPage({ params }: PageProps<"/event/[
                 <span className="text-lg font-bold">{item.name}</span>
                 {item.detailLine.length > 0 ? <span className="text-muted">{item.detailLine}</span> : null}
                 {item.priceLine.length > 0 ? (
-                  <span className="mt-1 font-semibold text-accent">{item.priceLine}</span>
+                  <span className="mt-1 font-semibold text-accent-text">{item.priceLine}</span>
                 ) : null}
               </div>
             ))}
@@ -233,7 +233,7 @@ export default async function DetaliiSectionPage({ params }: PageProps<"/event/[
                       href={vendor.externalUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="shrink-0 rounded-full bg-accent-soft px-4 py-2 text-sm font-semibold text-accent"
+                      className="shrink-0 rounded-full bg-accent-soft px-4 py-2 text-sm font-semibold text-accent-text"
                     >
                       Vezi
                     </a>
@@ -254,7 +254,7 @@ export default async function DetaliiSectionPage({ params }: PageProps<"/event/[
       <div className="flex items-start gap-3">
         <Link
           href={`/event/${id}/details`}
-          className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-surface-border bg-surface transition hover:text-accent"
+          className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-surface-border bg-surface transition hover:text-accent-text"
           aria-label="Înapoi la detalii"
         >
           <ArrowLeft size={18} aria-hidden="true" />

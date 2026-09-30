@@ -19,7 +19,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
     <div className="flex flex-1 flex-col">
       <Link
         href="/"
-        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-surface-border bg-surface transition hover:text-accent"
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-surface-border bg-surface transition hover:text-accent-text"
         aria-label="Înapoi la pagina principală"
       >
         <ArrowLeft size={18} aria-hidden="true" />

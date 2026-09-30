@@ -40,7 +40,7 @@ export default async function FondPage({ params }: PageProps<"/event/[id]/fund">
         <p className={ui.eyebrow}>{fund.title}</p>
         {fund.description.length > 0 ? <p className="text-muted">{fund.description}</p> : null}
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <span className="font-display text-5xl font-bold text-accent">
+          <span className="font-display text-5xl font-bold text-accent-text">
             {formatMoney(fund.currentAmount, fund.currency)}
           </span>
           <span className="text-muted">din {formatMoney(fund.targetAmount, fund.currency)}</span>

@@ -23,12 +23,12 @@ export default async function AlbumPage({ params }: PageProps<"/event/[id]/album
       <div className={`mx-auto grid w-full max-w-xl gap-4 ${attendees !== null ? "grid-cols-2" : "grid-cols-1"}`}>
         {attendees !== null ? (
           <div className={`${ui.cardPadded} text-center`}>
-            <p className="font-display text-4xl font-bold text-accent">{attendees}</p>
+            <p className="font-display text-4xl font-bold text-accent-text">{attendees}</p>
             <p className="text-sm text-muted">invitați prezenți</p>
           </div>
         ) : null}
         <div className={`${ui.cardPadded} text-center`}>
-          <p className="font-display text-4xl font-bold text-accent">{photos.length}</p>
+          <p className="font-display text-4xl font-bold text-accent-text">{photos.length}</p>
           <p className="text-sm text-muted">poze adunate</p>
         </div>
       </div>

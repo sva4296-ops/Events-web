@@ -62,7 +62,7 @@ export function MomentCard({
           onClick={() => react("love")}
           aria-pressed={optimistic.love.mine}
           aria-label="Reacționează cu inimă"
-          className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-semibold text-accent transition ${
+          className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-semibold text-accent-text transition ${
             optimistic.love.mine ? "border-accent bg-accent-soft" : "border-transparent bg-accent-soft/70"
           }`}
         >
@@ -83,7 +83,7 @@ export function MomentCard({
         </button>
         <Link
           href={`/event/${eventId}/chat`}
-          className="ml-auto flex items-center gap-1.5 text-sm text-muted transition hover:text-accent"
+          className="ml-auto flex items-center gap-1.5 text-sm text-muted transition hover:text-accent-text"
         >
           <MessageCircle size={15} aria-hidden="true" />
           Comentarii

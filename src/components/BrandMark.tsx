@@ -28,7 +28,7 @@ export function BrandHeader() {
     <div className="flex items-center gap-2">
       <BrandMark className="h-6 w-8" />
       <span className="font-display text-xl font-bold text-ink">
-        Povestea<span className="text-accent">Noastra</span>
+        Povestea<span className="text-accent-text">Noastra</span>
       </span>
     </div>
   );

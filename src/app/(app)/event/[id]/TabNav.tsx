@@ -1,20 +1,20 @@
 "use client";
 
-import { Camera, FileText, Heart, House, Image as ImageIcon, MessageCircle } from "lucide-react";
+import { Gift, House, Image as ImageIcon, List, MessageCircle, Radio } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const TABS = [
   { segment: "", label: "Acasă", icon: House },
-  { segment: "details", label: "Detalii", icon: FileText },
-  { segment: "fund", label: "Fond", icon: Heart },
+  { segment: "details", label: "Detalii", icon: List },
+  { segment: "fund", label: "Fond", icon: Gift },
   { segment: "chat", label: "Chat", icon: MessageCircle },
-  { segment: "live", label: "Live", icon: Camera },
+  { segment: "live", label: "Live", icon: Radio },
   { segment: "album", label: "Album", icon: ImageIcon },
 ] as const;
 
-/** Desktop/tablet: a pill row under the title. Mobile: a floating bottom bar,
- * same idea as the app's tab bar. */
+/** Desktop/tablet: a pill row under the title. Mobile: a bottom bar docked to
+ * the edge, same as the app's Warm Story 2.0 tab bar. */
 export function TabNav({ eventId }: { eventId: string }) {
   const pathname = usePathname();
   const base = `/event/${eventId}`;
@@ -26,7 +26,7 @@ export function TabNav({ eventId }: { eventId: string }) {
     <>
       <nav
         aria-label="Secțiunile evenimentului"
-        className="hidden gap-1 overflow-x-auto rounded-full border border-surface-border bg-surface p-1.5 shadow-lg shadow-black/5 md:flex"
+        className="hidden gap-1 overflow-x-auto rounded-full border border-surface-border bg-surface p-1.5 shadow-card md:flex"
       >
         {TABS.map(({ segment, label, icon: Icon }) => {
           const active = isActive(segment);
@@ -36,7 +36,7 @@ export function TabNav({ eventId }: { eventId: string }) {
               href={segment === "" ? base : `${base}/${segment}`}
               aria-current={active ? "page" : undefined}
               className={`flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition ${
-                active ? "bg-accent text-white shadow-md shadow-accent/30" : "text-muted hover:bg-accent-soft hover:text-accent"
+                active ? "bg-accent-tint text-accent-text" : "text-muted hover:bg-surface-2 hover:text-ink"
               }`}
             >
               <Icon size={17} aria-hidden="true" />
@@ -48,8 +48,8 @@ export function TabNav({ eventId }: { eventId: string }) {
 
       <nav
         aria-label="Secțiunile evenimentului"
-        className="fixed inset-x-3 bottom-3 z-40 flex justify-between rounded-3xl border border-white/10 bg-[#241E36]/95 px-1.5 py-2 shadow-2xl shadow-black/30 backdrop-blur md:hidden"
-        style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
+        className="fixed inset-x-0 bottom-0 z-40 flex justify-between border-t border-surface-border bg-surface/95 px-1.5 pt-2 backdrop-blur md:hidden"
+        style={{ paddingBottom: "max(1.5rem, env(safe-area-inset-bottom))" }}
       >
         {TABS.map(({ segment, label, icon: Icon }) => {
           const active = isActive(segment);
@@ -58,16 +58,16 @@ export function TabNav({ eventId }: { eventId: string }) {
               key={label}
               href={segment === "" ? base : `${base}/${segment}`}
               aria-current={active ? "page" : undefined}
-              className="flex flex-1 flex-col items-center gap-1 text-[11px] font-semibold"
+              className="flex flex-1 flex-col items-center gap-[3px] text-[11px]"
             >
               <span
-                className={`flex h-8 w-12 items-center justify-center rounded-full transition ${
-                  active ? "bg-accent text-gold" : "text-white/55"
+                className={`flex h-[30px] w-12 items-center justify-center rounded-full transition ${
+                  active ? "bg-accent-tint text-accent-text" : "text-muted"
                 }`}
               >
-                <Icon size={18} aria-hidden="true" />
+                <Icon size={21} strokeWidth={active ? 2 : 1.8} aria-hidden="true" />
               </span>
-              <span className={active ? "text-gold" : "text-white/55"}>{label}</span>
+              <span className={active ? "font-bold text-accent-text" : "font-medium text-muted"}>{label}</span>
             </Link>
           );
         })}

@@ -36,11 +36,11 @@ export function LiveDot() {
 /** Fund card shown in the contributions section and overlays. */
 export function FundDemo({ compact = false }: { compact?: boolean }) {
   return (
-    <div className={`${lp.card} ${compact ? "p-4" : "p-5 shadow-xl shadow-black/5"}`}>
-      <p className="text-[11px] font-bold uppercase tracking-wider text-accent">Luna de miere în Grecia</p>
+    <div className={`${lp.card} ${compact ? "p-4" : "p-5 shadow-card"}`}>
+      <p className="text-[11px] font-bold uppercase tracking-wider text-accent-text">Luna de miere în Grecia</p>
       <p className={`mt-1.5 font-bold ${compact ? "text-sm" : "text-base"}`}>Ajută-i pe Maria &amp; Andrei 🌊</p>
       <div className="mb-2 mt-3.5 flex justify-between text-sm font-semibold">
-        <span className="text-accent">5.420 lei</span>
+        <span className="text-accent-text">5.420 lei</span>
         <span className="text-muted">din 8.000 lei</span>
       </div>
       <div className="h-3 overflow-hidden rounded-full bg-surface-muted">
@@ -85,10 +85,10 @@ export function InviteScreen() {
       </div>
       <div className="p-4">
         <div className={`${phoneCard} p-4 text-center`}>
-          <p className="mb-2 text-[9px] font-bold uppercase tracking-wider text-accent">Ești invitat</p>
+          <p className="mb-2 text-[9px] font-bold uppercase tracking-wider text-accent-text">Ești invitat</p>
           <p className="mb-3 text-xs text-[#8A8496]">Vii alături de noi în ziua cea mare?</p>
-          <div className="rounded-full bg-accent py-2 text-xs font-semibold text-white">Da, particip</div>
-          <div className="mt-2 rounded-full border-[1.5px] border-accent py-2 text-xs font-semibold text-accent">
+          <div className="rounded-full bg-accent-fill py-2 text-xs font-semibold text-on-accent">Da, particip</div>
+          <div className="mt-2 rounded-full border-[1.5px] border-accent py-2 text-xs font-semibold text-accent-text">
             Vezi mai întâi
           </div>
         </div>
@@ -134,10 +134,10 @@ export function FundScreen() {
       <PhoneSpacer />
       <div className="p-4">
         <div className={`${phoneCard} p-4`}>
-          <p className="text-[9px] font-bold uppercase tracking-wider text-accent">Luna de miere în Grecia</p>
+          <p className="text-[9px] font-bold uppercase tracking-wider text-accent-text">Luna de miere în Grecia</p>
           <p className="mb-3 mt-1 text-[13px] font-bold">Ajută-i pe Maria &amp; Andrei 🌊</p>
           <div className="mb-1.5 flex justify-between text-[10.5px] font-semibold">
-            <span className="text-accent">5.420 lei</span>
+            <span className="text-accent-text">5.420 lei</span>
             <span className="text-[#8A8496]">din 8.000 lei</span>
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-[#FBEAE0]">
@@ -181,7 +181,7 @@ export function RecapScreen() {
       <PhoneSpacer />
       <div className="p-4">
         <div className="mb-3 text-center">
-          <p className="text-[9px] font-bold uppercase tracking-wider text-accent">Povestea s-a întâmplat</p>
+          <p className="text-[9px] font-bold uppercase tracking-wider text-accent-text">Povestea s-a întâmplat</p>
           <p className="mt-1 font-display text-lg font-bold italic">A fost minunat</p>
         </div>
         <div className="grid grid-cols-3 gap-1.5">
@@ -207,14 +207,14 @@ export function AmountScreen() {
             <div
               key={amount}
               className={`flex-1 rounded-lg border-[1.5px] py-2.5 text-center text-[13px] font-bold ${
-                amount === "300 lei" ? "border-accent text-accent" : "border-[#EFE6DD]"
+                amount === "300 lei" ? "border-accent text-accent-text" : "border-[#EFE6DD]"
               }`}
             >
               {amount}
             </div>
           ))}
         </div>
-        <div className="rounded-full bg-accent py-2 text-center text-xs font-semibold text-white">Contribuie 300 lei</div>
+        <div className="rounded-full bg-accent-fill py-2 text-center text-xs font-semibold text-on-accent">Contribuie 300 lei</div>
         <p className="mt-2.5 text-center text-[9.5px] text-[#8A8496]">🔒 Plată securizată prin Stripe</p>
       </div>
     </Phone>
@@ -243,7 +243,7 @@ export function OwnerFundScreen() {
             className={`flex justify-between py-2 text-xs ${i < rows.length - 1 ? "border-b border-[#EFE6DD]" : ""}`}
           >
             <span className="text-[#8A8496]">{row.name}</span>
-            <span className="font-bold text-accent">{row.amount}</span>
+            <span className="font-bold text-accent-text">{row.amount}</span>
           </div>
         ))}
       </div>

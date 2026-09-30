@@ -207,7 +207,7 @@ export function Stages() {
             <div className={`flex h-full flex-col items-center justify-center text-white ${lp.gradBg}`}>
               <p className="font-display text-[17px] font-bold italic">Maria &amp; Andrei</p>
               <p className="mt-0.5 text-[10px] opacity-90">12 septembrie 2026</p>
-              <p className="mt-2.5 rounded-full bg-white px-3.5 py-1 text-[10px] font-bold text-accent">Da, particip</p>
+              <p className="mt-2.5 rounded-full bg-white px-3.5 py-1 text-[10px] font-bold text-accent-text">Da, particip</p>
             </div>
           </StageCard>
           <StageCard n={2} color="#FF9F45" name="Parcursul" text="Postezi momente din pregătiri. Invitații reacționează și contribuie, lună după lună.">
@@ -422,7 +422,7 @@ export function Pricing({ startHref }: { startHref: string }) {
                 data-reveal
               >
                 {plan.highlighted === true && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-3.5 py-1 text-[11px] font-bold text-white">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent-fill px-3.5 py-1 text-[11px] font-bold text-on-accent">
                     Cel mai ales
                   </span>
                 )}
@@ -473,7 +473,7 @@ export function WhyUs() {
         <div className="mt-11 grid gap-4.5 md:grid-cols-2">
           {WHY_US.map((w, i) => (
             <div key={w.title} className={`flex gap-4 rounded-[18px] bg-surface p-6 ${lp.reveal}`} data-reveal>
-              <span className="shrink-0 font-display text-[30px] font-bold leading-none text-accent">
+              <span className="shrink-0 font-display text-[30px] font-bold leading-none text-accent-text">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <div>
@@ -502,7 +502,7 @@ export function HowToStart() {
         <div className="mt-11 grid gap-8 md:grid-cols-3 md:gap-5">
           {START_STEPS.map((s, i) => (
             <div key={s.title} className={`px-2.5 text-center ${lp.reveal}`} data-reveal>
-              <span className="mx-auto mb-4.5 flex size-16 items-center justify-center rounded-full bg-linear-135 from-[#FF9F45] to-accent font-display text-[28px] font-bold text-white">
+              <span className="mx-auto mb-4.5 flex size-16 items-center justify-center rounded-full bg-linear-135 from-gold to-accent font-display text-[28px] font-bold text-white">
                 {i + 1}
               </span>
               <h3 className="mb-1.5 text-lg font-bold">{s.title}</h3>
@@ -532,7 +532,7 @@ export function Faq() {
             <details key={item.q} className="group border-b border-surface-border">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-1 py-5 text-[17px] font-semibold [&::-webkit-details-marker]:hidden">
                 {item.q}
-                <span className="flex size-[26px] shrink-0 items-center justify-center rounded-full bg-surface-muted font-bold text-accent transition group-open:rotate-45">
+                <span className="flex size-[26px] shrink-0 items-center justify-center rounded-full bg-surface-muted font-bold text-accent-text transition group-open:rotate-45">
                   +
                 </span>
               </summary>
