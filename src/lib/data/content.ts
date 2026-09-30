@@ -45,13 +45,29 @@ export const getMoments = cache(
       moment_reactions: { user_id: string; reaction_type: ReactionType }[];
     };
     const rows = (data ?? []) as Row[];
+
+    // The app stores a Storage path ({eventId}/moments/{id}.jpg) in photo_url;
+    // older rows hold a device-local URI that only rendered on the organizer's phone.
+    const isStoragePath = (value: string | null): value is string =>
+      value !== null && value.startsWith(`${eventId}/moments/`);
+    const paths = rows.map((row) => row.photo_url).filter(isStoragePath);
+    const signedByPath = new Map<string, string>();
+    if (paths.length > 0) {
+      const { data: signed } = await supabase.storage.from(PHOTO_BUCKET).createSignedUrls(paths, SIGNED_URL_TTL_SECONDS);
+      for (const entry of signed ?? []) {
+        if (entry.path !== null && entry.signedUrl) signedByPath.set(entry.path, entry.signedUrl);
+      }
+    }
+
     return {
       moments: rows.map((row) => ({
         id: row.id,
         title: row.title,
-        // Moment photos are still device-local URIs in the app (CLAUDE.md §7);
-        // only a real http(s) URL can render on the web.
-        photoUrl: row.photo_url !== null && /^https?:\/\//.test(row.photo_url) ? row.photo_url : null,
+        photoUrl: isStoragePath(row.photo_url)
+          ? (signedByPath.get(row.photo_url) ?? null)
+          : row.photo_url !== null && /^https?:\/\//.test(row.photo_url)
+            ? row.photo_url
+            : null,
         createdAt: row.created_at,
       })),
       reactions: rows.flatMap((row) =>
