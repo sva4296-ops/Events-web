@@ -1,3 +1,4 @@
+import { EventTypeIcon } from "@/components/EventTypeIcon";
 import { bandBackground, getEventTypeMeta } from "@/lib/eventTypes";
 import { formatEventDate } from "@/lib/format";
 import type { EventType } from "@/lib/types";
@@ -44,7 +45,7 @@ export function InviteCard({
           className="flex size-20 items-center justify-center rounded-full bg-white/90 text-[38px] lg:size-28 lg:text-5xl"
           aria-hidden="true"
         >
-          {type.emoji}
+          <EventTypeIcon type={eventType} size={36} strokeWidth={1.6} className="text-[#2B2740] lg:size-12" />
         </span>
       </div>
 

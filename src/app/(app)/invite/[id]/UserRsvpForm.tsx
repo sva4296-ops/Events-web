@@ -31,9 +31,6 @@ export function UserRsvpForm({
     return (
       <div className="flex flex-col items-center gap-4 text-center">
         <div className={`w-full rounded-2xl px-5 py-5 ${confirmed ? "bg-confirmed-soft" : "bg-declined-soft"}`}>
-          <p className="text-3xl" aria-hidden="true">
-            {confirmed ? "🎉" : "💌"}
-          </p>
           <p className={`mt-1 text-lg font-semibold ${confirmed ? "text-confirmed" : "text-declined"}`}>
             {confirmed ? "Ești pe listă!" : "Mulțumim că ne-ai anunțat"}
           </p>

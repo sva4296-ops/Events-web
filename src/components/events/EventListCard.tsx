@@ -1,7 +1,8 @@
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-import { getEventTypeMeta } from "@/lib/eventTypes";
+import { EventTypeIcon } from "@/components/EventTypeIcon";
+import { bandBackground, getEventTypeMeta } from "@/lib/eventTypes";
 import { formatEventDate } from "@/lib/format";
 import type { MyEvent, RsvpStatus } from "@/lib/types";
 
@@ -22,11 +23,11 @@ export function EventListCard({ event, href }: { event: MyEvent; href: string })
       className="group flex items-center gap-4 rounded-3xl border border-surface-border bg-surface p-4 shadow-lg shadow-black/5 transition hover:-translate-y-0.5 hover:shadow-xl sm:p-5"
     >
       <span
-        className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-2xl"
-        style={{ background: `linear-gradient(135deg, ${type.light[0]}, ${type.light[1]})` }}
+        className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl"
+        style={{ background: bandBackground(type), color: type.bandInk }}
         aria-hidden="true"
       >
-        {type.emoji}
+        <EventTypeIcon type={event.type} size={26} />
       </span>
       <span className="flex min-w-0 flex-1 flex-col gap-0.5">
         <span className="truncate text-lg font-bold">{event.name}</span>

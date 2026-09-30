@@ -1,4 +1,17 @@
-import { ArrowLeft, ExternalLink, MapPin } from "lucide-react";
+import {
+  ArrowLeft,
+  Cake,
+  Camera,
+  Car,
+  ExternalLink,
+  Flower,
+  MapPin,
+  Music,
+  Sparkles,
+  Tag,
+  UtensilsCrossed,
+  type LucideIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import type { ReactNode } from "react";
@@ -11,16 +24,16 @@ import { getEventContext } from "@/lib/data/eventContext";
 import { isLocked, isSectionKey, SECTIONS } from "@/lib/details";
 import { pluralRo } from "@/lib/format";
 
-function vendorIcon(category: string): string {
+function vendorIcon(category: string): LucideIcon {
   const c = category.toLowerCase();
-  if (c.includes("foto") || c.includes("video")) return "📷";
-  if (c.includes("muz") || c.includes("dj")) return "🎵";
-  if (c.includes("catering") || c.includes("mânc") || c.includes("manc")) return "🍽️";
-  if (c.includes("flor")) return "💐";
-  if (c.includes("tort") || c.includes("cofet")) return "🎂";
-  if (c.includes("transport") || c.includes("mașin") || c.includes("masin")) return "🚗";
-  if (c.includes("decor")) return "🎈";
-  return "🏷️";
+  if (c.includes("foto") || c.includes("video")) return Camera;
+  if (c.includes("muz") || c.includes("dj")) return Music;
+  if (c.includes("catering") || c.includes("mânc") || c.includes("manc")) return UtensilsCrossed;
+  if (c.includes("flor")) return Flower;
+  if (c.includes("tort") || c.includes("cofet")) return Cake;
+  if (c.includes("transport") || c.includes("mașin") || c.includes("masin")) return Car;
+  if (c.includes("decor")) return Sparkles;
+  return Tag;
 }
 
 const EMPTY_GUEST: Record<string, string> = {
@@ -219,9 +232,17 @@ export default async function DetaliiSectionPage({ params }: PageProps<"/event/[
             <div className="grid gap-4 sm:grid-cols-2">
               {details.vendors.map((vendor) => (
                 <div key={vendor.id} className={`${ui.cardPadded} flex items-center gap-4`}>
-                  <span className="text-3xl" aria-hidden="true">
-                    {vendorIcon(vendor.category)}
-                  </span>
+                  {(() => {
+                    const Icon = vendorIcon(vendor.category);
+                    return (
+                      <span
+                        className="flex size-11 shrink-0 items-center justify-center rounded-[14px] bg-accent-tint text-accent-text"
+                        aria-hidden="true"
+                      >
+                        <Icon size={20} strokeWidth={1.8} />
+                      </span>
+                    );
+                  })()}
                   <span className="flex min-w-0 flex-1 flex-col">
                     <span className="truncate font-bold">{vendor.name}</span>
                     <span className="truncate text-sm text-muted">

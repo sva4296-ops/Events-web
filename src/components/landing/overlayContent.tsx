@@ -1,3 +1,18 @@
+import {
+  Baby,
+  Building,
+  Cake,
+  CreditCard,
+  Files,
+  Flower,
+  Gem,
+  HandHeart,
+  LayoutDashboard,
+  Megaphone,
+  Palette,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import Link from "next/link";
 
 import { BrandMark } from "@/components/BrandMark";
@@ -294,12 +309,12 @@ const PLANNER_EVENTS = [
 ];
 
 const PLANNER_FEATURES = [
-  { icon: "📊", title: "Totul centralizat", text: "Toate evenimentele, invitații și fondurile într-un singur panou, fără să sari între conturi." },
-  { icon: "🎨", title: "Brandul tău", text: "Logo-ul agenției apare pe paginile clienților: „organizat de Atelier Events”. Reclamă la fiecare eveniment." },
-  { icon: "📑", title: "Șabloane", text: "Creezi un eveniment nou dintr-un model salvat în câteva minute, nu ore." },
-  { icon: "💳", title: "Preț pe volum", text: "Cu cât gestionezi mai multe evenimente, cu atât prețul per eveniment scade." },
-  { icon: "📣", title: "Canal de creștere", text: "Fiecare eveniment îți promovează agenția către sute de invitați — viitori clienți." },
-  { icon: "🔐", title: "Control deplin", text: "Clientul își editează evenimentul, tu păstrezi controlul general și vizibilitatea." },
+  { icon: LayoutDashboard, title: "Totul centralizat", text: "Toate evenimentele, invitații și fondurile într-un singur panou, fără să sari între conturi." },
+  { icon: Palette, title: "Brandul tău", text: "Logo-ul agenției apare pe paginile clienților: „organizat de Atelier Events”. Reclamă la fiecare eveniment." },
+  { icon: Files, title: "Șabloane", text: "Creezi un eveniment nou dintr-un model salvat în câteva minute, nu ore." },
+  { icon: CreditCard, title: "Preț pe volum", text: "Cu cât gestionezi mai multe evenimente, cu atât prețul per eveniment scade." },
+  { icon: Megaphone, title: "Canal de creștere", text: "Fiecare eveniment îți promovează agenția către sute de invitați — viitori clienți." },
+  { icon: ShieldCheck, title: "Control deplin", text: "Clientul își editează evenimentul, tu păstrezi controlul general și vizibilitatea." },
 ];
 
 export function PlannerContent({ startHref }: { startHref: string }) {
@@ -352,7 +367,9 @@ export function PlannerContent({ startHref }: { startHref: string }) {
           <div className="mt-7 grid gap-3.5 sm:grid-cols-3">
             {PLANNER_FEATURES.map((f) => (
               <div key={f.title} className={`${lp.card} p-5 text-center`}>
-                <p className="text-[26px]">{f.icon}</p>
+                <span className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-accent-tint text-accent-text" aria-hidden="true">
+                  <f.icon size={24} strokeWidth={1.8} />
+                </span>
                 <h4 className="mb-1 mt-2 text-[15px] font-bold">{f.title}</h4>
                 <p className="text-[13px] text-muted">{f.text}</p>
               </div>
@@ -372,13 +389,13 @@ export function PlannerContent({ startHref }: { startHref: string }) {
 /* ---------- Create page ---------- */
 
 const EVENT_TYPES = [
-  { emoji: "💍", name: "Nuntă", selected: true },
-  { emoji: "🍼", name: "Botez" },
-  { emoji: "🎂", name: "Aniversare" },
-  { emoji: "💚", name: "Cauză" },
-  { emoji: "🏢", name: "Corporate" },
-  { emoji: "🕊️", name: "Comemorare" },
-  { emoji: "➕", name: "Altul", muted: true },
+  { icon: Gem, name: "Nuntă", selected: true },
+  { icon: Baby, name: "Botez" },
+  { icon: Cake, name: "Aniversare" },
+  { icon: HandHeart, name: "Cauză" },
+  { icon: Building, name: "Corporate" },
+  { icon: Flower, name: "Comemorare" },
+  { icon: Sparkles, name: "Altul", muted: true },
 ];
 
 const formBox = "rounded-2xl border border-[#EFE6DD] bg-white p-4.5 text-[#2B2740]";
@@ -418,7 +435,7 @@ export function CreateContent({ startHref }: { startHref: string }) {
                       t.selected === true ? "border-accent bg-[#FFF8F1]" : "border-[#EFE6DD] bg-white"
                     } ${t.muted === true ? "opacity-50" : ""}`}
                   >
-                    <p className="text-[26px]">{t.emoji}</p>
+                    <t.icon size={24} strokeWidth={1.8} className="mx-auto text-[#2B2740]" aria-hidden="true" />
                     <p className="mt-1.5 text-[13px] font-semibold">{t.name}</p>
                   </div>
                 ))}
@@ -465,7 +482,7 @@ export function CreateContent({ startHref }: { startHref: string }) {
                 <p className="mt-2 font-display text-[28px] font-bold italic">Maria &amp; Andrei</p>
                 <p className="mt-1 text-sm opacity-90">12 septembrie 2026</p>
                 <div className="mt-3.5 flex flex-wrap justify-center gap-1.5">
-                  {["💛 Fond activ", "📅 Program", "📸 Live"].map((chip) => (
+                  {["Fond activ", "Program", "Live"].map((chip) => (
                     <span key={chip} className="rounded-full bg-white/25 px-3 py-1 text-[11px] font-semibold">
                       {chip}
                     </span>

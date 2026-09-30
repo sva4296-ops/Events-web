@@ -1,5 +1,6 @@
 "use client";
 
+import { CirclePlay, MousePointerClick } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { TOUR_STEPS } from "./data";
@@ -92,15 +93,15 @@ export function Tour() {
             aria-expanded={menuOpen}
             className="fixed bottom-4 right-4 z-[200] inline-flex size-13 items-center justify-center gap-2 rounded-full bg-[#1E1A30] text-xl font-semibold text-white shadow-xl shadow-black/30 transition hover:-translate-y-0.5 sm:bottom-6 sm:right-6 sm:size-auto sm:px-5 sm:py-3 sm:text-sm"
           >
-            🎬<span className="hidden sm:inline"> Tur ghidat</span>
+            <CirclePlay size={22} strokeWidth={1.8} aria-hidden="true" /><span className="hidden sm:inline">Tur ghidat</span>
           </button>
           {menuOpen && (
             <div className="fixed bottom-[76px] right-4 z-[200] flex min-w-[210px] flex-col gap-1 rounded-2xl bg-white p-2 text-[#2B2740] shadow-2xl shadow-black/25 sm:bottom-[78px] sm:right-6">
               <button type="button" onClick={() => start("auto")} className="rounded-xl px-3.5 py-3 text-left text-sm hover:bg-[#FFF8F1]">
-                ▶️ Tur automat <span className="text-xs text-[#8A8496]">(se derulează singur)</span>
+                <CirclePlay size={16} strokeWidth={1.8} className="mr-1.5 inline-block align-[-3px]" aria-hidden="true" />Tur automat <span className="text-xs text-[#8A8496]">(se derulează singur)</span>
               </button>
               <button type="button" onClick={() => start("guided")} className="rounded-xl px-3.5 py-3 text-left text-sm hover:bg-[#FFF8F1]">
-                👆 Tur ghidat <span className="text-xs text-[#8A8496]">(pas cu pas)</span>
+                <MousePointerClick size={16} strokeWidth={1.8} className="mr-1.5 inline-block align-[-3px]" aria-hidden="true" />Tur ghidat <span className="text-xs text-[#8A8496]">(pas cu pas)</span>
               </button>
             </div>
           )}

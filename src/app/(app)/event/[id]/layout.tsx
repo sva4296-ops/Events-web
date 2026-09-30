@@ -1,5 +1,6 @@
+import { EventTypeIcon } from "@/components/EventTypeIcon";
 import { SiteHeader } from "@/components/SiteHeader";
-import { getEventTypeMeta } from "@/lib/eventTypes";
+import { bandBackground, getEventTypeMeta } from "@/lib/eventTypes";
 import { getEventContext } from "@/lib/data/eventContext";
 import { formatEventDate } from "@/lib/format";
 
@@ -23,11 +24,11 @@ export default async function EventLayout({ children, params }: LayoutProps<"/ev
 
       <div className="flex items-center gap-4">
         <span
-          className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-2xl shadow-md sm:h-16 sm:w-16 sm:text-3xl"
-          style={{ background: `linear-gradient(135deg, ${type.light[0]}, ${type.light[1]})` }}
+          className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl sm:h-16 sm:w-16"
+          style={{ background: bandBackground(type), color: type.bandInk }}
           aria-hidden="true"
         >
-          {type.emoji}
+          <EventTypeIcon type={event.type} size={28} />
         </span>
         <div className="min-w-0">
           <h1 className="truncate font-display text-2xl font-bold sm:text-4xl">{event.name}</h1>

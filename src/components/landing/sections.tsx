@@ -263,7 +263,9 @@ export function Verticals() {
               className={`rounded-[18px] border border-[#EFE6DD] bg-linear-135 p-6.5 text-[#2B2740] hover:-translate-y-0.5 ${v.tint} ${lp.reveal}`}
               data-reveal
             >
-              <p className="text-3xl">{v.emoji}</p>
+              <span className="flex size-12 items-center justify-center rounded-2xl bg-white/80 text-[#2B2740]" aria-hidden="true">
+                <v.icon size={24} strokeWidth={1.8} />
+              </span>
               <p className="mb-1 mt-2.5 text-lg font-bold">{v.name}</p>
               <p className="text-sm text-[#5F5E5A]">{v.text}</p>
             </div>
@@ -288,7 +290,7 @@ export function Features() {
         <div className="mt-11 grid gap-4.5 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((f) => (
             <div key={f.title} className={`${lp.card} rounded-[18px] p-6 ${lp.hoverLift} ${lp.reveal}`} data-reveal>
-              <div className="mb-3.5 flex size-[46px] items-center justify-center rounded-xl bg-surface-muted text-[22px]">{f.icon}</div>
+              <div className="mb-3.5 flex size-[46px] items-center justify-center rounded-xl bg-accent-tint text-accent-text" aria-hidden="true"><f.icon size={22} strokeWidth={1.8} /></div>
               <h3 className="mb-1 text-[17px] font-bold">{f.title}</h3>
               <p className="text-sm text-muted">{f.text}</p>
             </div>
@@ -313,7 +315,9 @@ export function ForWhom() {
         <div className="mt-11 grid grid-cols-2 gap-3.5 min-[461px]:grid-cols-3 lg:grid-cols-5">
           {FOR_WHOM.map((w) => (
             <div key={w.name} className={`rounded-[18px] bg-surface px-3.5 py-6 text-center hover:-translate-y-0.5 ${lp.reveal}`} data-reveal>
-              <p className="text-[32px]">{w.emoji}</p>
+              <span className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-accent-tint text-accent-text" aria-hidden="true">
+                <w.icon size={24} strokeWidth={1.8} />
+              </span>
               <p className="mb-1 mt-2.5 text-[15px] font-bold">{w.name}</p>
               <p className="text-[12.5px] leading-snug text-muted">{w.text}</p>
             </div>

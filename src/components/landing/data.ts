@@ -1,5 +1,29 @@
 /** Static copy for the landing page (texts in Romanian, as in the rest of the UI). */
 
+import {
+  Armchair,
+  Baby,
+  Bell,
+  BookOpen,
+  Building,
+  Cake,
+  CalendarDays,
+  ClipboardList,
+  Flower,
+  Gem,
+  Gift,
+  HandHeart,
+  Handshake,
+  Heart,
+  Images,
+  Mail,
+  MapPin,
+  MessageCircle,
+  QrCode,
+  UtensilsCrossed,
+  Users,
+} from "lucide-react";
+
 export const NAV_LINKS = [
   { href: "#cum", label: "Cum funcționează" },
   { href: "#functii", label: "Funcții" },
@@ -23,35 +47,35 @@ export const NEW_WAY = [
 ];
 
 export const VERTICALS = [
-  { emoji: "💍", name: "Nuntă", text: "Parcursul până la „Da”, contribuții la luna de miere, albumul tuturor.", tint: "from-[#FFF6F0] to-[#FBEAE2]" },
-  { emoji: "🍼", name: "Botez", text: "Pregătirile, nașii, fondul de viitor al celui mic.", tint: "from-[#F0F5FF] to-[#DEEAFB]" },
-  { emoji: "🎂", name: "Aniversare", text: "Majorate, aniversări rotunde — momente care merită o poveste.", tint: "from-[#FDF6E8] to-[#FBE8C8]" },
-  { emoji: "💚", name: "Cauze & gale", text: "Strângeri de fonduri transparente, cu impactul la vedere.", tint: "from-[#EDF9F4] to-[#D4EFE5]" },
-  { emoji: "🏢", name: "Corporate", text: "Gale, conferințe, premii — cu networking și branding propriu.", tint: "from-[#EEF2F7] to-[#DCE5F0]" },
-  { emoji: "🕊️", name: "Comemorare", text: "Un spațiu sobru și respectuos pentru a păstra amintirile împreună.", tint: "from-[#F4F1EE] to-[#E8E4DD]" },
+  { icon: Gem, name: "Nuntă", text: "Parcursul până la „Da”, contribuții la luna de miere, albumul tuturor.", tint: "from-[#FFF6F0] to-[#FBEAE2]" },
+  { icon: Baby, name: "Botez", text: "Pregătirile, nașii, fondul de viitor al celui mic.", tint: "from-[#F0F5FF] to-[#DEEAFB]" },
+  { icon: Cake, name: "Aniversare", text: "Majorate, aniversări rotunde — momente care merită o poveste.", tint: "from-[#FDF6E8] to-[#FBE8C8]" },
+  { icon: HandHeart, name: "Cauze & gale", text: "Strângeri de fonduri transparente, cu impactul la vedere.", tint: "from-[#EDF9F4] to-[#D4EFE5]" },
+  { icon: Building, name: "Corporate", text: "Gale, conferințe, premii — cu networking și branding propriu.", tint: "from-[#EEF2F7] to-[#DCE5F0]" },
+  { icon: Flower, name: "Comemorare", text: "Un spațiu sobru și respectuos pentru a păstra amintirile împreună.", tint: "from-[#F4F1EE] to-[#E8E4DD]" },
 ];
 
 export const FEATURES = [
-  { icon: "📨", title: "Invitație & RSVP", text: "Pagină frumoasă, link sau QR, confirmări cu un tap — fără cont pentru invitați." },
-  { icon: "📖", title: "Feed de parcurs", text: "Postezi momente din pregătiri. Invitații urmăresc povestea, lună după lună." },
-  { icon: "💛", title: "Contribuții la un scop", text: "Lună de miere, casă, o cauză — invitații contribuie online, securizat." },
-  { icon: "💬", title: "Chat & comentarii", text: "Invitații vorbesc între ei și cu tine, comentează la fiecare moment." },
-  { icon: "📅", title: "Program & agendă", text: "Orarul complet al zilei, pas cu pas, vizibil pentru toți." },
-  { icon: "📍", title: "Hartă & locație", text: "Adresă, cum ajungi, navigare — și cazare recomandată pentru cei din alte orașe." },
-  { icon: "🍽️", title: "Meniu & preferințe", text: "Felurile serii, plus opțiuni alimentare (vegetarian, fără gluten) alese de invitați." },
-  { icon: "🪑", title: "Așezare la mese", text: "Cine stă unde, organizat clar — fără confuzii în ziua cea mare." },
-  { icon: "🤝", title: "Furnizori", text: "Foto, muzică, decor, locație — tag-uiți pe pagină, ușor de recomandat." },
-  { icon: "📸", title: "Ecran live & QR", text: "În sală, pozele curg în timp real. Invitații scanează și adaugă pe loc." },
-  { icon: "✨", title: "Album & recap", text: "După eveniment, toate pozele tuturor, adunate într-un album pe care îl păstrezi." },
-  { icon: "🔔", title: "Notificări", text: "Toți rămân la curent: un moment nou, o confirmare, o contribuție." },
+  { icon: Mail, title: "Invitație & RSVP", text: "Pagină frumoasă, link sau QR, confirmări cu un tap — fără cont pentru invitați." },
+  { icon: BookOpen, title: "Feed de parcurs", text: "Postezi momente din pregătiri. Invitații urmăresc povestea, lună după lună." },
+  { icon: Gift, title: "Contribuții la un scop", text: "Lună de miere, casă, o cauză — invitații contribuie online, securizat." },
+  { icon: MessageCircle, title: "Chat & comentarii", text: "Invitații vorbesc între ei și cu tine, comentează la fiecare moment." },
+  { icon: CalendarDays, title: "Program & agendă", text: "Orarul complet al zilei, pas cu pas, vizibil pentru toți." },
+  { icon: MapPin, title: "Hartă & locație", text: "Adresă, cum ajungi, navigare — și cazare recomandată pentru cei din alte orașe." },
+  { icon: UtensilsCrossed, title: "Meniu & preferințe", text: "Felurile serii, plus opțiuni alimentare (vegetarian, fără gluten) alese de invitați." },
+  { icon: Armchair, title: "Așezare la mese", text: "Cine stă unde, organizat clar — fără confuzii în ziua cea mare." },
+  { icon: Handshake, title: "Furnizori", text: "Foto, muzică, decor, locație — tag-uiți pe pagină, ușor de recomandat." },
+  { icon: QrCode, title: "Ecran live & QR", text: "În sală, pozele curg în timp real. Invitații scanează și adaugă pe loc." },
+  { icon: Images, title: "Album & recap", text: "După eveniment, toate pozele tuturor, adunate într-un album pe care îl păstrezi." },
+  { icon: Bell, title: "Notificări", text: "Toți rămân la curent: un moment nou, o confirmare, o contribuție." },
 ];
 
 export const FOR_WHOM = [
-  { emoji: "💑", name: "Cupluri", text: "Care vor mai mult decât o invitație pentru nunta lor." },
-  { emoji: "👨‍👩‍👧", name: "Părinți", text: "Botez, aniversare — momentele copiilor, păstrate." },
-  { emoji: "💚", name: "Organizații", text: "Gale și cauze cu strângeri de fonduri transparente." },
-  { emoji: "🏢", name: "Companii", text: "Gale, conferințe și evenimente cu branding propriu." },
-  { emoji: "🎯", name: "Event planneri", text: "Agenții care gestionează multe evenimente deodată." },
+  { icon: Heart, name: "Cupluri", text: "Care vor mai mult decât o invitație pentru nunta lor." },
+  { icon: Users, name: "Părinți", text: "Botez, aniversare — momentele copiilor, păstrate." },
+  { icon: HandHeart, name: "Organizații", text: "Gale și cauze cu strângeri de fonduri transparente." },
+  { icon: Building, name: "Companii", text: "Gale, conferințe și evenimente cu branding propriu." },
+  { icon: ClipboardList, name: "Event planneri", text: "Agenții care gestionează multe evenimente deodată." },
 ];
 
 export type PlanAction = "start" | "planner";

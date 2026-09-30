@@ -1,3 +1,5 @@
+import { CalendarDays, Camera, MapPin, MessageCircle, Smartphone } from "lucide-react";
+
 import { BrandMark } from "@/components/BrandMark";
 
 /** Store links come from env so they can be filled in once the app is
@@ -6,10 +8,10 @@ const APP_STORE_URL = process.env.NEXT_PUBLIC_APP_STORE_URL ?? "";
 const PLAY_STORE_URL = process.env.NEXT_PUBLIC_PLAY_STORE_URL ?? "";
 
 const FEATURES = [
-  { icon: "📅", label: "Programul zilei" },
-  { icon: "📸", label: "Poze live" },
-  { icon: "💬", label: "Chat cu invitații" },
-  { icon: "📍", label: "Locație și detalii" },
+  { icon: CalendarDays, label: "Programul zilei" },
+  { icon: Camera, label: "Poze live" },
+  { icon: MessageCircle, label: "Chat cu invitații" },
+  { icon: MapPin, label: "Locație și detalii" },
 ];
 
 function StoreButton({ href, label }: { href: string; label: string }) {
@@ -72,7 +74,7 @@ export function AppBanner() {
               key={feature.label}
               className="flex items-center gap-2 rounded-xl bg-white/15 px-3 py-2 text-sm backdrop-blur-sm"
             >
-              <span aria-hidden="true">{feature.icon}</span>
+              <feature.icon className="h-4 w-4 shrink-0" strokeWidth={1.8} aria-hidden="true" />
               <span className="font-medium">{feature.label}</span>
             </li>
           ))}
@@ -84,7 +86,7 @@ export function AppBanner() {
         </div>
 
         <p className="flex items-start gap-2 text-xs text-white/85">
-          <span aria-hidden="true">📱</span>
+          <Smartphone className="mt-0.5 h-3.5 w-3.5 shrink-0" strokeWidth={1.8} aria-hidden="true" />
           <span>
             Intră cu <strong className="font-semibold text-white">același număr de telefon</strong>{" "}
             pe care ai primit invitația și o vei găsi deja acolo.

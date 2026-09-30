@@ -35,7 +35,7 @@ export function RsvpForm({ token, status, eventName, eventId }: RsvpFormProps) {
           className={`w-full rounded-2xl px-5 py-5 ${confirmed ? "bg-confirmed-soft" : "bg-declined-soft"}`}
         >
           <p className={`text-lg font-semibold ${confirmed ? "text-confirmed" : "text-declined"}`}>
-            {confirmed ? "Ne vedem acolo! 🎉" : "Mulțumim că ne-ai anunțat"}
+            {confirmed ? "Ne vedem acolo!" : "Mulțumim că ne-ai anunțat"}
           </p>
           <p className="mt-1 text-sm text-muted">
             {confirmed

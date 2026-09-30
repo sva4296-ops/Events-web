@@ -1,3 +1,4 @@
+import { Lock, MessageCircle } from "lucide-react";
 import Image from "next/image";
 
 import { BrandMark } from "@/components/BrandMark";
@@ -106,7 +107,7 @@ function FeedPost({ when, title, photo, likes, comments, chat }: { when: string;
       <div className="flex gap-3 px-3 py-2 text-[10.5px] text-[#8A8496]">
         <span className="font-bold text-pink">● {likes}</span>
         <span>● {comments}</span>
-        {chat === true && <span className="ml-auto">💬</span>}
+        {chat === true && <MessageCircle size={14} strokeWidth={1.8} className="ml-auto" aria-hidden="true" />}
       </div>
     </div>
   );
@@ -215,7 +216,7 @@ export function AmountScreen() {
           ))}
         </div>
         <div className="rounded-full bg-accent-fill py-2 text-center text-xs font-semibold text-on-accent">Contribuie 300 lei</div>
-        <p className="mt-2.5 text-center text-[9.5px] text-[#8A8496]">🔒 Plată securizată prin Stripe</p>
+        <p className="mt-2.5 text-center text-[9.5px] text-[#8A8496]"><Lock size={10} strokeWidth={2} className="mr-1 inline-block align-[-1px]" aria-hidden="true" />Plată securizată prin Stripe</p>
       </div>
     </Phone>
   );
