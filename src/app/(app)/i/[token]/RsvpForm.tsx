@@ -46,7 +46,7 @@ export function RsvpForm({ token, status, eventName, eventId }: RsvpFormProps) {
         {confirmed && eventId !== null ? (
           <Link
             href={`/login?next=${encodeURIComponent(`/event/${eventId}`)}`}
-            className="w-full rounded-full bg-accent px-6 py-4 text-base font-semibold text-white shadow-lg shadow-accent/25 transition active:scale-[0.98]"
+            className="flex h-[54px] w-full items-center justify-center rounded-full bg-accent-fill px-6 text-base font-semibold text-on-accent shadow-[0_8px_20px_rgba(106,97,209,0.28)] transition active:scale-[0.98] dark:shadow-none"
           >
             Vezi evenimentul pe web
           </Link>
@@ -54,7 +54,7 @@ export function RsvpForm({ token, status, eventName, eventId }: RsvpFormProps) {
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className="text-sm font-semibold text-accent underline-offset-4 hover:underline"
+          className="min-h-11 text-sm font-semibold text-accent-text underline-offset-4 hover:underline"
         >
           Schimbă răspunsul
         </button>
@@ -69,8 +69,21 @@ export function RsvpForm({ token, status, eventName, eventId }: RsvpFormProps) {
         name="status"
         value="confirmed"
         disabled={pending}
-        className="w-full rounded-full bg-accent px-6 py-4 text-base font-semibold text-white shadow-lg shadow-accent/25 transition active:scale-[0.98] disabled:opacity-60"
+        className="flex h-[54px] w-full items-center justify-center gap-2 rounded-full bg-accent-fill px-6 text-base font-semibold text-on-accent shadow-[0_8px_20px_rgba(106,97,209,0.28)] transition active:scale-[0.98] disabled:bg-surface-2 disabled:text-faint disabled:shadow-none dark:shadow-none"
       >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M20 6L9 17l-5-5" />
+        </svg>
         {pending ? "Se salvează…" : "Confirm prezența"}
       </button>
       <button
@@ -78,7 +91,7 @@ export function RsvpForm({ token, status, eventName, eventId }: RsvpFormProps) {
         name="status"
         value="declined"
         disabled={pending}
-        className="w-full rounded-full bg-declined-soft px-6 py-4 text-base font-semibold text-declined transition active:scale-[0.98] disabled:opacity-60"
+        className="flex h-[54px] w-full items-center justify-center rounded-full border-[1.5px] border-surface-border bg-surface px-6 text-base font-semibold text-ink transition active:scale-[0.98] disabled:opacity-60"
       >
         Nu pot ajunge
       </button>
@@ -86,13 +99,13 @@ export function RsvpForm({ token, status, eventName, eventId }: RsvpFormProps) {
         <button
           type="button"
           onClick={() => setEditing(false)}
-          className="text-sm text-muted underline-offset-4 hover:underline"
+          className="min-h-11 text-sm font-semibold text-accent-text underline-offset-4 hover:underline"
         >
           Renunță
         </button>
       ) : null}
       {state.error !== null ? (
-        <p role="alert" className="text-center text-sm text-red-500">
+        <p role="alert" className="text-center text-sm text-declined">
           {state.error}
         </p>
       ) : null}

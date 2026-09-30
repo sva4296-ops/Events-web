@@ -59,8 +59,8 @@ export default async function InvitePage({ params }: PageProps<"/i/[token]">) {
         />
 
         <aside className="flex flex-col gap-6 lg:sticky lg:top-10 lg:col-span-2">
-          <div className="rounded-3xl lg:border lg:border-surface-border lg:bg-surface lg:p-6 lg:shadow-xl lg:shadow-black/5">
-            <p className="mb-4 hidden font-display text-xl font-bold lg:block">Poți ajunge?</p>
+          <div className="rounded-3xl border border-surface-border bg-surface p-[18px] shadow-card lg:p-6">
+            <p className="mb-3 text-base font-bold lg:mb-4 lg:font-display lg:text-xl">Poți ajunge?</p>
             <RsvpForm
               token={token}
               status={invite.status}

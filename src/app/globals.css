@@ -5,45 +5,73 @@
   --bg-from: #fff8f1;
   --bg-to: #fbeae0;
   --surface: #ffffff;
-  --surface-border: rgba(43, 39, 64, 0.06);
+  --surface-border: #eee2d7;
+  --surface-2: #f7efe8;
   --ink: #2b2740;
-  --muted: #8a8496;
+  /* Warm Story 2.0: secondary text darkened for 5.3:1 on cream. */
+  --muted: #6e6880;
+  --faint: #8a8496;
   --accent: #7f77dd;
+  --accent-fill: #6a61d1;
+  --on-accent: #ffffff;
+  --accent-tint: #eeecfb;
+  --accent-text: #5b53c4;
   --accent-soft: rgba(127, 119, 221, 0.12);
   --gold: #f5c36b;
   --pink: #e8779e;
   --danger: #d9534f;
   --surface-muted: #fbeae0;
-  --confirmed: #2e9e6b;
-  --confirmed-soft: rgba(46, 158, 107, 0.12);
-  --declined: #786fa0;
-  --declined-soft: rgba(120, 111, 160, 0.12);
+  --confirmed: #1f7a51;
+  --confirmed-soft: #e3f4eb;
+  --pending: #8a5a0a;
+  --pending-soft: #fdf1dc;
+  --declined: #b5335f;
+  --declined-soft: #fce6ee;
+  --card-shadow: 0 6px 20px rgba(43, 39, 64, 0.07);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-from: #1e1a30;
-    --bg-to: #171325;
+    --bg-to: #1e1a30;
     --surface: #2a2440;
-    --surface-border: rgba(255, 255, 255, 0.08);
-    --ink: #f3f1f8;
-    --muted: #9b93b8;
+    --surface-border: #3d3659;
+    --surface-2: #342d4e;
+    --ink: #f4f1fa;
+    --muted: #b4adc7;
+    --faint: #8f88a6;
     --accent: #9b93f0;
+    --accent-fill: #9b93f0;
+    --on-accent: #1e1a30;
+    --accent-tint: #37305a;
+    --accent-text: #bdb7f7;
     --accent-soft: rgba(155, 147, 240, 0.16);
-    --gold: #f0c97d;
-    --pink: #ee93b4;
+    --gold: #f5c36b;
+    --pink: #f08fb3;
     --danger: #e8726e;
     --surface-muted: #1e1a30;
-    --confirmed: #5cc896;
-    --confirmed-soft: rgba(92, 200, 150, 0.14);
-    --declined: #a79ed0;
-    --declined-soft: rgba(167, 158, 208, 0.14);
+    --confirmed: #6dd3a0;
+    --confirmed-soft: #1f3b30;
+    --pending: #f5c36b;
+    --pending-soft: #3e3322;
+    --declined: #f08fb3;
+    --declined-soft: #45263a;
+    --card-shadow: none;
   }
 }
 
 @theme inline {
   --color-surface: var(--surface);
   --color-surface-border: var(--surface-border);
+  --color-surface-2: var(--surface-2);
+  --color-faint: var(--faint);
+  --color-accent-fill: var(--accent-fill);
+  --color-on-accent: var(--on-accent);
+  --color-accent-tint: var(--accent-tint);
+  --color-accent-text: var(--accent-text);
+  --color-pending: var(--pending);
+  --color-pending-soft: var(--pending-soft);
+  --shadow-card: var(--card-shadow);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-accent: var(--accent);

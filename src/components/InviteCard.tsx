@@ -1,4 +1,4 @@
-import { getEventTypeMeta } from "@/lib/eventTypes";
+import { bandBackground, getEventTypeMeta } from "@/lib/eventTypes";
 import { formatEventDate } from "@/lib/format";
 import type { EventType } from "@/lib/types";
 
@@ -30,55 +30,90 @@ export function InviteCard({
 
   return (
     <article
-      className={`overflow-hidden rounded-3xl border border-surface-border bg-surface shadow-xl shadow-black/5 ${className}`}
+      className={`overflow-hidden rounded-[28px] border border-surface-border bg-surface shadow-card ${className}`}
     >
+      {/* The band stays the same in both themes; text never sits on it except these white chips. */}
       <div
-        className="flex h-32 items-center justify-center text-6xl sm:h-44 sm:text-7xl lg:h-60 lg:text-8xl dark:hidden"
-        style={{ background: `linear-gradient(135deg, ${type.light[0]}, ${type.light[1]})` }}
-        aria-hidden="true"
+        className="relative flex h-[140px] items-center justify-center sm:h-44 lg:h-56"
+        style={{ background: bandBackground(type) }}
       >
-        {type.emoji}
-      </div>
-      <div
-        className="hidden h-32 items-center justify-center text-6xl sm:h-44 sm:text-7xl lg:h-60 lg:text-8xl dark:flex"
-        style={{ background: `linear-gradient(135deg, ${type.dark[0]}, ${type.dark[1]})` }}
-        aria-hidden="true"
-      >
-        {type.emoji}
+        <span className="absolute left-3.5 top-3.5 flex h-6 items-center rounded-full bg-white/90 px-2.5 text-xs font-semibold text-[#2B2740]">
+          {type.label}
+        </span>
+        <span
+          className="flex size-20 items-center justify-center rounded-full bg-white/90 text-[38px] lg:size-28 lg:text-5xl"
+          aria-hidden="true"
+        >
+          {type.emoji}
+        </span>
       </div>
 
-      <div className="flex flex-col gap-5 px-6 pb-7 pt-6 sm:px-10 sm:pb-10 sm:pt-8 lg:gap-7">
-        <div className="flex flex-col gap-1 lg:gap-2">
-          {greeting !== undefined ? <p className="text-sm text-muted lg:text-base">{greeting}</p> : null}
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent lg:text-sm">
-            {hostName ? `${hostName} te invită` : type.label}
+      <div className="flex flex-col items-center gap-2 px-6 pb-6 pt-5 text-center sm:px-10 sm:pb-9 sm:pt-7 lg:gap-3">
+        {greeting !== undefined ? <p className="text-sm text-muted lg:text-base">{greeting}</p> : null}
+        <h1 className="font-display text-[32px] font-bold leading-[1.15] sm:text-4xl lg:text-5xl">{eventName}</h1>
+        {hostName ? (
+          <p className="text-[13px] font-semibold uppercase tracking-[0.08em] text-muted">
+            {hostName} te invită
           </p>
-          <h1 className="font-display text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">{eventName}</h1>
-        </div>
-
-        {date !== null || location !== null ? (
-          <dl className="flex flex-col gap-3 lg:text-lg">
-            {date !== null ? (
-              <div className="flex items-start gap-3">
-                <dt className="mt-0.5 text-lg" aria-label="Data">📅</dt>
-                <dd className="first-letter:uppercase">{date}</dd>
-              </div>
-            ) : null}
-            {location !== null ? (
-              <div className="flex items-start gap-3">
-                <dt className="mt-0.5 text-lg" aria-label="Locația">📍</dt>
-                <dd>{location}</dd>
-              </div>
-            ) : null}
-          </dl>
+        ) : null}
+        {welcomeMessage !== null ? (
+          <p className="mt-1.5 font-display text-[17px] italic leading-[1.45] lg:text-2xl">„{welcomeMessage}”</p>
         ) : null}
 
-        {welcomeMessage !== null ? (
-          <blockquote className="rounded-2xl bg-accent-soft px-4 py-3 font-display text-lg italic leading-snug sm:px-6 sm:py-5 lg:text-2xl">
-            „{welcomeMessage}”
-          </blockquote>
+        {date !== null || location !== null ? (
+          <>
+            <div className="my-1.5 h-px self-stretch bg-surface-border" />
+            <dl className="flex flex-col items-center gap-2 text-sm text-muted lg:text-base">
+              {date !== null ? (
+                <div className="flex items-center gap-2">
+                  <dt aria-label="Data">
+                    <CalendarIcon />
+                  </dt>
+                  <dd className="first-letter:uppercase">{date}</dd>
+                </div>
+              ) : null}
+              {location !== null ? (
+                <div className="flex items-center gap-2">
+                  <dt aria-label="Locația">
+                    <PinIcon />
+                  </dt>
+                  <dd>{location}</dd>
+                </div>
+              ) : null}
+            </dl>
+          </>
         ) : null}
       </div>
     </article>
+  );
+}
+
+const iconProps = {
+  width: 16,
+  height: 16,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.8,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  "aria-hidden": true,
+};
+
+function CalendarIcon() {
+  return (
+    <svg {...iconProps}>
+      <rect x="3" y="4" width="18" height="18" rx="2" />
+      <path d="M16 2v4M8 2v4M3 10h18" />
+    </svg>
+  );
+}
+
+function PinIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
   );
 }
