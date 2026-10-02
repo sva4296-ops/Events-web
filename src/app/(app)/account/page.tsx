@@ -1,10 +1,11 @@
 import { LogOut } from "lucide-react";
 
+import { DeleteAccountForm } from "@/components/DeleteAccountForm";
 import { NameForm } from "@/components/NameForm";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { ui } from "@/components/ui/styles";
-import { signOut, updateName } from "@/lib/actions/profile";
+import { deleteAccount, signOut, updateName } from "@/lib/actions/profile";
 import { getProfile, requireUser } from "@/lib/auth";
 import { formatE164 } from "@/lib/phone";
 
@@ -35,6 +36,7 @@ export default async function AccountPage() {
             Ieși din cont
           </button>
         </form>
+        <DeleteAccountForm action={deleteAccount} />
       </div>
     </div>
   );

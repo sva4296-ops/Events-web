@@ -21,6 +21,8 @@ export interface GuestRow {
   rsvp_status: RsvpStatus;
   dietary_preferences: string[];
   table_id: string | null;
+  /** Picked menu_options row (chosen in the app, see Events' 20261001000005). */
+  menu_option_id?: string | null;
 }
 
 export interface EventRow {
@@ -109,10 +111,12 @@ export interface Venue {
   notes: string[];
 }
 
-export interface Menu {
-  starter: string;
-  main: string;
-  dessert: string;
+/** One whole menu guests pick from in the app (menu_options). */
+export interface MenuOption {
+  id: string;
+  name: string;
+  /** In serving order (menu_options.courses jsonb). */
+  courses: { name: string; dish: string; photoUrl: string | null }[];
 }
 
 export interface SeatingTable {

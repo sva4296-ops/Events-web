@@ -47,3 +47,23 @@ export async function signOut(): Promise<void> {
   await supabase.auth.signOut();
   redirect("/login");
 }
+
+/**
+ * Permanently deletes the signed-in account through the same delete-account
+ * Edge Function the app uses (the server client sends this session's token).
+ * Linked from Google Play's "delete account" URL.
+ */
+export async function deleteAccount(_prev: FormState, formData: FormData): Promise<FormState> {
+  if (formData.get("confirm") !== "on") return { error: "Bifează confirmarea pentru a continua." };
+
+  const user = await getSessionUser();
+  if (user === null) return { error: "Sesiunea a expirat. Intră din nou în cont." };
+
+  const supabase = await createClient();
+  const { error } = await supabase.functions.invoke("delete-account", { method: "POST" });
+  if (error) return { error: "Contul nu a putut fi șters. Te rugăm să încerci din nou." };
+
+  // The user no longer exists, so only the local cookies need clearing.
+  await supabase.auth.signOut({ scope: "local" });
+  redirect("/");
+}

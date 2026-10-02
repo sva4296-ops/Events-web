@@ -62,7 +62,7 @@ export function hasContent(key: SectionKey, d: Details): boolean {
     case "location":
       return d.venue.name.trim().length > 0 || d.venue.address.trim().length > 0;
     case "menu":
-      return d.menu !== null;
+      return d.menuOptions.length > 0;
     case "seating":
       return d.seatingTables.length > 0;
     case "lodging":
@@ -82,7 +82,11 @@ export function sectionStatus(key: SectionKey, d: Details, owner: boolean): stri
     case "location":
       return d.venue.address.trim() || d.venue.name.trim() || "Locația nu e setată";
     case "menu":
-      return d.menu === null ? "Meniul nu e setat" : owner ? "Meniul e setat" : "Vezi ce se servește";
+      return d.menuOptions.length === 0
+        ? "Meniul nu e setat"
+        : owner
+          ? `${d.menuOptions.length} ${pluralRo(d.menuOptions.length, "meniu", "meniuri", "de meniuri")}`
+          : "Vezi ce se servește";
     case "seating": {
       if (d.seatingTables.length === 0) return "Nicio masă adăugată";
       if (!owner) return "Vezi unde stai";

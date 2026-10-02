@@ -130,24 +130,40 @@ export default async function DetaliiSectionPage({ params }: PageProps<"/event/[
 
     case "menu":
       body =
-        details.menu === null ? (
+        details.menuOptions.length === 0 ? (
           empty
         ) : (
           <div className="flex flex-col gap-5">
-            <div className={`${ui.cardPadded} grid gap-5 sm:grid-cols-3`}>
-              {(
-                [
-                  ["Antreu", details.menu.starter],
-                  ["Fel principal", details.menu.main],
-                  ["Desert", details.menu.dessert],
-                ] as const
-              ).map(([course, dish]) => (
-                <div key={course} className="flex flex-col gap-1">
-                  <span className={ui.eyebrow}>{course}</span>
-                  <span className="font-display text-lg">{dish.trim().length > 0 ? dish : "—"}</span>
+            {!owner ? (
+              <p className="text-sm text-muted">Alegerea meniului se face din aplicația PovesteaNoastra.</p>
+            ) : null}
+            {details.menuOptions.map((option) => {
+              const mine = !owner && event.myGuest?.menu_option_id === option.id;
+              return (
+                <div
+                  key={option.id}
+                  className={`${ui.cardPadded} flex flex-col gap-4 ${mine ? "ring-2 ring-accent-fill" : ""}`}
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="font-display text-xl">{option.name}</span>
+                    {mine ? <span className={ui.eyebrow}>Alegerea ta</span> : null}
+                  </div>
+                  <div className="grid gap-5 sm:grid-cols-3">
+                    {option.courses.map((course, index) => (
+                      <div key={index} className="flex flex-col gap-1">
+                        {course.photoUrl !== null ? (
+                          // Signed Storage URL, expires; next/image would need remotePatterns for it.
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={course.photoUrl} alt={course.dish} className="mb-2 aspect-square w-full rounded-xl object-cover" />
+                        ) : null}
+                        <span className={ui.eyebrow}>{course.name}</span>
+                        <span className="font-display text-lg">{course.dish}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
-            </div>
+              );
+            })}
             {!owner && event.myGuest !== null ? (
               <div className={ui.cardPadded}>
                 <DietaryPills eventId={id} selected={event.myGuest.dietary_preferences} />

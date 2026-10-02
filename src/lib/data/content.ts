@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import type {
   Accommodation,
   Fund,
-  Menu,
+  MenuOption,
   Message,
   Moment,
   MomentReaction,
@@ -146,7 +146,7 @@ export interface Details {
   contributorCount: number;
   schedule: ScheduleItem[];
   venue: Venue;
-  menu: Menu | null;
+  menuOptions: MenuOption[];
   seatingTables: SeatingTable[];
   accommodations: Accommodation[];
   vendors: Vendor[];
@@ -154,17 +154,28 @@ export interface Details {
 
 export const getDetails = cache(async (eventId: string): Promise<Details> => {
   const supabase = await createClient();
-  const [schedule, venue, fund, menu, seating, accommodations, vendors] = await Promise.all([
+  const [schedule, venue, fund, menuOptions, seating, accommodations, vendors] = await Promise.all([
     supabase.from("schedule_items").select("*").eq("event_id", eventId).order("sort_order"),
     supabase.from("venue_info").select("*").eq("event_id", eventId).maybeSingle(),
     supabase.from("fund").select("*").eq("event_id", eventId).maybeSingle(),
-    supabase.from("menu").select("*").eq("event_id", eventId).maybeSingle(),
+    supabase.from("menu_options").select("*").eq("event_id", eventId).order("sort_order"),
     supabase.from("seating_tables").select("*").eq("event_id", eventId).order("sort_order"),
     supabase.from("accommodations").select("*").eq("event_id", eventId).order("sort_order"),
     supabase.from("vendors").select("*").eq("event_id", eventId).order("sort_order"),
   ]);
-  for (const res of [schedule, venue, fund, menu, seating, accommodations, vendors]) {
+  for (const res of [schedule, venue, fund, menuOptions, seating, accommodations, vendors]) {
     if (res.error) throw res.error;
+  }
+
+  // Course photos: paths inside menu_options.courses, signed in one call.
+  const rawCourses = (menuOptions.data ?? []).map((row) =>
+    Array.isArray(row.courses) ? (row.courses as { name?: unknown; dish?: unknown; photo_path?: unknown }[]) : [],
+  );
+  const coursePaths = rawCourses.flat().flatMap((c) => (typeof c?.photo_path === "string" ? [c.photo_path] : []));
+  const coursePhotoUrl = new Map<string, string>();
+  if (coursePaths.length > 0) {
+    const { data: signed } = await supabase.storage.from(PHOTO_BUCKET).createSignedUrls(coursePaths, SIGNED_URL_TTL_SECONDS);
+    for (const entry of signed ?? []) if (entry.path && entry.signedUrl) coursePhotoUrl.set(entry.path, entry.signedUrl);
   }
 
   let contributorCount = 0;
@@ -200,10 +211,21 @@ export const getDetails = cache(async (eventId: string): Promise<Details> => {
       address: venue.data?.address ?? "",
       notes: venue.data?.notes ?? [],
     },
-    menu:
-      menu.data === null
-        ? null
-        : { starter: menu.data.starter ?? "", main: menu.data.main ?? "", dessert: menu.data.dessert ?? "" },
+    menuOptions: (menuOptions.data ?? []).map((row, index) => ({
+      id: row.id,
+      name: row.name,
+      courses: rawCourses[index].flatMap((course) =>
+        typeof course?.dish === "string"
+          ? [
+              {
+                name: typeof course.name === "string" ? course.name : "",
+                dish: course.dish,
+                photoUrl: typeof course.photo_path === "string" ? (coursePhotoUrl.get(course.photo_path) ?? null) : null,
+              },
+            ]
+          : [],
+      ),
+    })),
     seatingTables: (seating.data ?? []).map((row) => ({
       id: row.id,
       name: row.name,
