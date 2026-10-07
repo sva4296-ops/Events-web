@@ -56,8 +56,8 @@ export const VERTICALS = [
 ];
 
 export const FEATURES = [
-  { icon: Mail, title: "Invitație & RSVP", text: "Pagină frumoasă, link sau QR, confirmări cu un tap — fără cont pentru invitați." },
-  { icon: BookOpen, title: "Feed de parcurs", text: "Postezi momente din pregătiri. Invitații urmăresc povestea, lună după lună." },
+  { icon: Mail, title: "Invitație & Confirmare", text: "Pagină frumoasă, link sau QR, confirmări cu un tap — fără cont pentru invitați." },
+  { icon: BookOpen, title: "Momente în timp real", text: "Postezi momente din pregătiri. Invitații urmăresc povestea, lună după lună." },
   { icon: Gift, title: "Contribuții la un scop", text: "Lună de miere, casă, o cauză — invitații contribuie online, securizat." },
   { icon: MessageCircle, title: "Chat & comentarii", text: "Invitații vorbesc între ei și cu tine, comentează la fiecare moment." },
   { icon: CalendarDays, title: "Program & agendă", text: "Orarul complet al zilei, pas cu pas, vizibil pentru toți." },
@@ -66,7 +66,7 @@ export const FEATURES = [
   { icon: Armchair, title: "Așezare la mese", text: "Cine stă unde, organizat clar — fără confuzii în ziua cea mare." },
   { icon: Handshake, title: "Furnizori", text: "Foto, muzică, decor, locație — tag-uiți pe pagină, ușor de recomandat." },
   { icon: QrCode, title: "Ecran live & QR", text: "În sală, pozele curg în timp real. Invitații scanează și adaugă pe loc." },
-  { icon: Images, title: "Album & recap", text: "După eveniment, toate pozele tuturor, adunate într-un album pe care îl păstrezi." },
+  { icon: Images, title: "Album & recapitulare", text: "După eveniment, toate pozele tuturor, adunate într-un album pe care îl păstrezi." },
   { icon: Bell, title: "Notificări", text: "Toți rămân la curent: un moment nou, o confirmare, o contribuție." },
 ];
 
@@ -89,7 +89,7 @@ export const PLANS: {
   action: PlanAction;
   cta: string;
 }[] = [
-  { tier: "Esențial", amount: "149", unit: "lei", features: ["Invitație & RSVP", "Feed de parcurs", "Album foto", "Până la 50 invitați"], action: "start", cta: "Alege" },
+  { tier: "Esențial", amount: "149", unit: "lei", features: ["Invitație & Confirmare", "Momente în timp real", "Album foto", "Până la 50 invitați"], action: "start", cta: "Alege" },
   { tier: "Complet", amount: "299", unit: "lei", features: ["Tot din Esențial", "Fond de contribuții", "Ecran live + QR", "Chat & comentarii", "Invitați nelimitați"], highlighted: true, action: "start", cta: "Alege" },
   { tier: "Premium", amount: "499", unit: "lei", features: ["Tot din Complet", "Cazare & transport", "Furnizori tag-uiți", "Suport prioritar"], action: "start", cta: "Alege" },
   { tier: "Agenție", amount: "de la 179", unit: "lei/ev.", features: ["Volum multiplu", "Branding propriu", "Panou centralizat", "Facturare pe volum"], action: "planner", cta: "Vezi panoul" },

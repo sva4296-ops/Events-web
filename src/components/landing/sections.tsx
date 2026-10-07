@@ -200,7 +200,7 @@ export function Stages() {
         <SectionHead
           eyebrow="Cum funcționează"
           title="Patru etape, o poveste întreagă"
-          lead="Nu e doar o invitație trimisă și uitată. E un fir care leagă totul, din prima zi până după."
+          lead="Nu e doar o invitație trimisă și uitată. E un fir care leagă totul, din prima zi până după eveniment."
         />
         <div className="mt-12 grid gap-4.5 min-[461px]:grid-cols-2 lg:grid-cols-4">
           <StageCard n={1} color="#FFD23F" name="Lansarea" text="Creezi pagina, trimiți invitația, aduni confirmările. Totul începe.">
