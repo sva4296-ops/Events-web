@@ -6,8 +6,10 @@ import { BrandHeader } from "@/components/BrandMark";
 import { InviteCard } from "@/components/InviteCard";
 import { formatEventDate } from "@/lib/format";
 import { getInvite } from "@/lib/invites";
+import { getVenueByToken } from "@/lib/venues";
 
 import { RsvpForm } from "./RsvpForm";
+import { VenuePage, venueWhen } from "./VenuePage";
 
 // Always read the live RSVP state; never serve a cached copy of someone's invite.
 export const dynamic = "force-dynamic";
@@ -17,7 +19,20 @@ export async function generateMetadata({ params }: PageProps<"/i/[token]">): Pro
   const invite = await getInvite(token);
   // Personal links: keep them out of search engines either way.
   const robots = { index: false, follow: false };
-  if (invite === null) return { title: "Invitație · PovesteaNoastra", robots };
+  if (invite === null) {
+    // Not a personal invite: maybe a venue's public booking link.
+    const venue = await getVenueByToken(token);
+    if (venue === null) return { title: "Invitație · PovesteaNoastra", robots };
+    const description = [venue.hostName !== null ? `${venue.hostName} te invită` : null, venueWhen(venue), venue.priceInfo ?? "Intrare liberă"]
+      .filter(Boolean)
+      .join(" · ");
+    return {
+      title: `${venue.name}${venue.hostName !== null ? ` · ${venue.hostName}` : ""}`,
+      description,
+      robots,
+      openGraph: { title: venue.name, description, siteName: "PovesteaNoastra" },
+    };
+  }
 
   const date = formatEventDate(invite.eventDate);
   const description = [
@@ -39,7 +54,11 @@ export async function generateMetadata({ params }: PageProps<"/i/[token]">): Pro
 export default async function InvitePage({ params }: PageProps<"/i/[token]">) {
   const { token } = await params;
   const invite = await getInvite(token);
-  if (invite === null) notFound();
+  if (invite === null) {
+    const venue = await getVenueByToken(token);
+    if (venue === null) notFound();
+    return <VenuePage token={token} venue={venue} />;
+  }
 
   return (
     <div className="mx-auto flex w-full max-w-md flex-1 flex-col gap-6 md:max-w-2xl lg:max-w-none lg:gap-10">

@@ -7,9 +7,9 @@ export function BrandMark({ className }: { className?: string }) {
     <svg viewBox="0 20 100 68" className={className} aria-hidden="true">
       <defs>
         <linearGradient id={gradientId} x1="0" y1="0" x2="100" y2="0" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#F5C36B" />
-          <stop offset="0.5" stopColor="#E8779E" />
-          <stop offset="1" stopColor="#7F77DD" />
+          <stop offset="0" stopColor="#F7C948" />
+          <stop offset="0.5" stopColor="#F0509E" />
+          <stop offset="1" stopColor="#5E5EF2" />
         </linearGradient>
       </defs>
       <path
@@ -20,8 +20,8 @@ export function BrandMark({ className }: { className?: string }) {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <circle cx="8" cy="66" r="6" fill="#F5C36B" />
-      <circle cx="92" cy="66" r="6" fill="#7F77DD" />
+      <circle cx="8" cy="66" r="6" fill="#F7C948" />
+      <circle cx="92" cy="66" r="6" fill="#5E5EF2" />
     </svg>
   );
 }
