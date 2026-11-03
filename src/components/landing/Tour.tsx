@@ -91,17 +91,17 @@ export function Tour() {
             type="button"
             onClick={() => setMenuOpen((o) => !o)}
             aria-expanded={menuOpen}
-            className="fixed bottom-4 right-4 z-[200] inline-flex size-13 items-center justify-center gap-2 rounded-full bg-[#1E1A30] text-xl font-semibold text-white shadow-xl shadow-black/30 transition hover:-translate-y-0.5 sm:bottom-6 sm:right-6 sm:size-auto sm:px-5 sm:py-3 sm:text-sm"
+            className="fixed bottom-4 right-4 z-[200] inline-flex size-13 items-center justify-center gap-2 rounded-full bg-[#2A211C] text-xl font-semibold text-white shadow-xl shadow-black/30 transition hover:-translate-y-0.5 sm:bottom-6 sm:right-6 sm:size-auto sm:px-5 sm:py-3 sm:text-sm"
           >
             <CirclePlay size={22} strokeWidth={1.8} aria-hidden="true" /><span className="hidden sm:inline">Tur ghidat</span>
           </button>
           {menuOpen && (
-            <div className="fixed bottom-[76px] right-4 z-[200] flex min-w-[210px] flex-col gap-1 rounded-2xl bg-white p-2 text-[#2B2740] shadow-2xl shadow-black/25 sm:bottom-[78px] sm:right-6">
-              <button type="button" onClick={() => start("auto")} className="rounded-xl px-3.5 py-3 text-left text-sm hover:bg-[#FFF8F1]">
-                <CirclePlay size={16} strokeWidth={1.8} className="mr-1.5 inline-block align-[-3px]" aria-hidden="true" />Tur automat <span className="text-xs text-[#8A8496]">(se derulează singur)</span>
+            <div className="fixed bottom-[76px] right-4 z-[200] flex min-w-[210px] flex-col gap-1 rounded-2xl bg-white p-2 text-[#2A211C] shadow-2xl shadow-black/25 sm:bottom-[78px] sm:right-6">
+              <button type="button" onClick={() => start("auto")} className="rounded-xl px-3.5 py-3 text-left text-sm hover:bg-[#EEE5D9]">
+                <CirclePlay size={16} strokeWidth={1.8} className="mr-1.5 inline-block align-[-3px]" aria-hidden="true" />Tur automat <span className="text-xs text-[#958879]">(se derulează singur)</span>
               </button>
-              <button type="button" onClick={() => start("guided")} className="rounded-xl px-3.5 py-3 text-left text-sm hover:bg-[#FFF8F1]">
-                <MousePointerClick size={16} strokeWidth={1.8} className="mr-1.5 inline-block align-[-3px]" aria-hidden="true" />Tur ghidat <span className="text-xs text-[#8A8496]">(pas cu pas)</span>
+              <button type="button" onClick={() => start("guided")} className="rounded-xl px-3.5 py-3 text-left text-sm hover:bg-[#EEE5D9]">
+                <MousePointerClick size={16} strokeWidth={1.8} className="mr-1.5 inline-block align-[-3px]" aria-hidden="true" />Tur ghidat <span className="text-xs text-[#958879]">(pas cu pas)</span>
               </button>
             </div>
           )}
@@ -109,12 +109,12 @@ export function Tour() {
       )}
 
       {mode === "auto" && (
-        <div className="fixed inset-x-0 top-0 z-[2500] flex flex-wrap items-center gap-2 bg-[#1E1A30] px-3.5 py-2.5 text-white shadow-xl shadow-black/30 sm:flex-nowrap sm:gap-4 sm:px-5.5 sm:py-3.5">
+        <div className="fixed inset-x-0 top-0 z-[2500] flex flex-wrap items-center gap-2 bg-[#2A211C] px-3.5 py-2.5 text-white shadow-xl shadow-black/30 sm:flex-nowrap sm:gap-4 sm:px-5.5 sm:py-3.5">
           <span className="size-2.5 shrink-0 animate-pulse rounded-full bg-gold" />
           <span className="order-1 line-clamp-2 basis-full text-[12.5px] leading-snug sm:order-none sm:basis-auto sm:text-[14.5px]">
             <b className="text-gold">{step.title}</b> — {step.text}
           </span>
-          <span className="order-2 shrink-0 text-[11px] text-[#B5B4C8] sm:order-none sm:ml-auto sm:text-xs">{progress}</span>
+          <span className="order-2 shrink-0 text-[11px] text-[#C9BDB0] sm:order-none sm:ml-auto sm:text-xs">{progress}</span>
           <button
             type="button"
             onClick={stop}
@@ -132,14 +132,14 @@ export function Tour() {
           <div
             role="dialog"
             aria-live="polite"
-            className="fixed bottom-7 left-1/2 z-[2410] w-[min(420px,calc(100vw-32px))] -translate-x-1/2 rounded-2xl bg-white p-5 text-[#2B2740] shadow-2xl shadow-black/40"
+            className="fixed bottom-7 left-1/2 z-[2410] w-[min(420px,calc(100vw-32px))] -translate-x-1/2 rounded-2xl bg-white p-5 text-[#2A211C] shadow-2xl shadow-black/40"
           >
             <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wider text-accent-text">Pasul {index + 1}</p>
             <p className="mb-1.5 font-display text-[21px] font-bold">{step.title}</p>
-            <p className="text-[14.5px] leading-normal text-[#5F5E5A]">{step.text}</p>
+            <p className="text-[14.5px] leading-normal text-[#6A5E54]">{step.text}</p>
             <div className="mt-4 flex items-center gap-2.5">
-              <span className="mr-auto text-xs text-[#8A8496]">{progress}</span>
-              <button type="button" onClick={stop} className="text-[13px] text-[#8A8496] hover:text-[#2B2740]">
+              <span className="mr-auto text-xs text-[#958879]">{progress}</span>
+              <button type="button" onClick={stop} className="text-[13px] text-[#958879] hover:text-[#2A211C]">
                 Sari peste
               </button>
               <button

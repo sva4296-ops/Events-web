@@ -34,7 +34,7 @@ export function DeleteAccountForm({ action }: DeleteAccountFormProps) {
       <button
         type="submit"
         disabled={pending}
-        className={`${ui.buttonSecondary} w-full border-danger text-danger hover:bg-surface`}
+        className={`${ui.buttonDanger} w-full`}
       >
         <Trash2 size={18} aria-hidden="true" />
         {pending ? "Se șterge…" : "Șterge contul definitiv"}

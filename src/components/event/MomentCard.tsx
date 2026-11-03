@@ -40,30 +40,30 @@ export function MomentCard({
   };
 
   return (
-    <article className="overflow-hidden rounded-3xl border border-surface-border bg-surface shadow-lg shadow-black/5">
-      <header className="flex flex-col gap-1 px-5 pb-4 pt-5">
-        <p className="text-xs text-muted">{timeAgo(moment.createdAt)}</p>
-        <h3 className="font-display text-xl font-bold">{moment.title}</h3>
-      </header>
-
+    <article className="flex flex-col gap-3.5 rounded-[24px] border border-surface-border bg-surface p-4 shadow-card sm:p-5">
       {moment.photoUrl !== null ? (
         // eslint-disable-next-line @next/next/no-img-element -- remote user photo, arbitrary host
-        <img src={moment.photoUrl} alt="" className="aspect-[4/3] max-h-[480px] w-full object-cover" />
+        <img src={moment.photoUrl} alt="" className="aspect-[16/10] max-h-[480px] w-full rounded-[18px] bg-surface-2 object-cover" />
       ) : (
-        <div className="flex aspect-[16/7] flex-col items-center justify-center gap-2 bg-surface-muted text-muted">
+        <div className="flex aspect-[16/7] flex-col items-center justify-center gap-2 rounded-[18px] bg-surface-2 text-muted">
           <ImageIcon size={28} aria-hidden="true" />
-          <span className="text-sm">Fără fotografie</span>
+          <span className="text-[13px]">Fără fotografie</span>
         </div>
       )}
 
-      <footer className="flex items-center gap-2 px-5 py-4">
+      <header className="flex flex-col gap-0.5">
+        <h3 className="font-theme text-[26px] leading-[34px]">{moment.title}</h3>
+        <p className="text-[13px] text-muted">{timeAgo(moment.createdAt)}</p>
+      </header>
+
+      <footer className="flex items-center gap-2">
         <button
           type="button"
           onClick={() => react("love")}
           aria-pressed={optimistic.love.mine}
           aria-label="Reacționează cu inimă"
-          className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-semibold text-accent-text transition ${
-            optimistic.love.mine ? "border-accent bg-accent-soft" : "border-transparent bg-accent-soft/70"
+          className={`flex min-h-10 items-center gap-1.5 rounded-full border px-3.5 text-sm font-semibold text-accent-text transition ${
+            optimistic.love.mine ? "border-accent bg-accent-tint" : "border-transparent bg-accent-tint"
           }`}
         >
           <Heart size={15} fill={optimistic.love.mine ? "currentColor" : "none"} aria-hidden="true" />
@@ -74,8 +74,8 @@ export function MomentCard({
           onClick={() => react("celebrate")}
           aria-pressed={optimistic.celebrate.mine}
           aria-label="Reacționează cu felicitări"
-          className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-semibold text-[#B7862A] transition dark:text-gold ${
-            optimistic.celebrate.mine ? "border-gold bg-gold/25" : "border-transparent bg-gold/15"
+          className={`flex min-h-10 items-center gap-1.5 rounded-full border px-3.5 text-sm font-semibold text-pending transition ${
+            optimistic.celebrate.mine ? "border-pending bg-pending-soft" : "border-transparent bg-pending-soft"
           }`}
         >
           <Star size={15} fill={optimistic.celebrate.mine ? "currentColor" : "none"} aria-hidden="true" />
@@ -83,7 +83,7 @@ export function MomentCard({
         </button>
         <Link
           href={`/event/${eventId}/chat`}
-          className="ml-auto flex items-center gap-1.5 text-sm text-muted transition hover:text-accent-text"
+          className="ml-auto flex items-center gap-1.5 text-[13px] text-muted transition hover:text-accent-text"
         >
           <MessageCircle size={15} aria-hidden="true" />
           Comentarii

@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { AppBanner } from "@/components/AppBanner";
 import { BrandHeader } from "@/components/BrandMark";
+import { EventCover } from "@/components/EventCover";
 import { ui } from "@/components/ui/styles";
 import { getSessionUser } from "@/lib/auth";
 import { formatEventDate } from "@/lib/format";
@@ -34,16 +35,16 @@ export async function VenuePage({ token, venue }: { token: string; venue: VenueN
 
       <div className="grid items-start gap-6 lg:grid-cols-5 lg:gap-10">
         <section className="flex flex-col gap-5 lg:col-span-3">
-          <div className="rounded-[26px] bg-[linear-gradient(135deg,#1A1A2E_0%,#5F2B84_55%,#D6336C_100%)] p-6 text-white shadow-card">
+          <EventCover type="other" coverTheme="local" className="rounded-4xl p-6 text-white shadow-card">
             {venue.hostName !== null ? (
-              <p className="text-[11.5px] font-bold uppercase tracking-[0.14em] opacity-90">{venue.hostName} te invită</p>
+              <p className="relative text-[13px] font-semibold uppercase tracking-[1px] opacity-90">{venue.hostName} te invită</p>
             ) : null}
-            <h1 className="mt-1 font-display text-[32px] font-bold leading-tight">{venue.name}</h1>
-            {when !== null ? <p className="mt-1 text-sm opacity-90">{when}</p> : null}
-            <span className="mt-4 inline-flex h-7 items-center rounded-full bg-white/90 px-3 text-[13px] font-bold text-[#2B2740]">
+            <h1 className="relative mt-1 font-display text-[32px] font-semibold leading-[38px]">{venue.name}</h1>
+            {when !== null ? <p className="relative mt-1 text-sm opacity-90">{when}</p> : null}
+            <span className="relative mt-4 inline-flex h-7 items-center rounded-full bg-white/90 px-3 text-[13px] font-semibold text-[#2A211C]">
               {venue.priceInfo ?? "Intrare liberă"}
             </span>
-          </div>
+          </EventCover>
 
           {venue.welcomeMessage !== null ? <p className="text-[15px] leading-relaxed">{venue.welcomeMessage}</p> : null}
 

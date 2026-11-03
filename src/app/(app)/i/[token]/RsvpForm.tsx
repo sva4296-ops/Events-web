@@ -55,7 +55,7 @@ export function RsvpForm({ token, status, eventName, eventId }: RsvpFormProps) {
         {confirmed && eventId !== null ? (
           <Link
             href={`/login?next=${encodeURIComponent(`/event/${eventId}`)}`}
-            className="flex h-[54px] w-full items-center justify-center rounded-full bg-accent-fill px-6 text-base font-semibold text-on-accent shadow-[0_8px_20px_rgba(106,97,209,0.28)] transition active:scale-[0.98] dark:shadow-none"
+            className="flex h-[54px] w-full items-center justify-center rounded-full bg-accent-fill px-6 text-base font-semibold text-on-accent shadow-accent transition active:scale-[0.98]"
           >
             Vezi evenimentul pe web
           </Link>
@@ -78,7 +78,7 @@ export function RsvpForm({ token, status, eventName, eventId }: RsvpFormProps) {
         name="status"
         value="confirmed"
         disabled={pending}
-        className="flex h-[54px] w-full items-center justify-center gap-2 rounded-full bg-accent-fill px-6 text-base font-semibold text-on-accent shadow-[0_8px_20px_rgba(106,97,209,0.28)] transition active:scale-[0.98] disabled:bg-surface-2 disabled:text-faint disabled:shadow-none dark:shadow-none"
+        className="flex h-[54px] w-full items-center justify-center gap-2 rounded-full bg-accent-fill px-6 text-base font-semibold text-on-accent shadow-accent transition active:scale-[0.98] disabled:bg-surface-2 disabled:text-faint disabled:shadow-none"
       >
         <svg
           width="20"

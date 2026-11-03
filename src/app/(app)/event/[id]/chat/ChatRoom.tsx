@@ -16,6 +16,11 @@ interface MessageRow {
   created_at: string;
 }
 
+function initials(label: string): string {
+  const parts = label.trim().split(/\s+/).filter(Boolean);
+  return parts.slice(0, 2).map((part) => part[0]?.toUpperCase() ?? "").join("");
+}
+
 function mapRow(row: MessageRow): Message {
   return {
     id: row.id,
@@ -31,11 +36,14 @@ export function ChatRoom({
   userId,
   ownerId,
   initialMessages,
+  embedded = false,
 }: {
   eventId: string;
   userId: string;
   ownerId: string;
   initialMessages: Message[];
+  /** Inside the chat bubble's panel, which draws the frame and sets the height. */
+  embedded?: boolean;
 }) {
   const [messages, setMessages] = useState(initialMessages);
   const [draft, setDraft] = useState("");
@@ -95,7 +103,13 @@ export function ChatRoom({
   };
 
   return (
-    <div className="flex h-[calc(100dvh-21rem)] min-h-[380px] flex-col overflow-hidden rounded-3xl border border-surface-border bg-surface shadow-card md:h-[calc(100dvh-24rem)]">
+    <div
+      className={
+        embedded
+          ? "flex min-h-0 flex-1 flex-col"
+          : "flex h-[calc(100dvh-13rem)] min-h-[380px] flex-col overflow-hidden rounded-3xl border border-surface-border bg-surface shadow-card md:h-[calc(100dvh-11rem)]"
+      }
+    >
       <div ref={listRef} className="flex flex-1 flex-col gap-3 overflow-y-auto p-4 sm:p-6">
         {messages.length === 0 ? (
           <p className="m-auto text-center text-muted">Niciun mesaj încă. Scrie primul!</p>
@@ -109,15 +123,21 @@ export function ChatRoom({
                   {own ? "Tu" : message.senderLabel}
                   {organizer ? " · Organizator" : ""} · {timeOfDay(message.createdAt)}
                 </span>
-                <div className={`flex items-center gap-2 ${own ? "flex-row-reverse" : ""}`}>
+                <div className={`flex max-w-[85%] items-end gap-2 ${own ? "flex-row-reverse" : ""}`}>
+                  {!own ? (
+                    <span
+                      className="flex size-8 shrink-0 items-center justify-center rounded-full bg-accent-tint text-xs font-semibold text-accent-text"
+                      aria-hidden="true"
+                    >
+                      {initials(message.senderLabel)}
+                    </span>
+                  ) : null}
                   <p
-                    className={`max-w-[80vw] whitespace-pre-wrap break-words rounded-3xl px-4 py-2.5 sm:max-w-md ${
-                      organizer
-                        ? "bg-accent-fill text-on-accent"
-                        : own
-                          ? "bg-accent-soft"
-                          : "bg-surface-muted"
-                    } ${own ? "rounded-br-lg" : "rounded-bl-lg"}`}
+                    className={`min-w-0 whitespace-pre-wrap break-words rounded-[18px] px-3.5 py-2.5 ${
+                      own
+                        ? "rounded-br-md bg-accent-fill text-on-accent"
+                        : "rounded-bl-md border border-surface-border bg-(--bg)"
+                    }`}
                   >
                     {message.content}
                   </p>
@@ -151,12 +171,12 @@ export function ChatRoom({
           rows={1}
           placeholder="Scrie un mesaj…"
           aria-label="Mesaj"
-          className="max-h-32 min-h-12 flex-1 resize-none rounded-2xl border border-surface-border bg-surface-muted/60 px-4 py-3 outline-none focus:border-accent"
+          className="max-h-32 min-h-12 flex-1 resize-none rounded-3xl border-[1.5px] border-surface-border bg-surface px-4 py-2.5 outline-none placeholder:text-faint focus:border-accent focus:ring-4 focus:ring-accent-tint"
         />
         <button
           type="submit"
           disabled={pending || draft.trim().length === 0}
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent-fill text-on-accent transition disabled:opacity-50"
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent-fill text-on-accent transition disabled:bg-surface-2 disabled:text-faint"
           aria-label="Trimite"
         >
           <Send size={18} aria-hidden="true" />

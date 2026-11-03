@@ -17,7 +17,7 @@ export default async function AccountPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <SiteHeader />
+      <SiteHeader active="account" />
       <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
         <SectionTitle
           eyebrow="Cont"

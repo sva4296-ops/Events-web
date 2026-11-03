@@ -1,47 +1,62 @@
-import { ChevronRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-import { EventTypeIcon } from "@/components/EventTypeIcon";
-import { bandBackground, getEventTypeMeta } from "@/lib/eventTypes";
-import { formatEventDate } from "@/lib/format";
-import type { MyEvent, RsvpStatus } from "@/lib/types";
+import { EventCover } from "@/components/EventCover";
+import { getEventTypeMeta } from "@/lib/eventTypes";
+import { daysUntilEvent, formatEventDate } from "@/lib/format";
+import type { MyEvent } from "@/lib/types";
 
-const STATUS: Record<RsvpStatus, { label: string; className: string }> = {
-  confirmed: { label: "Confirmat", className: "bg-confirmed-soft text-confirmed" },
-  pending: { label: "În așteptare", className: "bg-gold/20 text-[#B7862A] dark:text-gold" },
-  declined: { label: "Refuzat", className: "bg-declined-soft text-declined" },
-};
-
-export function EventListCard({ event, href }: { event: MyEvent; href: string }) {
-  const type = getEventTypeMeta(event.type);
-  const date = formatEventDate(event.date) ?? "Data va fi anunțată";
-  const status = event.myGuest?.rsvp_status;
+/** The soonest event, across the page: its cover, name, and the days left at the size of a headline. */
+export function NextEventCard({ event, href }: { event: MyEvent; href: string }) {
+  const days = daysUntilEvent(event.date);
+  const toAnswer = event.myGuest?.rsvp_status === "pending";
 
   return (
-    <Link
-      href={href}
-      className="group flex items-center gap-4 rounded-3xl border border-surface-border bg-surface p-4 shadow-lg shadow-black/5 transition hover:-translate-y-0.5 hover:shadow-xl sm:p-5"
-    >
-      <span
-        className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl"
-        style={{ background: bandBackground(type), color: type.bandInk }}
-        aria-hidden="true"
-      >
-        <EventTypeIcon type={event.type} size={26} />
-      </span>
-      <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span className="truncate text-lg font-bold">{event.name}</span>
-        <span className="truncate text-sm text-muted first-letter:uppercase">
-          {date}
-          {event.location !== null ? ` · ${event.location}` : ""}
-        </span>
-      </span>
-      {status !== undefined ? (
-        <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${STATUS[status].className}`}>
-          {STATUS[status].label}
-        </span>
-      ) : null}
-      <ChevronRight size={20} className="shrink-0 text-muted transition group-hover:translate-x-0.5" aria-hidden="true" />
+    <Link href={href} className="group relative block overflow-hidden rounded-4xl text-white shadow-card">
+      <EventCover
+        type={event.type}
+        coverTheme={event.coverTheme}
+        photoUrl={event.coverPhotoUrl}
+        className="absolute! inset-0"
+      />
+      <div className="absolute inset-0 bg-linear-to-b from-transparent from-30% to-black/60" />
+      <div className="relative flex min-h-[340px] flex-col justify-between gap-10 p-5 sm:p-8 lg:min-h-[400px] lg:px-11 lg:py-10">
+        <div className="flex flex-wrap items-center gap-2 text-[13px] font-semibold text-[#2A211C]">
+          <span className="rounded-full bg-white/90 px-3 py-1">Urmează</span>
+          <span className="rounded-full bg-white/90 px-3 py-1">{getEventTypeMeta(event.type).label}</span>
+        </div>
+        <div className="flex flex-wrap items-end justify-between gap-6 lg:gap-8">
+          <div className="flex min-w-0 flex-[1_1_420px] flex-col gap-2">
+            <h2 className="font-theme text-[38px] leading-[46px] tracking-[-0.5px] md:text-[64px] md:leading-[72px] md:tracking-[-1px]">
+              {event.name}
+            </h2>
+            <p className="text-white/90 first-letter:uppercase">
+              {formatEventDate(event.date)}
+              {event.location !== null ? ` · ${event.location}` : ""}
+            </p>
+            <span className="mt-4 inline-flex min-h-12 items-center gap-2 self-start rounded-full bg-white px-[22px] font-semibold text-[#2A211C]">
+              {toAnswer ? "Răspunde la invitație" : "Deschide evenimentul"}
+              <ArrowRight size={16} className="transition group-hover:translate-x-0.5" aria-hidden="true" />
+            </span>
+          </div>
+          {days !== null ? (
+            days === 0 ? (
+              <span className="font-theme text-[56px] leading-[60px] md:text-[80px] md:leading-[84px]">Azi</span>
+            ) : (
+              <span className="flex items-end gap-3">
+                <span className="font-theme text-[72px] leading-[64px] tracking-[-2px] md:text-[112px] md:leading-[96px] md:tracking-[-3px]">
+                  {days}
+                </span>
+                <span className="text-[15px] leading-5 text-white/90">
+                  {days === 1 ? "zi" : "zile"}
+                  <br />
+                  {days === 1 ? "rămasă" : "rămase"}
+                </span>
+              </span>
+            )
+          ) : null}
+        </div>
+      </div>
     </Link>
   );
 }

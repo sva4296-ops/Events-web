@@ -31,7 +31,7 @@ export function LegalPage({
       </Link>
 
       <div className="flex flex-col gap-3">
-        <p className="text-[13px] font-bold uppercase tracking-[0.08em] text-accent-text">Document legal</p>
+        <p className="text-[13px] leading-[18px] font-semibold uppercase tracking-[1px] text-muted">Document legal</p>
         <h1 className="font-display text-[34px] font-semibold leading-tight">{title}</h1>
         <p className="text-sm text-muted">Ultima actualizare: {updated}</p>
       </div>

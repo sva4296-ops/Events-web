@@ -35,6 +35,8 @@ export interface EventRow {
   welcome_message: string | null;
   plan_tier: string | null;
   album_status: AlbumStatus;
+  cover_theme: string | null;
+  cover_photo_path: string | null;
   event_guests: GuestRow[];
 }
 
@@ -48,6 +50,10 @@ export interface AppEvent {
   welcomeMessage: string | null;
   planTier: string | null;
   albumStatus: AlbumStatus;
+  /** utils/coverThemes id; null = the themed default cover. */
+  coverTheme: string | null;
+  /** Signed URL of the organizer's cover photo. */
+  coverPhotoUrl: string | null;
   /** Owner: every guest. Guest: RLS limits this to their own single row. */
   guests: GuestRow[];
 }

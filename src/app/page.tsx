@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { LandingOverlays } from "@/components/landing/Overlays";
 import { RevealObserver } from "@/components/landing/RevealObserver";
 import {
-  Contributions,
   Faq,
   Features,
   FinalCta,
@@ -40,7 +39,6 @@ export default async function LandingPage() {
         <Verticals />
         <Features />
         <ForWhom />
-        <Contributions />
         <Planners />
         <Pricing startHref={startHref} />
         <WhyUs />

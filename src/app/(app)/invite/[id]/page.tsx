@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { AppBanner } from "@/components/AppBanner";
-import { InviteCard } from "@/components/InviteCard";
+import { InviteSplit } from "@/components/InviteSplit";
 import { SiteHeader } from "@/components/SiteHeader";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { requireUser } from "@/lib/auth";
@@ -69,30 +69,24 @@ export default async function SignedInInvitePage({ params }: PageProps<"/invite/
   }
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-1 flex-col">
       <SiteHeader />
       {view === null ? (
-        <div className="mx-auto w-full max-w-lg">
+        <div className="mx-auto mt-8 w-full max-w-lg">
           <EmptyState message="Invitația nu a fost găsită. Verifică dacă ai intrat cu numărul de telefon pe care ai primit invitația." />
         </div>
       ) : (
-        <div className="mx-auto grid w-full max-w-md items-start gap-6 md:max-w-2xl lg:max-w-none lg:grid-cols-5 lg:gap-10">
-          <InviteCard
-            className="lg:col-span-3"
-            eventName={view.name}
-            eventType={view.type}
-            eventDate={view.date}
-            location={view.location}
-            welcomeMessage={view.welcomeMessage}
-          />
-          <aside className="flex flex-col gap-6 lg:sticky lg:top-10 lg:col-span-2">
-            <div className="rounded-3xl lg:border lg:border-surface-border lg:bg-surface lg:p-6 lg:shadow-xl lg:shadow-black/5">
-              <p className="mb-4 hidden font-display text-xl font-bold lg:block">Poți ajunge?</p>
-              <UserRsvpForm eventId={id} eventName={view.name} status={view.status} />
-            </div>
-            <AppBanner />
-          </aside>
-        </div>
+        <InviteSplit
+          underHeader
+          eventName={view.name}
+          eventType={view.type}
+          eventDate={view.date}
+          location={view.location}
+          welcomeMessage={view.welcomeMessage}
+        >
+          <UserRsvpForm eventId={id} eventName={view.name} status={view.status} />
+          <AppBanner />
+        </InviteSplit>
       )}
     </div>
   );

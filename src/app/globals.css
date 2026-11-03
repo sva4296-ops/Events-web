@@ -1,55 +1,67 @@
 @import "tailwindcss";
 
-/* Warm Story tokens, mirrored from the app's utils/themeTokens.ts. */
+/*
+ * Mirrored from the app's utils/themeTokens.ts: light = the default theme
+ * (Teracotă), dark = Bleumarin (the theme the app maps its old dark mode onto).
+ * Status tones come from the app's lightTheme/darkTheme base.
+ */
 :root {
-  --bg-from: #fff8f1;
-  --bg-to: #fbeae0;
+  color-scheme: light;
+  --bg: #eee5d9;
   --surface: #ffffff;
-  --surface-border: #eee2d7;
-  --surface-2: #f7efe8;
-  --ink: #2b2740;
-  /* Warm Story 2.0: secondary text darkened for 5.3:1 on cream. */
-  --muted: #6e6880;
-  --faint: #8a8496;
-  --accent: #7f77dd;
-  --accent-fill: #6a61d1;
+  --surface-border: #e0d4c4;
+  --surface-2: #e2d5c3;
+  --surface-muted: #e2d5c3;
+  --ink: #2a211c;
+  --muted: #6a5e54;
+  --faint: #958879;
+  --accent: #a54e36;
+  --accent-fill: #a54e36;
   --on-accent: #ffffff;
-  --accent-tint: #eeecfb;
-  --accent-text: #5b53c4;
-  --accent-soft: rgba(127, 119, 221, 0.12);
+  --accent-tint: #f3e2da;
+  --accent-text: #9a462f;
+  --accent-soft: var(--accent-tint);
   --gold: #f5c36b;
   --pink: #e8779e;
   --danger: #d9534f;
-  --surface-muted: #fbeae0;
+  --danger-soft: #fcedec;
   --confirmed: #1f7a51;
   --confirmed-soft: #e3f4eb;
   --pending: #8a5a0a;
   --pending-soft: #fdf1dc;
   --declined: #b5335f;
   --declined-soft: #fce6ee;
-  --card-shadow: 0 6px 20px rgba(43, 39, 64, 0.07);
+  /* shadowColor #2B2740 at the themes' 0.05, offset 6, RN radius 10. */
+  --card-shadow: 0 6px 20px rgba(43, 39, 64, 0.05);
+  --accent-shadow: 0 8px 20px color-mix(in srgb, var(--accent-fill) 28%, transparent);
+  /* The default cover: deep shades of the accent, so white text sits on it directly. */
+  --cover-a: color-mix(in srgb, var(--accent-fill) 55%, black);
+  --cover-b: color-mix(in srgb, var(--accent-fill) 85%, black);
+  --cover-c: color-mix(in srgb, var(--accent-fill) 38%, black);
+  --cover-glow: color-mix(in srgb, var(--accent-fill) 60%, white);
+  --cover-ink: color-mix(in srgb, var(--accent-fill) 30%, white);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg-from: #1e1a30;
-    --bg-to: #1e1a30;
-    --surface: #2a2440;
-    --surface-border: #3d3659;
-    --surface-2: #342d4e;
-    --ink: #f4f1fa;
-    --muted: #b4adc7;
-    --faint: #8f88a6;
-    --accent: #9b93f0;
-    --accent-fill: #9b93f0;
-    --on-accent: #1e1a30;
-    --accent-tint: #37305a;
-    --accent-text: #bdb7f7;
-    --accent-soft: rgba(155, 147, 240, 0.16);
+    color-scheme: dark;
+    --bg: #111827;
+    --surface: #18223a;
+    --surface-border: #26324d;
+    --surface-2: #202c46;
+    --surface-muted: #202c46;
+    --ink: #eef1f6;
+    --muted: #a3adc1;
+    --faint: #78839a;
+    --accent: #e07a62;
+    --accent-fill: #e07a62;
+    --on-accent: #1a1210;
+    --accent-tint: #3a2a2e;
+    --accent-text: #ee927c;
     --gold: #f5c36b;
     --pink: #f08fb3;
     --danger: #e8726e;
-    --surface-muted: #1e1a30;
+    --danger-soft: #3a2229;
     --confirmed: #6dd3a0;
     --confirmed-soft: #1f3b30;
     --pending: #f5c36b;
@@ -57,6 +69,28 @@
     --declined: #f08fb3;
     --declined-soft: #45263a;
     --card-shadow: none;
+    --accent-shadow: none;
+  }
+}
+
+/* Inside an event with a picked cover theme: the accent follows the cover
+   (the app's utils/eventAccent.ts). Background, cards and text stay the theme's.
+   --event-accent and --on-accent are set inline from the event's cover theme. */
+.event-accent {
+  --accent: var(--event-accent);
+  --accent-fill: var(--event-accent);
+  --accent-tint: color-mix(in srgb, var(--event-accent) 15%, white);
+  --accent-text: color-mix(in srgb, var(--event-accent) 65%, black);
+  /* Custom properties resolve where they're declared, so these need restating. */
+  --accent-soft: var(--accent-tint);
+  --accent-shadow: 0 8px 20px color-mix(in srgb, var(--event-accent) 28%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  .event-accent {
+    --accent-tint: color-mix(in srgb, var(--event-accent) 25%, var(--bg));
+    --accent-text: color-mix(in srgb, var(--event-accent) 65%, white);
+    --accent-shadow: none;
   }
 }
 
@@ -64,33 +98,67 @@
   --color-surface: var(--surface);
   --color-surface-border: var(--surface-border);
   --color-surface-2: var(--surface-2);
+  --color-surface-muted: var(--surface-muted);
   --color-faint: var(--faint);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
   --color-accent-fill: var(--accent-fill);
   --color-on-accent: var(--on-accent);
   --color-accent-tint: var(--accent-tint);
   --color-accent-text: var(--accent-text);
-  --color-pending: var(--pending);
-  --color-pending-soft: var(--pending-soft);
-  --shadow-card: var(--card-shadow);
-  --color-ink: var(--ink);
-  --color-muted: var(--muted);
-  --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
   --color-gold: var(--gold);
   --color-pink: var(--pink);
   --color-danger: var(--danger);
-  --color-surface-muted: var(--surface-muted);
+  --color-danger-soft: var(--danger-soft);
   --color-confirmed: var(--confirmed);
   --color-confirmed-soft: var(--confirmed-soft);
+  --color-pending: var(--pending);
+  --color-pending-soft: var(--pending-soft);
   --color-declined: var(--declined);
   --color-declined-soft: var(--declined-soft);
-  --font-sans: var(--font-inter);
-  --font-display: var(--font-playfair);
+
+  --shadow-card: var(--card-shadow);
+  --shadow-accent: var(--accent-shadow);
+
+  /* Bricolage Grotesque 600 for titles and big numbers, Instrument Sans for the
+     rest, Lora for the slots where the app uses the theme's own display font
+     (Home's greeting and event names). */
+  --font-sans: var(--font-instrument), system-ui, sans-serif;
+  --font-display: var(--font-bricolage), system-ui, sans-serif;
+  --font-theme: var(--font-lora), Georgia, serif;
+  /* No 700 file is loaded, same as the app: its bold slot maps to 600. */
+  --font-weight-bold: 600;
+  --font-weight-extrabold: 600;
+
+  /* themeRadius: rounded-xl = sm (12), rounded-2xl = md (16), these two = xl, xxl. */
+  --radius-3xl: 22px;
+  --radius-4xl: 26px;
 }
 
 body {
   min-height: 100dvh;
-  background: linear-gradient(180deg, var(--bg-from), var(--bg-to));
+  background: var(--bg);
   color: var(--ink);
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-sans);
+}
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+/* Clip, not hidden: full-bleed bands reach past the column, and sticky bars keep working. */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* A band across the whole window, from inside the page's centered column. */
+.full-bleed {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
 }

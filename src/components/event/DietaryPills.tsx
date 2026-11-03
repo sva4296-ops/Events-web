@@ -31,7 +31,7 @@ export function DietaryPills({ eventId, selected }: { eventId: string; selected:
               type="button"
               onClick={() => toggle(option)}
               aria-pressed={active}
-              className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
+              className={`rounded-full border-[1.5px] px-4 py-2 text-sm font-semibold transition ${
                 active ? "border-accent bg-accent-fill text-on-accent" : "border-surface-border bg-surface text-ink hover:border-accent"
               }`}
             >

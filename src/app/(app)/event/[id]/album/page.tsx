@@ -3,6 +3,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { ui } from "@/components/ui/styles";
 import { getPhotos } from "@/lib/data/content";
 import { getEventContext } from "@/lib/data/eventContext";
+import { pluralRo } from "@/lib/format";
 
 import { DownloadAll } from "./DownloadAll";
 
@@ -14,43 +15,37 @@ export default async function AlbumPage({ params }: PageProps<"/event/[id]/album
   const attendees = event.isOwner ? event.guests.filter((guest) => guest.rsvp_status === "confirmed").length : null;
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex flex-col items-center gap-2 pt-2 text-center">
-        <p className={ui.eyebrow}>Povestea s-a întâmplat</p>
-        <h2 className="font-display text-4xl italic sm:text-5xl">A fost minunat</h2>
-      </div>
-
-      <div className={`mx-auto grid w-full max-w-xl gap-4 ${attendees !== null ? "grid-cols-2" : "grid-cols-1"}`}>
-        {attendees !== null ? (
-          <div className={`${ui.cardPadded} text-center`}>
-            <p className="font-display text-4xl font-bold text-accent-text">{attendees}</p>
-            <p className="text-sm text-muted">invitați prezenți</p>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-wrap items-end justify-between gap-6">
+        <div className="flex flex-col gap-1">
+          <p className={ui.eyebrow}>Povestea s-a întâmplat</p>
+          <h2 className="font-theme text-[34px] leading-[42px] tracking-[-0.5px] md:text-[44px] md:leading-[52px]">A fost minunat</h2>
+          <p className="text-[15px] text-muted">
+            {photos.length} {pluralRo(photos.length, "poză", "poze", "de poze")}
+            {attendees !== null ? ` · ${attendees} ${pluralRo(attendees, "invitat prezent", "invitați prezenți", "de invitați prezenți")}` : ""}
+          </p>
+        </div>
+        {event.albumStatus !== "ready" ? (
+          <p className="max-w-xs text-sm text-muted">Albumul complet va putea fi descărcat la 3 zile după eveniment.</p>
+        ) : fullUrls.length > 0 ? (
+          <div className="w-full sm:w-auto">
+            <DownloadAll urls={fullUrls} eventName={event.name} />
           </div>
         ) : null}
-        <div className={`${ui.cardPadded} text-center`}>
-          <p className="font-display text-4xl font-bold text-accent-text">{photos.length}</p>
-          <p className="text-sm text-muted">poze adunate</p>
-        </div>
       </div>
 
-      <section className="flex flex-col gap-4">
-        <h3 className="font-display text-2xl font-bold">Albumul vostru</h3>
-        {photos.length === 0 ? (
-          <EmptyState message="Nicio poză încă. Pozele adăugate în Live apar aici." />
-        ) : (
-          <PhotoGrid eventId={id} photos={photos} userId={user.id} isOwner={event.isOwner} />
-        )}
-      </section>
-
-      <div className="mx-auto w-full max-w-md">
-        {event.albumStatus !== "ready" ? (
-          <p className="text-center text-sm text-muted">
-            Albumul complet va putea fi descărcat la 3 zile după eveniment.
-          </p>
-        ) : fullUrls.length > 0 ? (
-          <DownloadAll urls={fullUrls} eventName={event.name} />
-        ) : null}
-      </div>
+      {photos.length === 0 ? (
+        <EmptyState message="Nicio poză încă. Pozele adăugate în Live apar aici." />
+      ) : (
+        <PhotoGrid
+          eventId={id}
+          photos={photos}
+          userId={user.id}
+          isOwner={event.isOwner}
+          columns="grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+          mosaic="md:[&>*:nth-child(7n+1)]:col-span-2 md:[&>*:nth-child(7n+1)]:row-span-2"
+        />
+      )}
     </div>
   );
 }

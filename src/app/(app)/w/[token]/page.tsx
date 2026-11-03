@@ -35,7 +35,7 @@ export default async function PublicLivePage({ params }: PageProps<"/w/[token]">
       <BrandHeader />
       <div className="flex items-center gap-3">
         {live.isLive ? (
-          <span className="rounded-full bg-[#B5335F] px-3 py-1 text-xs font-bold tracking-wide text-white">● LIVE</span>
+          <span className="rounded-full bg-declined px-3 py-1 text-xs font-semibold tracking-wide text-white dark:text-[#111827]">● LIVE</span>
         ) : null}
         <h1 className="font-display text-2xl lg:text-3xl">{live.eventName}</h1>
       </div>

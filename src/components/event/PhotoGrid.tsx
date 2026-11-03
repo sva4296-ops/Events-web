@@ -13,12 +13,15 @@ export function PhotoGrid({
   userId,
   isOwner,
   columns = "grid-cols-3 sm:grid-cols-4 lg:grid-cols-5",
+  mosaic = "",
 }: {
   eventId: string;
   photos: Photo[];
   userId: string;
   isOwner: boolean;
   columns?: string;
+  /** Classes for the grid that make some tiles larger, so a wide screen shows a wall, not a table. */
+  mosaic?: string;
 }) {
   const [open, setOpen] = useState<Photo | null>(null);
   const [hidden, setHidden] = useState<Set<string>>(new Set());
@@ -44,13 +47,13 @@ export function PhotoGrid({
 
   return (
     <>
-      <div className={`grid gap-2 sm:gap-3 ${columns}`}>
+      <div className={`grid grid-flow-dense gap-2 sm:gap-3 ${columns} ${mosaic}`}>
         {visible.map((photo) => (
           <button
             key={photo.id}
             type="button"
             onClick={() => setOpen(photo)}
-            className="group relative aspect-square overflow-hidden rounded-2xl bg-surface-muted"
+            className="group relative aspect-square min-h-full w-full overflow-hidden rounded-2xl bg-surface-muted"
             aria-label={`Deschide poza de la ${photo.uploadedByLabel ?? "Invitat"}`}
           >
             {photo.thumbUrl !== null ? (

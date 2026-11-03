@@ -18,7 +18,7 @@ import Link from "next/link";
 import { BrandMark } from "@/components/BrandMark";
 import { ui } from "@/components/ui/styles";
 
-import { AmountScreen, FeedScreen, FundScreen, InviteScreen, LiveScreen, OwnerFundScreen, QrMark, RecapScreen } from "./mockups";
+import { FeedScreen, InviteScreen, LiveScreen, QrMark, RecapScreen } from "./mockups";
 import { lp } from "./styles";
 
 /* ---------- Shared building blocks ---------- */
@@ -62,7 +62,7 @@ function Step({
         <div className="mb-4 flex items-center gap-3">
           <span
             className="flex size-[42px] shrink-0 items-center justify-center rounded-full text-lg font-bold text-white"
-            style={{ background: color, color: n === 1 ? "#1A1A2E" : undefined }}
+            style={{ background: color, color: n === 1 ? "#2A211C" : undefined }}
           >
             {n}
           </span>
@@ -85,7 +85,7 @@ function Role({ who, children }: { who: "org" | "inv"; children: React.ReactNode
     <div className="flex items-start gap-3">
       <span
         className={`mt-0.5 min-w-[92px] shrink-0 rounded-full px-3 py-1 text-center text-[11px] font-bold ${
-          who === "org" ? "bg-accent-soft text-accent-text" : "bg-surface-muted text-[#B5683E]"
+          who === "org" ? "bg-accent-soft text-accent-text" : "bg-surface-muted text-[#9A462F]"
         }`}
       >
         {who === "org" ? "Organizator" : "Invitat"}
@@ -99,25 +99,12 @@ function Roles({ children }: { children: React.ReactNode }) {
   return <div className="flex flex-col gap-3.5">{children}</div>;
 }
 
-function Points({ items }: { items: string[] }) {
-  return (
-    <ul className="flex flex-col">
-      {items.map((item) => (
-        <li key={item} className="relative py-2 pl-7 text-[15px] text-muted">
-          <span className="absolute left-0 font-bold text-confirmed">✓</span>
-          {item}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 function Final({ title, text, startHref }: { title: string; text: string; startHref: string }) {
   return (
     <div className={`mb-16 mt-9 rounded-[28px] px-6 py-14 text-center text-white sm:px-10 ${lp.gradBg}`}>
       <h2 className="font-display text-[clamp(26px,4vw,40px)] font-bold">{title}</h2>
       <p className="mx-auto mb-6 mt-3 max-w-md text-[17px] opacity-95">{text}</p>
-      <Link href={startHref} className={ui.buttonGold}>
+      <Link href={startHref} className={`${ui.buttonGold} bg-white! text-[#2A211C]!`}>
         Am înțeles, începe
       </Link>
     </div>
@@ -133,7 +120,7 @@ export function HowItWorksContent({ startHref }: { startHref: string }) {
         eyebrow="Cum funcționează"
         title="De la primul anunț"
         accent="până la ultima amintire"
-        text="Cinci etape simple. Tu construiești evenimentul, invitații îl trăiesc alături de tine. Iată exact ce se întâmplă la fiecare pas."
+        text="Patru etape simple. Tu construiești evenimentul, invitații îl trăiesc alături de tine. Iată exact ce se întâmplă la fiecare pas."
       />
       <div className={inner}>
         <Step n={1} color="#FFD23F" label="Lansarea" title="Îți creezi pagina și trimiți invitația" visual={<InviteScreen />} flip={false}>
@@ -164,21 +151,7 @@ export function HowItWorksContent({ startHref }: { startHref: string }) {
             </Role>
           </Roles>
         </Step>
-        <Step n={3} color="#E8779E" label="Contribuțiile" title="În loc de un cadou, o parte din vis" visual={<FundScreen />} flip={false}>
-          <Intro>
-            Invitații nu pun bani într-un plic — contribuie la ceva anume: luna de miere, casa nouă, o cauză. Văd exact la ce
-            ajută, iar tu vezi fondul crescând. Transparent și cald, prin plăți securizate.
-          </Intro>
-          <Roles>
-            <Role who="org">
-              Setezi un scop și o țintă. <b>Banii ajung direct la tine</b>, prin Stripe — platforma nu îi ține.
-            </Role>
-            <Role who="inv">
-              Alege o sumă și <b>contribuie în câteva secunde</b>, cu cardul. Vede la ce a ajutat.
-            </Role>
-          </Roles>
-        </Step>
-        <Step n={4} color="#D957A8" label="Ziua X" title="Momentul culminant, trăit împreună" visual={<LiveScreen />} flip>
+        <Step n={3} color="#E8779E" label="Ziua X" title="Momentul culminant, trăit împreună" visual={<LiveScreen />} flip={false}>
           <Intro>
             În ziua evenimentului, un ecran live în sală afișează pozele în timp real. Invitații scanează un cod QR și adaugă
             propriile fotografii — fără să descarce nimic. Toată lumea construiește albumul, împreună.
@@ -192,7 +165,7 @@ export function HowItWorksContent({ startHref }: { startHref: string }) {
             </Role>
           </Roles>
         </Step>
-        <Step n={5} color="#7F77DD" label="Recap" title="Povestea rămâne, pentru totdeauna" visual={<RecapScreen />} flip={false}>
+        <Step n={4} color="#A54E36" label="Recap" title="Povestea rămâne, pentru totdeauna" visual={<RecapScreen />} flip>
           <Intro>
             După eveniment, totul se transformă într-un album și o poveste completă: toate momentele, toate pozele tuturor,
             într-un singur loc pe care îl păstrezi și-l revezi oricând.
@@ -216,89 +189,12 @@ export function HowItWorksContent({ startHref }: { startHref: string }) {
   );
 }
 
-/* ---------- Contributions ---------- */
-
-function LeadBlock({ title, children, visual, flip }: { title: string; children: React.ReactNode; visual: React.ReactNode; flip: boolean }) {
-  return (
-    <div className="border-t border-surface-border py-12 first:border-t-0">
-      <div className="grid items-center gap-7 md:grid-cols-2 md:gap-12">
-        <div className={flip ? "md:order-2" : ""}>
-          <h2 className="mb-3.5 font-display text-[clamp(24px,3.5vw,32px)] font-bold leading-tight">{title}</h2>
-          {children}
-        </div>
-        <div>{visual}</div>
-      </div>
-    </div>
-  );
-}
-
-export function ContributionsContent({ startHref }: { startHref: string }) {
-  return (
-    <>
-      <OverlayHero
-        eyebrow="Contribuțiile"
-        title="În loc de un cadou,"
-        accent="o parte din vis"
-        text="Invitații nu mai pun bani într-un plic. Contribuie la ceva anume — și văd exact la ce ajută. Iată cum funcționează, de la cap la coadă."
-      />
-      <div className={inner}>
-        <LeadBlock title="Un scop, nu un plic" visual={<FundScreen />} flip={false}>
-          <p className="mb-3.5 text-muted">
-            În loc de „bani pentru miri”, tu alegi un scop concret: luna de miere, casa nouă, mobilarea, o cauză dragă. Invitații
-            contribuie la <b>acel</b> vis și se simt parte din el.
-          </p>
-          <Points
-            items={[
-              "Alegi un scop și o țintă (ex: 8.000 lei pentru luna de miere)",
-              "Invitații văd la ce contribuie, nu doar „un dar”",
-              "Bara crește la vedere — toți văd povestea apropiindu-se de țintă",
-            ]}
-          />
-        </LeadBlock>
-        <LeadBlock title="Plata, simplă și sigură" visual={<AmountScreen />} flip>
-          <p className="mb-3.5 text-muted">
-            Invitatul alege o sumă și plătește cu cardul, în câteva secunde. Procesarea se face securizat prin Stripe — datele
-            cardului nu sunt stocate de platformă.
-          </p>
-          <Points
-            items={[
-              "Sume sugerate sau o sumă la alegere",
-              "Plată cu cardul, securizată prin Stripe",
-              "Funcționează cu sistemele de plată din România",
-              "Confirmare instant, cu mulțumire automată",
-            ]}
-          />
-        </LeadBlock>
-        <LeadBlock title="Banii ajung direct la tine" visual={<OwnerFundScreen />} flip={false}>
-          <p className="mb-3.5 text-muted">
-            Contribuțiile merg direct către tine, organizatorul, prin contul tău conectat. Platforma <b>nu ține banii</b> — reține
-            doar un comision mic și transparent pe fiecare contribuție.
-          </p>
-          <Points
-            items={[
-              "Transferul ajunge direct în contul tău",
-              "Comision mic, afișat clar — fără surprize",
-              "Vezi în timp real cine a contribuit și cât",
-              "Transparent până la ultimul leu",
-            ]}
-          />
-        </LeadBlock>
-        <Final
-          title="Universal, nu doar la noi"
-          text="Contribuția la un scop e o idee acceptată oriunde în lume — de la liste de nuntă la strângeri pentru cauze. Tu pornești povestea, invitații o duc mai departe."
-          startHref={startHref}
-        />
-      </div>
-    </>
-  );
-}
-
 /* ---------- Planner ---------- */
 
 const PLANNER_STATS = [
   { n: "8", l: "evenimente active", bg: "#FBEAE2" },
   { n: "1.240", l: "invitați gestionați", bg: "#EFE6FA" },
-  { n: "214.500", l: "lei în fonduri", bg: "#FDF0D9" },
+  { n: "4.800", l: "poze adunate", bg: "#FDF0D9" },
   { n: "96%", l: "rată confirmare", bg: "#E6F0FB" },
 ];
 
@@ -309,7 +205,7 @@ const PLANNER_EVENTS = [
 ];
 
 const PLANNER_FEATURES = [
-  { icon: LayoutDashboard, title: "Totul centralizat", text: "Toate evenimentele, invitații și fondurile într-un singur panou, fără să sari între conturi." },
+  { icon: LayoutDashboard, title: "Totul centralizat", text: "Toate evenimentele și invitații într-un singur panou, fără să sari între conturi." },
   { icon: Palette, title: "Brandul tău", text: "Logo-ul agenției apare pe paginile clienților: „organizat de Atelier Events”. Reclamă la fiecare eveniment." },
   { icon: Files, title: "Șabloane", text: "Creezi un eveniment nou dintr-un model salvat în câteva minute, nu ore." },
   { icon: CreditCard, title: "Preț pe volum", text: "Cu cât gestionezi mai multe evenimente, cu atât prețul per eveniment scade." },
@@ -332,8 +228,8 @@ export function PlannerContent({ startHref }: { startHref: string }) {
             <h2 className="font-display text-[clamp(22px,3vw,30px)] font-bold">Panoul tău de lucru</h2>
             <p className={`${lp.lead} mx-auto mt-2.5`}>O vedere de ansamblu peste toate evenimentele agenției.</p>
           </div>
-          <div className="overflow-hidden rounded-2xl border border-[#EFE6DD] bg-white text-[#2B2740] shadow-2xl shadow-black/10" aria-hidden="true">
-            <div className="flex items-center gap-2.5 bg-[#1E1A30] px-4.5 py-3.5">
+          <div className="overflow-hidden rounded-2xl border border-[#E0D4C4] bg-white text-[#2A211C] shadow-2xl shadow-black/10" aria-hidden="true">
+            <div className="flex items-center gap-2.5 bg-[#2A211C] px-4.5 py-3.5">
               <BrandMark className="h-3 w-5" />
               <span className="text-sm font-bold text-white">
                 Atelier<span className="text-gold">Events</span>
@@ -344,13 +240,13 @@ export function PlannerContent({ startHref }: { startHref: string }) {
                 {PLANNER_STATS.map((s) => (
                   <div key={s.l} className="rounded-xl p-3" style={{ background: s.bg }}>
                     <p className="font-display text-[22px] font-bold">{s.n}</p>
-                    <p className="text-[10.5px] text-[#5F5E5A]">{s.l}</p>
+                    <p className="text-[10.5px] text-[#6A5E54]">{s.l}</p>
                   </div>
                 ))}
               </div>
               <div className="flex flex-col gap-2">
                 {PLANNER_EVENTS.map((e) => (
-                  <div key={e.name} className="flex items-center gap-3 rounded-xl border border-[#EFE6DD] p-2.5">
+                  <div key={e.name} className="flex items-center gap-3 rounded-xl border border-[#E0D4C4] p-2.5">
                     <div className="size-[34px] shrink-0 rounded-lg" style={{ background: e.thumb }} />
                     <span className="flex-1 text-[13px] font-semibold">{e.name}</span>
                     <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${e.tone}`}>{e.status}</span>
@@ -398,13 +294,13 @@ const EVENT_TYPES = [
   { icon: Sparkles, name: "Altul", muted: true },
 ];
 
-const formBox = "rounded-2xl border border-[#EFE6DD] bg-white p-4.5 text-[#2B2740]";
+const formBox = "rounded-2xl border border-[#E0D4C4] bg-white p-4.5 text-[#2A211C]";
 
 function FakeField({ label, value, tall = false }: { label: string; value: string; tall?: boolean }) {
   return (
     <div className="mb-3.5 last:mb-0">
       <p className="mb-1.5 text-[13px] font-semibold">{label}</p>
-      <div className={`rounded-lg border border-[#EFE6DD] bg-[#FFF8F1] px-3.5 py-2.5 text-sm text-[#8A8496] ${tall ? "min-h-[54px]" : ""}`}>{value}</div>
+      <div className={`rounded-lg border border-[#E0D4C4] bg-[#EEE5D9] px-3.5 py-2.5 text-sm text-[#958879] ${tall ? "min-h-[54px]" : ""}`}>{value}</div>
     </div>
   );
 }
@@ -432,10 +328,10 @@ export function CreateContent({ startHref }: { startHref: string }) {
                   <div
                     key={t.name}
                     className={`rounded-xl border-[1.5px] px-2 py-4 text-center ${
-                      t.selected === true ? "border-accent bg-[#FFF8F1]" : "border-[#EFE6DD] bg-white"
+                      t.selected === true ? "border-accent bg-[#EEE5D9]" : "border-[#E0D4C4] bg-white"
                     } ${t.muted === true ? "opacity-50" : ""}`}
                   >
-                    <t.icon size={24} strokeWidth={1.8} className="mx-auto text-[#2B2740]" aria-hidden="true" />
+                    <t.icon size={24} strokeWidth={1.8} className="mx-auto text-[#2A211C]" aria-hidden="true" />
                     <p className="mt-1.5 text-[13px] font-semibold">{t.name}</p>
                   </div>
                 ))}
@@ -479,10 +375,10 @@ export function CreateContent({ startHref }: { startHref: string }) {
             <div aria-hidden="true">
               <div className={`rounded-2xl px-5 py-8 text-center text-white ${lp.gradBg}`}>
                 <p className="text-[10px] font-bold tracking-[0.2em] opacity-90">NUNTĂ</p>
-                <p className="mt-2 font-display text-[28px] font-bold italic">Maria &amp; Andrei</p>
+                <p className="mt-2 font-display text-[28px] font-bold">Maria &amp; Andrei</p>
                 <p className="mt-1 text-sm opacity-90">12 septembrie 2026</p>
                 <div className="mt-3.5 flex flex-wrap justify-center gap-1.5">
-                  {["Fond activ", "Program", "Live"].map((chip) => (
+                  {["Program", "Live", "Album"].map((chip) => (
                     <span key={chip} className="rounded-full bg-white/25 px-3 py-1 text-[11px] font-semibold">
                       {chip}
                     </span>
@@ -494,24 +390,24 @@ export function CreateContent({ startHref }: { startHref: string }) {
           }
         >
           <Intro>
-            Alegi o copertă, adaugi prima poză sau primul moment, activezi secțiunile pe care le vrei: fond de contribuții,
-            program, hartă, mese. Pagina e a ta.
+            Alegi o copertă, adaugi prima poză sau primul moment, activezi secțiunile pe care le vrei: program,
+            hartă, mese. Pagina e a ta.
           </Intro>
           <Intro small>Tot ce alegi se vede instant în previzualizare — exact ce vor vedea invitații.</Intro>
         </Step>
         <Step
           n={4}
-          color="#7F77DD"
+          color="#A54E36"
           label="Trimite invitația"
           title="Un link și gata"
           flip
           visual={
             <div className={`${formBox} text-center`} aria-hidden="true">
               <p className="mb-3 text-[13px] font-semibold">Pagina ta e gata de trimis</p>
-              <div className="mb-3.5 rounded-lg border border-[#EFE6DD] bg-[#FFF8F1] p-3 text-[13px] font-semibold text-accent-text">
+              <div className="mb-3.5 rounded-lg border border-[#E0D4C4] bg-[#EEE5D9] p-3 text-[13px] font-semibold text-accent-text">
                 povesteanoastra.ro/maria-andrei
               </div>
-              <div className="mx-auto mb-3.5 size-[120px] rounded-xl border border-[#EFE6DD] bg-white p-3">
+              <div className="mx-auto mb-3.5 size-[120px] rounded-xl border border-[#E0D4C4] bg-white p-3">
                 <QrMark className="size-full" />
               </div>
               <div className="flex justify-center gap-2">

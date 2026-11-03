@@ -6,9 +6,18 @@ import { createClient } from "@/lib/supabase/server";
 import type { AppEvent, EventRow, MyEvent, PlanCapabilities } from "@/lib/types";
 
 const SELECT_WITH_GUESTS =
-  "id, organizer_id, type, name, event_date, location, welcome_message, plan_tier, album_status, event_guests(id, event_id, guest_user_id, guest_phone, guest_name, rsvp_status, dietary_preferences, table_id)";
+  "id, organizer_id, type, name, event_date, location, welcome_message, plan_tier, album_status, cover_theme, cover_photo_path, event_guests(id, event_id, guest_user_id, guest_phone, guest_name, rsvp_status, dietary_preferences, table_id)";
 
-function mapEvent(row: EventRow): AppEvent {
+/** Same bucket and TTL as the app's fetchEventCoverUrl. */
+async function signCoverPhotos(rows: EventRow[]): Promise<Map<string, string>> {
+  const paths = rows.map((row) => row.cover_photo_path).filter((path): path is string => path !== null);
+  if (paths.length === 0) return new Map();
+  const supabase = await createClient();
+  const { data } = await supabase.storage.from("event-photos").createSignedUrls(paths, 24 * 60 * 60);
+  return new Map((data ?? []).flatMap((item) => (item.path && item.signedUrl ? [[item.path, item.signedUrl]] : [])));
+}
+
+function mapEvent(row: EventRow, coverPhotos: Map<string, string>): AppEvent {
   return {
     id: row.id,
     ownerId: row.organizer_id,
@@ -19,6 +28,8 @@ function mapEvent(row: EventRow): AppEvent {
     welcomeMessage: row.welcome_message?.trim() || null,
     planTier: row.plan_tier,
     albumStatus: row.album_status,
+    coverTheme: row.cover_theme,
+    coverPhotoUrl: row.cover_photo_path !== null ? (coverPhotos.get(row.cover_photo_path) ?? null) : null,
     guests: row.event_guests,
   };
 }
@@ -44,7 +55,9 @@ export const getMyEvents = cache(async (userId: string): Promise<MyEvent[]> => {
     .select(SELECT_WITH_GUESTS)
     .order("created_at", { ascending: false });
   if (error) throw error;
-  return (data as unknown as EventRow[]).map((row) => toMyEvent(mapEvent(row), userId));
+  const rows = data as unknown as EventRow[];
+  const coverPhotos = await signCoverPhotos(rows);
+  return rows.map((row) => toMyEvent(mapEvent(row, coverPhotos), userId));
 });
 
 export const getMyEvent = cache(async (eventId: string, userId: string): Promise<MyEvent | null> => {
@@ -55,7 +68,9 @@ export const getMyEvent = cache(async (eventId: string, userId: string): Promise
     .eq("id", eventId)
     .maybeSingle();
   if (error) throw error;
-  return data === null ? null : toMyEvent(mapEvent(data as unknown as EventRow), userId);
+  if (data === null) return null;
+  const row = data as unknown as EventRow;
+  return toMyEvent(mapEvent(row, await signCoverPhotos([row])), userId);
 });
 
 /** Fallback for a guest whose row isn't linked to their account yet — same

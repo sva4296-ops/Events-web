@@ -1,36 +1,30 @@
-import { useId } from "react";
-
-/** The Warm Story 2.0 "story thread with a heart" mark — same geometry as the app's utils/brandMark.ts. */
-export function BrandMark({ className }: { className?: string }) {
-  const gradientId = useId();
+/** The "story thread with a heart", same geometry as the app's utils/brandMark.ts.
+ * Drawn in the theme's accent, like the app's BrandMark; `className` can recolor it via text-*. */
+export function BrandMark({ className, color = "text-accent" }: { className?: string; color?: string }) {
   return (
-    <svg viewBox="0 20 100 68" className={className} aria-hidden="true">
-      <defs>
-        <linearGradient id={gradientId} x1="0" y1="0" x2="100" y2="0" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#F7C948" />
-          <stop offset="0.5" stopColor="#F0509E" />
-          <stop offset="1" stopColor="#5E5EF2" />
-        </linearGradient>
-      </defs>
+    <svg viewBox="0 20 100 68" className={`${color} ${className ?? ""}`} aria-hidden="true">
       <path
         d="M8 66C22 66 38 72 50 82C26 64 20 40 32 30C40 23 50 28 50 38C50 28 60 23 68 30C80 40 74 64 50 82C62 72 78 66 92 66"
         fill="none"
-        stroke={`url(#${gradientId})`}
+        stroke="currentColor"
         strokeWidth="6.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <circle cx="8" cy="66" r="6" fill="#F7C948" />
-      <circle cx="92" cy="66" r="6" fill="#5E5EF2" />
+      <circle cx="8" cy="66" r="6" fill="currentColor" />
+      <circle cx="92" cy="66" r="6" fill="currentColor" />
     </svg>
   );
 }
 
-export function BrandHeader() {
+/** `compact`: only the mark on phones, for a nav that also has to fit a long button. `onCover`: all white. */
+export function BrandHeader({ compact = false, onCover = false }: { compact?: boolean; onCover?: boolean }) {
   return (
     <div className="flex items-center gap-2">
-      <BrandMark className="h-[29px] w-[43px]" />
-      <span className="font-display text-xl font-semibold text-ink">PovesteaNoastra</span>
+      <BrandMark className="h-[29px] w-[43px]" color={onCover ? "text-white" : undefined} />
+      <span className={`font-display text-[19px] font-semibold ${onCover ? "text-white" : "text-ink"} ${compact ? "max-sm:sr-only" : ""}`}>
+        Povestea<span className={onCover ? undefined : "text-accent"}>Noastra</span>
+      </span>
     </div>
   );
 }

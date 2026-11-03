@@ -5,7 +5,7 @@ import { BrandHeader } from "@/components/BrandMark";
 import { ui } from "@/components/ui/styles";
 
 import { FAQ, FEATURES, FOR_WHOM, NAV_LINKS, NEW_WAY, OLD_WAY, PLANS, START_STEPS, VERTICALS, WHY_US } from "./data";
-import { FundDemo, LiveDot, Photo, QrMark } from "./mockups";
+import { LiveDot, Photo, QrMark } from "./mockups";
 import { OverlayButton } from "./Overlays";
 import { lp } from "./styles";
 
@@ -36,12 +36,12 @@ function SectionHead({ eyebrow, title, lead }: { eyebrow: string; title: React.R
 /* ---------- Nav ---------- */
 
 export function LandingNav({ signedIn, startHref }: LandingAuth) {
-  const link = "text-[14.5px] font-medium text-muted transition hover:text-ink";
+  const link = "whitespace-nowrap text-[14.5px] font-medium text-muted transition hover:text-ink";
   return (
-    <nav className="sticky top-0 z-50 border-b border-surface-border bg-(--bg-from)/85 backdrop-blur-md">
+    <nav className="sticky top-0 z-50 border-b border-surface-border bg-(--bg)/85 backdrop-blur-md">
       <div className={`${lp.wrap} flex items-center gap-2.5 py-3.5`}>
         <Link href="/" aria-label="PovesteaNoastra, acasă">
-          <BrandHeader />
+          <BrandHeader compact={signedIn} />
         </Link>
         <div className="ml-auto flex items-center gap-7">
           {NAV_LINKS.map((l) => (
@@ -52,7 +52,7 @@ export function LandingNav({ signedIn, startHref }: LandingAuth) {
           <Link href={signedIn ? "/account" : "/login"} className={`${link} hidden sm:inline`}>
             {signedIn ? "Cont" : "Intră în cont"}
           </Link>
-          <Link href={startHref} className={`${ui.buttonPrimary} !px-5 !py-2.5 !text-[15px]`}>
+          <Link href={startHref} className={`${ui.buttonPrimary} min-h-11! whitespace-nowrap px-4! text-sm! sm:px-5! sm:text-[15px]!`}>
             {signedIn ? "Evenimentele mele" : "Începe gratuit"}
           </Link>
         </div>
@@ -71,7 +71,7 @@ function ThreadLine() {
         <linearGradient id={id} x1="0" y1="0" x2="1" y2="0">
           <stop offset="0" stopColor="#FFD23F" />
           <stop offset="0.5" stopColor="#E8779E" />
-          <stop offset="1" stopColor="#7F77DD" />
+          <stop offset="1" stopColor="#A54E36" />
         </linearGradient>
       </defs>
       <path d="M30 50 Q190 18 360 48 T560 42 T730 38" fill="none" stroke={`url(#${id})`} strokeWidth="5" strokeLinecap="round" />
@@ -79,7 +79,7 @@ function ThreadLine() {
       <circle cx="220" cy="32" r="7" fill="#FF9F45" />
       <circle cx="400" cy="48" r="7" fill="#E8779E" />
       <circle cx="560" cy="42" r="7" fill="#D957A8" />
-      <circle cx="730" cy="38" r="13" fill="#7F77DD" />
+      <circle cx="730" cy="38" r="13" fill="#A54E36" />
     </svg>
   );
 }
@@ -101,7 +101,7 @@ export function Hero({ startHref }: { startHref: string }) {
         </h1>
         <p className={`mx-auto mb-9 mt-5 max-w-[620px] text-[clamp(17px,2.2vw,21px)] text-muted ${lp.reveal}`} data-reveal>
           De la primul anunț până la ultima fotografie, PovesteaNoastra adună tot ce ține de evenimentul tău într-un singur loc
-          viu: invitație, parcurs, contribuții și amintiri.
+          viu: invitație, parcurs, poze și amintiri.
         </p>
         <div className={`flex flex-wrap justify-center gap-3.5 ${lp.reveal}`} data-reveal>
           <Link href={startHref} className={ui.buttonPrimary}>
@@ -177,7 +177,7 @@ function StageCard({ n, color, name, text, children }: { n: number; color: strin
       </div>
       <span
         className="mb-4 flex size-[30px] items-center justify-center rounded-full text-[13px] font-bold text-white"
-        style={{ background: color, color: n === 1 ? "#1A1A2E" : undefined }}
+        style={{ background: color, color: n === 1 ? "#2A211C" : undefined }}
       >
         {n}
       </span>
@@ -205,35 +205,35 @@ export function Stages() {
         <div className="mt-12 grid gap-4.5 min-[461px]:grid-cols-2 lg:grid-cols-4">
           <StageCard n={1} color="#FFD23F" name="Lansarea" text="Creezi pagina, trimiți invitația, aduni confirmările. Totul începe.">
             <div className={`flex h-full flex-col items-center justify-center text-white ${lp.gradBg}`}>
-              <p className="font-display text-[17px] font-bold italic">Maria &amp; Andrei</p>
+              <p className="font-display text-[17px] font-bold">Maria &amp; Andrei</p>
               <p className="mt-0.5 text-[10px] opacity-90">12 septembrie 2026</p>
               <p className="mt-2.5 rounded-full bg-white px-3.5 py-1 text-[10px] font-bold text-accent-text">Da, particip</p>
             </div>
           </StageCard>
-          <StageCard n={2} color="#FF9F45" name="Parcursul" text="Postezi momente din pregătiri. Invitații reacționează și contribuie, lună după lună.">
-            <div className="h-full bg-[#FFF8F1] p-2.5">
+          <StageCard n={2} color="#FF9F45" name="Parcursul" text="Postezi momente din pregătiri. Invitații reacționează, lună după lună.">
+            <div className="h-full bg-[#EEE5D9] p-2.5">
               {MINI_POSTS.map((p) => (
-                <div key={p.text} className="mb-1.5 flex items-center gap-2 rounded-lg border border-[#EFE6DD] bg-white px-2 py-1.5">
+                <div key={p.text} className="mb-1.5 flex items-center gap-2 rounded-lg border border-[#E0D4C4] bg-white px-2 py-1.5">
                   <Photo n={p.photo} className="size-[26px] shrink-0 rounded-md" />
-                  <span className="text-[9.5px] font-semibold text-[#2B2740]">{p.text}</span>
+                  <span className="text-[9.5px] font-semibold text-[#2A211C]">{p.text}</span>
                   <span className="ml-auto text-[9px] font-bold text-pink">● {p.count}</span>
                 </div>
               ))}
             </div>
           </StageCard>
           <StageCard n={3} color="#E8779E" name="Ziua X" text="Ecranul live în sală, QR-ul, pozele care curg în timp real. Momentul culminant.">
-            <div className="flex h-full flex-col items-center justify-center gap-2 bg-[#1E1A30]">
+            <div className="flex h-full flex-col items-center justify-center gap-2 bg-[#2A211C]">
               <p className="flex items-center gap-1.5 text-[10px] font-bold text-white">
                 <LiveDot /> LIVE · în sală
               </p>
               <div className="size-[46px] rounded-md bg-white p-1.5">
                 <QrMark className="size-full" />
               </div>
-              <p className="text-[9px] text-[#B5B4C8]">Scanează și adaugă poze</p>
+              <p className="text-[9px] text-[#C9BDB0]">Scanează și adaugă poze</p>
             </div>
           </StageCard>
-          <StageCard n={4} color="#7F77DD" name="Recap" text="Albumul complet și povestea întreagă, păstrate pentru totdeauna.">
-            <div className="grid h-full grid-cols-3 gap-1.5 bg-[#FFF8F1] p-2">
+          <StageCard n={4} color="#A54E36" name="Recap" text="Albumul complet și povestea întreagă, păstrate pentru totdeauna.">
+            <div className="grid h-full grid-cols-3 gap-1.5 bg-[#EEE5D9] p-2">
               {[4, 5, 6, 7, 8, 9].map((n) => (
                 <Photo key={n} n={n} className="aspect-square rounded-[5px]" />
               ))}
@@ -260,14 +260,14 @@ export function Verticals() {
           {VERTICALS.map((v) => (
             <div
               key={v.name}
-              className={`rounded-[18px] border border-[#EFE6DD] bg-linear-135 p-6.5 text-[#2B2740] hover:-translate-y-0.5 ${v.tint} ${lp.reveal}`}
+              className={`rounded-[18px] border border-[#E0D4C4] bg-linear-135 p-6.5 text-[#2A211C] hover:-translate-y-0.5 ${v.tint} ${lp.reveal}`}
               data-reveal
             >
-              <span className="flex size-12 items-center justify-center rounded-2xl bg-white/80 text-[#2B2740]" aria-hidden="true">
+              <span className="flex size-12 items-center justify-center rounded-2xl bg-white/80 text-[#2A211C]" aria-hidden="true">
                 <v.icon size={24} strokeWidth={1.8} />
               </span>
               <p className="mb-1 mt-2.5 text-lg font-bold">{v.name}</p>
-              <p className="text-sm text-[#5F5E5A]">{v.text}</p>
+              <p className="text-sm text-[#6A5E54]">{v.text}</p>
             </div>
           ))}
         </div>
@@ -328,41 +328,6 @@ export function ForWhom() {
   );
 }
 
-/* ---------- Contributions ---------- */
-
-export function Contributions() {
-  return (
-    <section id="contributii" className={lp.section}>
-      <div className={`${lp.wrap} grid items-center gap-8 md:grid-cols-[1.1fr_0.9fr] md:gap-12`}>
-        <div>
-          <p className={`${lp.eyebrow} ${lp.reveal}`} data-reveal>
-            Contribuie la poveste
-          </p>
-          <h2 className={`${lp.title} ${lp.reveal}`} data-reveal>
-            În loc de un cadou,
-            <br />o parte din vis
-          </h2>
-          <p className={`${lp.lead} ${lp.reveal}`} data-reveal>
-            Invitații nu pun bani într-un plic — contribuie la ceva anume: luna de miere, casa nouă, o cauză. Văd la ce ajută, iar
-            tu vezi povestea crescând. Cald, transparent, și acceptat oriunde în lume.
-          </p>
-          <div className={`mt-6 ${lp.reveal}`} data-reveal>
-            <OverlayButton overlay="contrib" className={ui.buttonPrimary}>
-              Cum funcționează contribuțiile
-            </OverlayButton>
-          </div>
-        </div>
-        <div className={`rounded-3xl bg-linear-135 from-surface-muted to-accent-soft p-6 sm:p-9 ${lp.reveal}`} data-reveal>
-          <FundDemo />
-          <p className="mt-3.5 text-center text-[11.5px] text-muted">
-            Plăți securizate prin Stripe &amp; card local · banii merg direct la organizator
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ---------- Planners ---------- */
 
 export function Planners() {
@@ -389,7 +354,7 @@ export function Planners() {
             {stats.map((s) => (
               <div key={s.n}>
                 <p className="font-display text-[34px] font-bold text-gold">{s.n}</p>
-                <p className="text-[13px] text-[#B5B4C8]">
+                <p className="text-[13px] text-[#C9BDB0]">
                   {s.l[0]}
                   <br />
                   {s.l[1]}
@@ -455,8 +420,8 @@ export function Pricing({ startHref }: { startHref: string }) {
             );
           })}
         </div>
-        <p className="mt-5 text-center text-[13px] italic text-muted">
-          Prețurile sunt orientative, în lei. La contribuții se aplică un comision mic, transparent.
+        <p className="mt-5 text-center text-[13px] text-muted">
+          Prețurile sunt orientative, în lei.
         </p>
       </div>
     </section>
@@ -506,7 +471,7 @@ export function HowToStart() {
         <div className="mt-11 grid gap-8 md:grid-cols-3 md:gap-5">
           {START_STEPS.map((s, i) => (
             <div key={s.title} className={`px-2.5 text-center ${lp.reveal}`} data-reveal>
-              <span className="mx-auto mb-4.5 flex size-16 items-center justify-center rounded-full bg-linear-135 from-gold to-accent font-display text-[28px] font-bold text-white">
+              <span className="mx-auto mb-4.5 flex size-16 items-center justify-center rounded-full bg-accent-fill font-display text-[28px] font-bold text-white">
                 {i + 1}
               </span>
               <h3 className="mb-1.5 text-lg font-bold">{s.title}</h3>
@@ -560,7 +525,7 @@ export function FinalCta({ startHref }: { startHref: string }) {
           <p className="mx-auto mb-7.5 mt-3.5 max-w-[520px] text-lg opacity-95">
             Creează-ți pagina în câteva minute. Gratuit până trimiți prima invitație.
           </p>
-          <Link href={startHref} className={`${ui.buttonGold} px-8.5 py-4`}>
+          <Link href={startHref} className={`${ui.buttonGold} bg-white! px-8.5 py-4 text-[#2A211C]!`}>
             Începe acum
           </Link>
         </div>

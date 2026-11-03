@@ -1,14 +1,17 @@
 import { HeartHandshake } from "lucide-react";
+import { redirect } from "next/navigation";
 
 import { LockedFeature } from "@/components/event/LockedFeature";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ui } from "@/components/ui/styles";
 import { getDetails } from "@/lib/data/content";
 import { getEventContext } from "@/lib/data/eventContext";
+import { FUND_ENABLED } from "@/lib/features";
 import { formatMoney, pluralRo } from "@/lib/format";
 
 export default async function FondPage({ params }: PageProps<"/event/[id]/fund">) {
   const { id } = await params;
+  if (!FUND_ENABLED) redirect(`/event/${id}`);
   const [{ event, capabilities }, { fund, contributorCount }] = await Promise.all([
     getEventContext(id),
     getDetails(id),
@@ -40,19 +43,19 @@ export default async function FondPage({ params }: PageProps<"/event/[id]/fund">
         <p className={ui.eyebrow}>{fund.title}</p>
         {fund.description.length > 0 ? <p className="text-muted">{fund.description}</p> : null}
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <span className="font-display text-5xl font-bold text-accent-text">
+          <span className="font-display text-5xl font-semibold text-accent-text">
             {formatMoney(fund.currentAmount, fund.currency)}
           </span>
           <span className="text-muted">din {formatMoney(fund.targetAmount, fund.currency)}</span>
         </div>
         <div
-          className="h-3 overflow-hidden rounded-full bg-accent-soft"
+          className="h-3 overflow-hidden rounded-full bg-surface-2"
           role="progressbar"
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={Math.round(progress)}
         >
-          <div className="h-full rounded-full bg-gradient-to-r from-gold to-accent" style={{ width: `${progress}%` }} />
+          <div className="h-full rounded-full bg-accent-fill" style={{ width: `${progress}%` }} />
         </div>
         <p className="text-sm text-muted">
           {contributorCount}{" "}

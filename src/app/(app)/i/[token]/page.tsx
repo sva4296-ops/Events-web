@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { AppBanner } from "@/components/AppBanner";
-import { BrandHeader } from "@/components/BrandMark";
-import { InviteCard } from "@/components/InviteCard";
+import { InviteSplit } from "@/components/InviteSplit";
 import { formatEventDate } from "@/lib/format";
 import { getInvite } from "@/lib/invites";
 import { getVenueByToken } from "@/lib/venues";
@@ -61,35 +60,17 @@ export default async function InvitePage({ params }: PageProps<"/i/[token]">) {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-md flex-1 flex-col gap-6 md:max-w-2xl lg:max-w-none lg:gap-10">
-      <BrandHeader />
-
-      {/* Mobile/tablet: one column. Desktop: invitation left, actions right (sticky). */}
-      <div className="grid items-start gap-6 lg:grid-cols-5 lg:gap-10">
-        <InviteCard
-          className="lg:col-span-3"
-          eventName={invite.eventName}
-          eventType={invite.eventType}
-          eventDate={invite.eventDate}
-          location={invite.location}
-          welcomeMessage={invite.welcomeMessage}
-          greeting={invite.guestName !== null ? `Bună, ${invite.guestName}!` : "Bună!"}
-          hostName={invite.hostName}
-        />
-
-        <aside className="flex flex-col gap-6 lg:sticky lg:top-10 lg:col-span-2">
-          <div className="rounded-3xl border border-surface-border bg-surface p-[18px] shadow-card lg:p-6">
-            <p className="mb-3 text-base font-bold lg:mb-4 lg:font-display lg:text-xl">Poți ajunge?</p>
-            <RsvpForm
-              token={token}
-              status={invite.status}
-              eventName={invite.eventName}
-              eventId={invite.eventId}
-            />
-          </div>
-          <AppBanner />
-        </aside>
-      </div>
-    </div>
+    <InviteSplit
+      eventName={invite.eventName}
+      eventType={invite.eventType}
+      eventDate={invite.eventDate}
+      location={invite.location}
+      welcomeMessage={invite.welcomeMessage}
+      greeting={invite.guestName !== null ? `Bună, ${invite.guestName}!` : "Bună!"}
+      hostName={invite.hostName}
+    >
+      <RsvpForm token={token} status={invite.status} eventName={invite.eventName} eventId={invite.eventId} />
+      <AppBanner />
+    </InviteSplit>
   );
 }

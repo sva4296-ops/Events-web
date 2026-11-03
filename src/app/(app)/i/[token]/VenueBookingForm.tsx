@@ -3,6 +3,7 @@
 import { Minus, Plus } from "lucide-react";
 import { useActionState, useState } from "react";
 
+import { EventCover } from "@/components/EventCover";
 import { ui } from "@/components/ui/styles";
 import type { MyVenueBooking, VenueNight } from "@/lib/venues";
 
@@ -55,10 +56,10 @@ export function VenueBookingForm({
     return (
       <div className="flex flex-col gap-4">
         <div className={`${ui.card} overflow-hidden`}>
-          <div className="bg-[linear-gradient(135deg,#1A1A2E_0%,#5F2B84_55%,#D6336C_100%)] p-5 text-white">
-            <p className="text-[11px] font-bold uppercase tracking-[0.14em] opacity-90">Biletul meu</p>
-            <p className="font-display text-xl font-bold">{venue.name}</p>
-          </div>
+          <EventCover type="other" coverTheme="local" className="p-5 text-white">
+            <p className="relative text-[13px] font-semibold uppercase tracking-[1px] opacity-90">Biletul meu</p>
+            <p className="relative font-display text-xl font-semibold">{venue.name}</p>
+          </EventCover>
           <div className="flex flex-col items-center gap-2 p-5">
             <p className="text-3xl font-extrabold tracking-[0.12em] tabular-nums">{mine.bookingCode ?? "—"}</p>
             <p className="text-sm text-muted">{mine.checkedInAt !== null ? "Ai intrat ✓" : "Arată codul la intrare"}</p>

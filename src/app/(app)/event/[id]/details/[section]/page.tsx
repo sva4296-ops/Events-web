@@ -1,40 +1,20 @@
-import {
-  ArrowLeft,
-  Cake,
-  Camera,
-  Car,
-  ExternalLink,
-  Flower,
-  MapPin,
-  Music,
-  Sparkles,
-  Tag,
-  UtensilsCrossed,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
-import { DietaryPills } from "@/components/event/DietaryPills";
+import {
+  LocationSection,
+  LodgingSection,
+  MenuSection,
+  ScheduleSection,
+  SeatingSection,
+  VendorsSection,
+} from "@/components/event/PlanSections";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { ui } from "@/components/ui/styles";
 import { getDetails, getTableCompanions } from "@/lib/data/content";
 import { getEventContext } from "@/lib/data/eventContext";
-import { isLocked, isSectionKey, SECTIONS } from "@/lib/details";
-import { pluralRo } from "@/lib/format";
-
-function vendorIcon(category: string): LucideIcon {
-  const c = category.toLowerCase();
-  if (c.includes("foto") || c.includes("video")) return Camera;
-  if (c.includes("muz") || c.includes("dj")) return Music;
-  if (c.includes("catering") || c.includes("mânc") || c.includes("manc")) return UtensilsCrossed;
-  if (c.includes("flor")) return Flower;
-  if (c.includes("tort") || c.includes("cofet")) return Cake;
-  if (c.includes("transport") || c.includes("mașin") || c.includes("masin")) return Car;
-  if (c.includes("decor")) return Sparkles;
-  return Tag;
-}
+import { hasContent, isLocked, isSectionKey, SECTIONS } from "@/lib/details";
 
 const EMPTY_GUEST: Record<string, string> = {
   schedule: "Programul nu a fost publicat încă.",
@@ -59,236 +39,30 @@ export default async function DetaliiSectionPage({ params }: PageProps<"/event/[
     />
   );
 
-  let body: ReactNode = null;
-
-  switch (section) {
-    case "schedule":
-      body =
-        details.schedule.length === 0 ? (
-          empty
-        ) : (
-          <ol className={`${ui.cardPadded} flex flex-col`}>
-            {details.schedule.map((item, index) => (
-              <li key={item.id} className="relative flex gap-5 pb-6 last:pb-0">
-                {index < details.schedule.length - 1 ? (
-                  <span className="absolute left-[3.35rem] top-8 h-[calc(100%-1.5rem)] w-px bg-surface-border" aria-hidden="true" />
-                ) : null}
-                <span className="w-12 shrink-0 pt-0.5 text-right font-display text-lg font-bold text-accent-text">
-                  {item.time}
-                </span>
-                <span className="mt-2 h-3 w-3 shrink-0 rounded-full bg-accent ring-4 ring-accent-soft" aria-hidden="true" />
-                <span className="flex flex-col">
-                  <span className="font-semibold">{item.title}</span>
-                  {item.location.length > 0 ? <span className="text-sm text-muted">{item.location}</span> : null}
-                </span>
-              </li>
-            ))}
-          </ol>
-        );
-      break;
-
-    case "location": {
-      const { notes } = details.venue;
-      // No venue set yet: fall back to the location typed when the event was created.
-      const fromEvent = details.venue.name.trim().length === 0 && details.venue.address.trim().length === 0;
-      const name = fromEvent ? (event.location ?? "") : details.venue.name;
-      const address = fromEvent ? "" : details.venue.address;
-      const has = name.trim().length > 0 || address.trim().length > 0;
-      const query = encodeURIComponent([name, address].filter((part) => part.trim().length > 0).join(", "));
-      body = !has ? (
-        empty
-      ) : (
-        <div className={`${ui.cardPadded} flex flex-col gap-5`}>
-          <div className="flex items-start gap-3">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent-text">
-              <MapPin size={20} aria-hidden="true" />
-            </span>
-            <div className="flex flex-col">
-              {name.trim().length > 0 ? <span className="text-lg font-bold">{name}</span> : null}
-              {address.trim().length > 0 ? <span className="text-muted">{address}</span> : null}
-              {fromEvent ? <span className="text-sm text-muted">Din detaliile evenimentului</span> : null}
-            </div>
-          </div>
-          {notes.length > 0 ? (
-            <ul className="flex flex-col gap-2">
-              {notes.map((note) => (
-                <li key={note} className="flex gap-2 text-sm">
-                  <span className="text-accent-text" aria-hidden="true">•</span>
-                  {note}
-                </li>
-              ))}
-            </ul>
-          ) : null}
-          <a
-            href={`https://www.google.com/maps/search/?api=1&query=${query}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${ui.buttonPrimary} self-start`}
-          >
-            Deschide în hartă
-            <ExternalLink size={16} aria-hidden="true" />
-          </a>
-        </div>
-      );
-      break;
-    }
-
-    case "menu":
-      body =
-        details.menuOptions.length === 0 ? (
-          empty
-        ) : (
-          <div className="flex flex-col gap-5">
-            {!owner ? (
-              <p className="text-sm text-muted">Alegerea meniului se face din aplicația PovesteaNoastra.</p>
-            ) : null}
-            {details.menuOptions.map((option) => {
-              const mine = !owner && event.myGuest?.menu_option_id === option.id;
-              return (
-                <div
-                  key={option.id}
-                  className={`${ui.cardPadded} flex flex-col gap-4 ${mine ? "ring-2 ring-accent-fill" : ""}`}
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="font-display text-xl">{option.name}</span>
-                    {mine ? <span className={ui.eyebrow}>Alegerea ta</span> : null}
-                  </div>
-                  <div className="grid gap-5 sm:grid-cols-3">
-                    {option.courses.map((course, index) => (
-                      <div key={index} className="flex flex-col gap-1">
-                        {course.photoUrl !== null ? (
-                          // Signed Storage URL, expires; next/image would need remotePatterns for it.
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={course.photoUrl} alt={course.dish} className="mb-2 aspect-square w-full rounded-xl object-cover" />
-                        ) : null}
-                        <span className={ui.eyebrow}>{course.name}</span>
-                        <span className="font-display text-lg">{course.dish}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-            {!owner && event.myGuest !== null ? (
-              <div className={ui.cardPadded}>
-                <DietaryPills eventId={id} selected={event.myGuest.dietary_preferences} />
-              </div>
-            ) : null}
-          </div>
-        );
-      break;
-
-    case "seating": {
-      if (details.seatingTables.length === 0) {
-        body = empty;
+  let body: ReactNode = empty;
+  if (hasContent(section, details, event.location ?? "")) {
+    switch (section) {
+      case "schedule":
+        body = <ScheduleSection details={details} />;
+        break;
+      case "location":
+        body = <LocationSection details={details} eventLocation={event.location} />;
+        break;
+      case "menu":
+        body = <MenuSection details={details} event={event} />;
+        break;
+      case "seating": {
+        const seated = !owner && (event.myGuest?.table_id ?? null) !== null;
+        body = <SeatingSection details={details} event={event} companions={seated ? await getTableCompanions(id) : []} />;
         break;
       }
-      const myTableId = owner ? null : (event.myGuest?.table_id ?? null);
-      const companions = myTableId !== null ? await getTableCompanions(id) : [];
-      body = (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {details.seatingTables.map((table) => {
-            const mine = table.id === myTableId;
-            const assigned = owner ? event.guests.filter((guest) => guest.table_id === table.id).length : 0;
-            return (
-              <div
-                key={table.id}
-                className={`flex flex-col gap-1 rounded-3xl border p-5 shadow-lg shadow-black/5 ${
-                  mine ? "border-2 border-accent bg-accent-soft" : "border-surface-border bg-surface"
-                }`}
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <span className="truncate text-lg font-bold">{table.name}</span>
-                  {mine ? (
-                    <span className="shrink-0 rounded-full bg-accent-fill px-2.5 py-0.5 text-xs font-semibold text-on-accent">
-                      Ești aici
-                    </span>
-                  ) : null}
-                </div>
-                {table.label.length > 0 ? <span className="text-sm text-muted">{table.label}</span> : null}
-                <span className="text-sm text-muted">
-                  {table.seatCount} {pluralRo(table.seatCount, "loc", "locuri", "de locuri")}
-                </span>
-                {owner && assigned > 0 ? (
-                  <span className="text-sm font-semibold text-accent-text">
-                    {assigned} / {table.seatCount} locuri ocupate
-                  </span>
-                ) : null}
-                {mine && companions.length > 0 ? (
-                  <span className="mt-2 text-sm">Alături de tine: {companions.join(", ")}</span>
-                ) : null}
-              </div>
-            );
-          })}
-        </div>
-      );
-      break;
+      case "lodging":
+        body = <LodgingSection details={details} />;
+        break;
+      case "vendors":
+        body = <VendorsSection details={details} />;
+        break;
     }
-
-    case "lodging":
-      body =
-        details.accommodations.length === 0 ? (
-          empty
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2">
-            {details.accommodations.map((item) => (
-              <div key={item.id} className={`${ui.cardPadded} flex flex-col gap-1`}>
-                <span className="text-lg font-bold">{item.name}</span>
-                {item.detailLine.length > 0 ? <span className="text-muted">{item.detailLine}</span> : null}
-                {item.priceLine.length > 0 ? (
-                  <span className="mt-1 font-semibold text-accent-text">{item.priceLine}</span>
-                ) : null}
-              </div>
-            ))}
-          </div>
-        );
-      break;
-
-    case "vendors":
-      body =
-        details.vendors.length === 0 ? (
-          empty
-        ) : (
-          <div className="flex flex-col gap-4">
-            <div className="grid gap-4 sm:grid-cols-2">
-              {details.vendors.map((vendor) => (
-                <div key={vendor.id} className={`${ui.cardPadded} flex items-center gap-4`}>
-                  {(() => {
-                    const Icon = vendorIcon(vendor.category);
-                    return (
-                      <span
-                        className="flex size-11 shrink-0 items-center justify-center rounded-[14px] bg-accent-tint text-accent-text"
-                        aria-hidden="true"
-                      >
-                        <Icon size={20} strokeWidth={1.8} />
-                      </span>
-                    );
-                  })()}
-                  <span className="flex min-w-0 flex-1 flex-col">
-                    <span className="truncate font-bold">{vendor.name}</span>
-                    <span className="truncate text-sm text-muted">
-                      {[vendor.category, vendor.handle].filter((part) => part.length > 0).join(" · ")}
-                    </span>
-                  </span>
-                  {vendor.externalUrl.length > 0 ? (
-                    <a
-                      href={vendor.externalUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="shrink-0 rounded-full bg-accent-soft px-4 py-2 text-sm font-semibold text-accent-text"
-                    >
-                      Vezi
-                    </a>
-                  ) : null}
-                </div>
-              ))}
-            </div>
-            <p className="text-center text-sm italic text-muted">
-              Furnizorii tag-uiți își promovează serviciile — fiecare aduce clienți noi pe platformă.
-            </p>
-          </div>
-        );
-      break;
   }
 
   return (

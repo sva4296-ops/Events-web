@@ -1,6 +1,6 @@
 "use client";
 
-import { ImagePlus } from "lucide-react";
+import { ImagePlus, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
@@ -16,6 +16,7 @@ export function LiveUploader({ eventId }: { eventId: string }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [dragging, setDragging] = useState(false);
 
   const upload = async (files: FileList | null) => {
     if (files === null || files.length === 0) return;
@@ -61,12 +62,35 @@ export function LiveUploader({ eventId }: { eventId: string }) {
         onChange={(event) => void upload(event.target.files)}
         disabled={progress !== null}
       />
+      {/* Phone: the app's button. From tablet up: a drop zone, since there's a mouse to drag with. */}
       <label
         htmlFor="live-upload"
-        className={`${ui.buttonPrimary} cursor-pointer ${progress !== null ? "pointer-events-none opacity-60" : ""}`}
+        className={`${ui.buttonPrimary} cursor-pointer md:hidden ${progress !== null ? "pointer-events-none opacity-60" : ""}`}
       >
         <ImagePlus size={20} aria-hidden="true" />
         {progress !== null ? `Se încarcă ${progress.done}/${progress.total}…` : "Adaugă poze"}
+      </label>
+      <label
+        htmlFor="live-upload"
+        onDragOver={(event) => {
+          event.preventDefault();
+          setDragging(true);
+        }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={(event) => {
+          event.preventDefault();
+          setDragging(false);
+          if (progress === null) void upload(event.dataTransfer.files);
+        }}
+        className={`hidden min-h-[220px] cursor-pointer flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed p-6 text-center transition hover:border-accent md:flex ${
+          dragging ? "border-accent bg-accent-tint" : "border-surface-border bg-surface"
+        } ${progress !== null ? "pointer-events-none opacity-60" : ""}`}
+      >
+        <Upload size={28} strokeWidth={1.8} className="text-accent-text" aria-hidden="true" />
+        <span className="font-theme text-[22px] leading-7">
+          {progress !== null ? `Se încarcă ${progress.done}/${progress.total}…` : "Trage pozele aici"}
+        </span>
+        {progress === null ? <span className="text-sm text-muted">sau alege-le de pe calculator</span> : null}
       </label>
       {error !== null ? (
         <p role="alert" className="text-center text-sm text-danger">

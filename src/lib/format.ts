@@ -13,6 +13,15 @@ export function formatEventDate(date: string | null): string | null {
   }).format(parsed);
 }
 
+/** Whole days from today in Romania to the event date; null without a date. Negative once it's past. */
+export function daysUntilEvent(date: string | null): number | null {
+  if (date === null) return null;
+  const eventDay = Date.parse(`${date}T00:00:00Z`);
+  if (Number.isNaN(eventDay)) return null;
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Bucharest" }).format(new Date());
+  return Math.round((eventDay - Date.parse(`${today}T00:00:00Z`)) / 86_400_000);
+}
+
 const MINUTE = 60 * 1000;
 const HOUR = 60 * MINUTE;
 const DAY = 24 * HOUR;
@@ -62,4 +71,38 @@ export function pluralRo(count: number, one: string, few: string, other: string)
   const mod100 = count % 100;
   if (count === 0 || (mod100 >= 1 && mod100 <= 19)) return few;
   return other;
+}
+
+/** Soonest first, then undated, then finished ones, most recent first. */
+export function compareEventsByDate(a: { date: string | null }, b: { date: string | null }): number {
+  const rank = (days: number | null) => (days === null ? 1 : days >= 0 ? 0 : 2);
+  const [daysA, daysB] = [daysUntilEvent(a.date), daysUntilEvent(b.date)];
+  if (rank(daysA) !== rank(daysB)) return rank(daysA) - rank(daysB);
+  if (daysA === null || daysB === null) return 0;
+  return daysA >= 0 ? daysA - daysB : daysB - daysA;
+}
+
+function firstUpper(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+/** "Marți, 3 noiembrie": today in Romania. */
+export function todayLabel(): string {
+  return firstUpper(
+    new Intl.DateTimeFormat("ro-RO", { weekday: "long", day: "numeric", month: "long", timeZone: "Europe/Bucharest" }).format(new Date()),
+  );
+}
+
+/** The pieces of an agenda row: { day: "12", weekday: "joi", month: "Noiembrie 2026" }. */
+export function eventDateParts(date: string | null): { day: string; weekday: string; month: string } | null {
+  if (date === null) return null;
+  const parsed = new Date(`${date}T00:00:00Z`);
+  if (Number.isNaN(parsed.getTime())) return null;
+  const format = (options: Intl.DateTimeFormatOptions) =>
+    new Intl.DateTimeFormat("ro-RO", { ...options, timeZone: "UTC" }).format(parsed);
+  return {
+    day: format({ day: "numeric" }),
+    weekday: format({ weekday: "short" }).replace(".", ""),
+    month: firstUpper(format({ month: "long", year: "numeric" })),
+  };
 }
