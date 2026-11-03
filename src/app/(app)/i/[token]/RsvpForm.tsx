@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 
 import type { RsvpStatus } from "@/lib/invites";
+import { getBrowserClient } from "@/lib/supabase/browser";
 
 import { submitRsvp, type RsvpActionState } from "./actions";
 
@@ -26,6 +27,14 @@ export function RsvpForm({ token, status, eventName, eventId }: RsvpFormProps) {
     },
     INITIAL_STATE,
   );
+
+  // Client-side on purpose: the server render also runs for WhatsApp's link preview.
+  // The query only runs once .then() is called, so it can't be dropped. Best-effort.
+  useEffect(() => {
+    void getBrowserClient()
+      .rpc("mark_invite_seen_by_token", { p_token: token })
+      .then(() => undefined);
+  }, [token]);
 
   if (status !== "pending" && !editing) {
     const confirmed = status === "confirmed";

@@ -10,10 +10,11 @@ export default async function DetaliiPage({ params }: PageProps<"/event/[id]/det
   const { id } = await params;
   const [{ event, capabilities }, details] = await Promise.all([getEventContext(id), getDetails(id)]);
   const owner = event.isOwner;
+  const eventLocation = event.location ?? "";
 
   // Guests only see sections with content that their plan includes (same rule as the app).
   const keys = SECTION_ORDER.filter(
-    (key) => owner || (!isLocked(key, capabilities) && hasContent(key, details)),
+    (key) => owner || (!isLocked(key, capabilities) && hasContent(key, details, eventLocation)),
   );
 
   if (keys.length === 0) {
@@ -25,7 +26,7 @@ export default async function DetaliiPage({ params }: PageProps<"/event/[id]/det
       {keys.map((key) => {
         const meta = SECTIONS[key];
         const locked = isLocked(key, capabilities);
-        const complete = hasContent(key, details);
+        const complete = hasContent(key, details, eventLocation);
         const Icon = meta.icon;
         const body = (
           <>
@@ -39,7 +40,7 @@ export default async function DetaliiPage({ params }: PageProps<"/event/[id]/det
             <span className="flex min-w-0 flex-1 flex-col">
               <span className="truncate font-bold">{meta.title}</span>
               <span className="truncate text-sm text-muted">
-                {locked ? "Necesită un plan superior" : sectionStatus(key, details, owner)}
+                {locked ? "Necesită un plan superior" : sectionStatus(key, details, owner, eventLocation)}
               </span>
             </span>
             {owner ? (

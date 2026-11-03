@@ -88,7 +88,11 @@ export default async function DetaliiSectionPage({ params }: PageProps<"/event/[
       break;
 
     case "location": {
-      const { name, address, notes } = details.venue;
+      const { notes } = details.venue;
+      // No venue set yet: fall back to the location typed when the event was created.
+      const fromEvent = details.venue.name.trim().length === 0 && details.venue.address.trim().length === 0;
+      const name = fromEvent ? (event.location ?? "") : details.venue.name;
+      const address = fromEvent ? "" : details.venue.address;
       const has = name.trim().length > 0 || address.trim().length > 0;
       const query = encodeURIComponent([name, address].filter((part) => part.trim().length > 0).join(", "));
       body = !has ? (
@@ -102,6 +106,7 @@ export default async function DetaliiSectionPage({ params }: PageProps<"/event/[
             <div className="flex flex-col">
               {name.trim().length > 0 ? <span className="text-lg font-bold">{name}</span> : null}
               {address.trim().length > 0 ? <span className="text-muted">{address}</span> : null}
+              {fromEvent ? <span className="text-sm text-muted">Din detaliile evenimentului</span> : null}
             </div>
           </div>
           {notes.length > 0 ? (

@@ -55,12 +55,13 @@ export function isLocked(key: SectionKey, caps: PlanCapabilities): boolean {
   return false;
 }
 
-export function hasContent(key: SectionKey, d: Details): boolean {
+/** `eventLocation`: the free-text location typed when the event was created, used until a venue is set. */
+export function hasContent(key: SectionKey, d: Details, eventLocation = ""): boolean {
   switch (key) {
     case "schedule":
       return d.schedule.length > 0;
     case "location":
-      return d.venue.name.trim().length > 0 || d.venue.address.trim().length > 0;
+      return d.venue.name.trim().length > 0 || d.venue.address.trim().length > 0 || eventLocation.trim().length > 0;
     case "menu":
       return d.menuOptions.length > 0;
     case "seating":
@@ -73,14 +74,14 @@ export function hasContent(key: SectionKey, d: Details): boolean {
 }
 
 /** One-line status under each hub card — guest wording where it differs (see the app's detalii.tsx). */
-export function sectionStatus(key: SectionKey, d: Details, owner: boolean): string {
+export function sectionStatus(key: SectionKey, d: Details, owner: boolean, eventLocation = ""): string {
   switch (key) {
     case "schedule":
       return d.schedule.length === 0
         ? "Niciun program adăugat"
         : `${d.schedule.length} ${pluralRo(d.schedule.length, "activitate", "activități", "de activități")}`;
     case "location":
-      return d.venue.address.trim() || d.venue.name.trim() || "Locația nu e setată";
+      return d.venue.address.trim() || d.venue.name.trim() || eventLocation.trim() || "Locația nu e setată";
     case "menu":
       return d.menuOptions.length === 0
         ? "Meniul nu e setat"
