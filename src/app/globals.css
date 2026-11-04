@@ -2,7 +2,7 @@
 
 /*
  * Mirrored from the app's utils/themeTokens.ts: light = the default theme
- * (Teracotă), dark = Bleumarin (the theme the app maps its old dark mode onto).
+ * (Teracotă), dark = a warm charcoal of its own, not one of the app's themes.
  * Status tones come from the app's lightTheme/darkTheme base.
  */
 :root {
@@ -45,18 +45,18 @@
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --bg: #111827;
-    --surface: #18223a;
-    --surface-border: #26324d;
-    --surface-2: #202c46;
-    --surface-muted: #202c46;
-    --ink: #eef1f6;
-    --muted: #a3adc1;
-    --faint: #78839a;
+    --bg: #15110f;
+    --surface: #211a17;
+    --surface-border: #3a2f2a;
+    --surface-2: #2c2420;
+    --surface-muted: #2c2420;
+    --ink: #f5eee8;
+    --muted: #bbaea3;
+    --faint: #8f8278;
     --accent: #e07a62;
     --accent-fill: #e07a62;
     --on-accent: #1a1210;
-    --accent-tint: #3a2a2e;
+    --accent-tint: #3a2620;
     --accent-text: #ee927c;
     --gold: #f5c36b;
     --pink: #f08fb3;
@@ -161,4 +161,55 @@ body {
 .full-bleed {
   width: 100vw;
   margin-inline: calc(50% - 50vw);
+}
+
+/* The landing's mockups show the app in its default theme, whatever the mode. */
+.phone-light {
+  --accent: #a54e36;
+  --accent-fill: #a54e36;
+  --on-accent: #ffffff;
+  --accent-tint: #f3e2da;
+  --accent-text: #9a462f;
+  --cover-a: #5b2b1e;
+  --cover-b: #8c432e;
+  --cover-c: #3f1e15;
+  --cover-glow: #d7a08f;
+  --cover-ink: #e4cac3;
+}
+
+/* The hero's story thread draws itself once, then its nodes appear. */
+.thread-draw {
+  stroke-dasharray: 1;
+  animation: thread-draw 2.4s ease-out both;
+}
+
+.thread-node {
+  animation: thread-node 0.5s ease-out both;
+}
+
+@keyframes thread-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes thread-node {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thread-draw,
+  .thread-node {
+    animation: none;
+  }
 }

@@ -2,10 +2,11 @@ import Link from "next/link";
 import { useId } from "react";
 
 import { BrandHeader } from "@/components/BrandMark";
+import { EventCover } from "@/components/EventCover";
 import { ui } from "@/components/ui/styles";
 
-import { FAQ, FEATURES, FOR_WHOM, NAV_LINKS, NEW_WAY, OLD_WAY, PLANS, START_STEPS, VERTICALS, WHY_US } from "./data";
-import { LiveDot, Photo, QrMark } from "./mockups";
+import { FAQ, FEATURE_GROUPS, NAV_LINKS, NEW_WAY, OLD_WAY, PLANS, START_STEPS, VERTICALS } from "./data";
+import { Photo, StageAlbum, StageInvite, StageLive, StageMoment } from "./mockups";
 import { OverlayButton } from "./Overlays";
 import { lp } from "./styles";
 
@@ -63,24 +64,42 @@ export function LandingNav({ signedIn, startHref }: LandingAuth) {
 
 /* ---------- Hero ---------- */
 
+/** The story's thread: a line that draws itself once, a spark traveling along it, one node per stage. */
 function ThreadLine() {
   const id = useId();
+  const path = "M0 50 C 30 22, 65 22, 95 50 C 150 96, 230 96, 285 50 C 340 4, 420 4, 475 50 C 530 96, 610 96, 665 50 C 695 22, 730 22, 760 50";
+  const nodes = [95, 285, 475, 665];
   return (
-    <svg viewBox="0 0 760 90" className="w-full" aria-hidden="true">
-      <defs>
-        <linearGradient id={id} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="#FFD23F" />
-          <stop offset="0.5" stopColor="#E8779E" />
-          <stop offset="1" stopColor="#A54E36" />
-        </linearGradient>
-      </defs>
-      <path d="M30 50 Q190 18 360 48 T560 42 T730 38" fill="none" stroke={`url(#${id})`} strokeWidth="5" strokeLinecap="round" />
-      <circle cx="30" cy="50" r="8" fill="#FFD23F" />
-      <circle cx="220" cy="32" r="7" fill="#FF9F45" />
-      <circle cx="400" cy="48" r="7" fill="#E8779E" />
-      <circle cx="560" cy="42" r="7" fill="#D957A8" />
-      <circle cx="730" cy="38" r="13" fill="#A54E36" />
-    </svg>
+    <div>
+      <svg viewBox="0 0 760 100" className="w-full overflow-visible" aria-hidden="true">
+        <defs>
+          <linearGradient id={id} x1="0" y1="0" x2="760" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0" style={{ stopColor: "var(--gold)", stopOpacity: 0 }} />
+            <stop offset="0.1" style={{ stopColor: "var(--gold)" }} />
+            <stop offset="0.9" style={{ stopColor: "var(--accent)" }} />
+            <stop offset="1" style={{ stopColor: "var(--accent)", stopOpacity: 0 }} />
+          </linearGradient>
+        </defs>
+        <path d={path} fill="none" stroke={`url(#${id})`} strokeWidth="10" strokeLinecap="round" opacity="0.14" pathLength={1} className="thread-draw" />
+        <path d={path} fill="none" stroke={`url(#${id})`} strokeWidth="2.5" strokeLinecap="round" pathLength={1} className="thread-draw" />
+        {nodes.map((x, index) => (
+          <g key={x} className="thread-node" style={{ animationDelay: `${0.3 + index * 0.4}s`, transformOrigin: `${x}px 50px` }}>
+            <circle cx={x} cy={50} r={10} fill="var(--bg)" stroke={`url(#${id})`} strokeWidth="2" />
+            <circle cx={x} cy={50} r={4} fill={`url(#${id})`} />
+          </g>
+        ))}
+        <circle r="3.5" fill="var(--gold)" className="motion-reduce:hidden">
+          <animateMotion dur="9s" repeatCount="indefinite" path={path} />
+        </circle>
+      </svg>
+      <div className="grid grid-cols-4 text-[13px] font-semibold">
+        {["Lansarea", "Parcursul", "Ziua evenimentului", "Recap"].map((label) => (
+          <span key={label} className="px-1">
+            {label}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -113,7 +132,7 @@ export function Hero({ startHref }: { startHref: string }) {
         </div>
         <div className={`mx-auto mt-12 max-w-[760px] ${lp.reveal}`} data-reveal>
           <ThreadLine />
-          <p className="mt-2 text-[13px] text-muted">
+          <p className="mt-4 text-[13px] text-muted">
             Fiecare eveniment e o poveste — noi o ținem întreagă, de la început până la ziua cea mare.
           </p>
         </div>
@@ -172,12 +191,12 @@ export function ProblemSolution() {
 function StageCard({ n, color, name, text, children }: { n: number; color: string; name: string; text: string; children: React.ReactNode }) {
   return (
     <div className={`${lp.card} rounded-[20px] px-5.5 py-6.5 ${lp.hoverLift} ${lp.reveal}`} data-reveal>
-      <div className="relative mb-4 h-[140px] overflow-hidden rounded-xl border border-surface-border" aria-hidden="true">
+      <div className="phone-light relative mb-4 h-[140px] overflow-hidden rounded-xl border border-surface-border text-[#2A211C]" aria-hidden="true">
         {children}
       </div>
       <span
         className="mb-4 flex size-[30px] items-center justify-center rounded-full text-[13px] font-bold text-white"
-        style={{ background: color, color: n === 1 ? "#2A211C" : undefined }}
+        style={{ background: color, color: n <= 2 ? "#2A211C" : undefined }}
       >
         {n}
       </span>
@@ -186,12 +205,6 @@ function StageCard({ n, color, name, text, children }: { n: number; color: strin
     </div>
   );
 }
-
-const MINI_POSTS = [
-  { photo: 1, text: "Am ales rochia! 👰", count: 24 },
-  { photo: 2, text: "Ei sunt nașii noștri 💛", count: 38 },
-  { photo: 3, text: "Locația e gata ✨", count: 15 },
-];
 
 export function Stages() {
   return (
@@ -203,41 +216,17 @@ export function Stages() {
           lead="Nu e doar o invitație trimisă și uitată. E un fir care leagă totul, din prima zi până după eveniment."
         />
         <div className="mt-12 grid gap-4.5 min-[461px]:grid-cols-2 lg:grid-cols-4">
-          <StageCard n={1} color="#FFD23F" name="Lansarea" text="Creezi pagina, trimiți invitația, aduni confirmările. Totul începe.">
-            <div className={`flex h-full flex-col items-center justify-center text-white ${lp.gradBg}`}>
-              <p className="font-display text-[17px] font-bold">Maria &amp; Andrei</p>
-              <p className="mt-0.5 text-[10px] opacity-90">12 septembrie 2026</p>
-              <p className="mt-2.5 rounded-full bg-white px-3.5 py-1 text-[10px] font-bold text-accent-text">Da, particip</p>
-            </div>
+          <StageCard n={1} color="#F5C36B" name="Lansarea" text="Creezi pagina, trimiți invitația, aduni confirmările. Totul începe.">
+            <StageInvite />
           </StageCard>
-          <StageCard n={2} color="#FF9F45" name="Parcursul" text="Postezi momente din pregătiri. Invitații reacționează, lună după lună.">
-            <div className="h-full bg-[#EEE5D9] p-2.5">
-              {MINI_POSTS.map((p) => (
-                <div key={p.text} className="mb-1.5 flex items-center gap-2 rounded-lg border border-[#E0D4C4] bg-white px-2 py-1.5">
-                  <Photo n={p.photo} className="size-[26px] shrink-0 rounded-md" />
-                  <span className="text-[9.5px] font-semibold text-[#2A211C]">{p.text}</span>
-                  <span className="ml-auto text-[9px] font-bold text-pink">● {p.count}</span>
-                </div>
-              ))}
-            </div>
+          <StageCard n={2} color="#E8A25E" name="Parcursul" text="Postezi momente din pregătiri. Invitații reacționează, lună după lună.">
+            <StageMoment />
           </StageCard>
-          <StageCard n={3} color="#E8779E" name="Ziua X" text="Ecranul live în sală, QR-ul, pozele care curg în timp real. Momentul culminant.">
-            <div className="flex h-full flex-col items-center justify-center gap-2 bg-[#2A211C]">
-              <p className="flex items-center gap-1.5 text-[10px] font-bold text-white">
-                <LiveDot /> LIVE · în sală
-              </p>
-              <div className="size-[46px] rounded-md bg-white p-1.5">
-                <QrMark className="size-full" />
-              </div>
-              <p className="text-[9px] text-[#C9BDB0]">Scanează și adaugă poze</p>
-            </div>
+          <StageCard n={3} color="#C9744A" name="Ziua evenimentului" text="Ecranul live în sală, QR-ul, pozele care curg în timp real. Momentul culminant.">
+            <StageLive />
           </StageCard>
           <StageCard n={4} color="#A54E36" name="Recap" text="Albumul complet și povestea întreagă, păstrate pentru totdeauna.">
-            <div className="grid h-full grid-cols-3 gap-1.5 bg-[#EEE5D9] p-2">
-              {[4, 5, 6, 7, 8, 9].map((n) => (
-                <Photo key={n} n={n} className="aspect-square rounded-[5px]" />
-              ))}
-            </div>
+            <StageAlbum />
           </StageCard>
         </div>
       </div>
@@ -249,7 +238,7 @@ export function Stages() {
 
 export function Verticals() {
   return (
-    <section id="evenimente" className={`${lp.section} bg-surface`}>
+    <section id="evenimente" className={`${lp.section} ${lp.band}`}>
       <div className={lp.wrap}>
         <SectionHead
           eyebrow="Pentru orice eveniment"
@@ -258,16 +247,16 @@ export function Verticals() {
         />
         <div className="mt-11 grid gap-4 min-[441px]:grid-cols-2 md:grid-cols-3">
           {VERTICALS.map((v) => (
-            <div
-              key={v.name}
-              className={`rounded-[18px] border border-[#E0D4C4] bg-linear-135 p-6.5 text-[#2A211C] hover:-translate-y-0.5 ${v.tint} ${lp.reveal}`}
-              data-reveal
-            >
-              <span className="flex size-12 items-center justify-center rounded-2xl bg-white/80 text-[#2A211C]" aria-hidden="true">
-                <v.icon size={24} strokeWidth={1.8} />
-              </span>
-              <p className="mb-1 mt-2.5 text-lg font-bold">{v.name}</p>
-              <p className="text-sm text-[#6A5E54]">{v.text}</p>
+            <div key={v.name} className={`${lp.card} overflow-hidden ${lp.hoverLift} ${lp.reveal}`} data-reveal>
+              <EventCover type={v.type} className="h-[104px]">
+                <span className="absolute left-4 top-4 flex size-11 items-center justify-center rounded-2xl bg-white/90 text-[#2A211C]" aria-hidden="true">
+                  <v.icon size={22} strokeWidth={1.8} />
+                </span>
+              </EventCover>
+              <div className="px-5 pb-5 pt-4">
+                <p className="mb-1 text-lg font-semibold">{v.name}</p>
+                <p className="text-sm text-muted">{v.text}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -280,46 +269,35 @@ export function Verticals() {
 
 export function Features() {
   return (
-    <section id="functii" className={`${lp.section} bg-surface`}>
+    <section id="functii" className={`${lp.section} ${lp.band}`}>
       <div className={lp.wrap}>
         <SectionHead
           eyebrow="Tot ce poți face"
           title="O platformă, toate uneltele"
           lead="Nu trebuie să jonglezi cu zece aplicații. Tot ce ține de evenimentul tău, într-un singur loc."
         />
-        <div className="mt-11 grid gap-4.5 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((f) => (
-            <div key={f.title} className={`${lp.card} rounded-[18px] p-6 ${lp.hoverLift} ${lp.reveal}`} data-reveal>
-              <div className="mb-3.5 flex size-[46px] items-center justify-center rounded-xl bg-accent-tint text-accent-text" aria-hidden="true"><f.icon size={22} strokeWidth={1.8} /></div>
-              <h3 className="mb-1 text-[17px] font-bold">{f.title}</h3>
-              <p className="text-sm text-muted">{f.text}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- For whom ---------- */
-
-export function ForWhom() {
-  return (
-    <section id="pentru-cine" className={lp.section}>
-      <div className={lp.wrap}>
-        <SectionHead
-          eyebrow="Pentru cine e"
-          title="Făcută pentru fiecare poveste"
-          lead="Oricine organizează un eveniment care merită ținut minte."
-        />
-        <div className="mt-11 grid grid-cols-2 gap-3.5 min-[461px]:grid-cols-3 lg:grid-cols-5">
-          {FOR_WHOM.map((w) => (
-            <div key={w.name} className={`rounded-[18px] bg-surface px-3.5 py-6 text-center hover:-translate-y-0.5 ${lp.reveal}`} data-reveal>
-              <span className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-accent-tint text-accent-text" aria-hidden="true">
-                <w.icon size={24} strokeWidth={1.8} />
-              </span>
-              <p className="mb-1 mt-2.5 text-[15px] font-bold">{w.name}</p>
-              <p className="text-[12.5px] leading-snug text-muted">{w.text}</p>
+        {/* Grouped by when they matter, each group beside a real moment, rather than a wall of equal tiles. */}
+        <div className="mt-14 flex flex-col gap-14 lg:gap-20">
+          {FEATURE_GROUPS.map((group, index) => (
+            <div
+              key={group.title}
+              className={`grid items-start gap-6 lg:gap-12 ${index % 2 === 0 ? "lg:grid-cols-[320px_minmax(0,1fr)]" : "lg:grid-cols-[minmax(0,1fr)_320px]"}`}
+            >
+              <div className={`flex flex-col gap-4 ${index % 2 === 0 ? "" : "lg:order-last"} ${lp.reveal}`} data-reveal>
+                <h3 className="font-theme text-[28px] leading-9">{group.title}</h3>
+                <Photo n={group.photo} sizes="(min-width: 1024px) 320px, 100vw" className="aspect-[16/10] rounded-3xl lg:aspect-[4/3]" />
+              </div>
+              <ul className="grid sm:grid-cols-2 sm:gap-x-10 [&>li:last-child:nth-child(odd)]:sm:col-span-2">
+                {group.items.map((f) => (
+                  <li key={f.title} className={`flex gap-4 border-t border-surface-border py-5 ${lp.reveal}`} data-reveal>
+                    <f.icon size={26} strokeWidth={1.3} className="mt-0.5 shrink-0 text-accent-text" aria-hidden="true" />
+                    <span className="flex min-w-0 flex-col gap-1">
+                      <span className="text-[17px] font-semibold">{f.title}</span>
+                      <span className="text-sm text-muted">{f.text}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
@@ -428,35 +406,6 @@ export function Pricing({ startHref }: { startHref: string }) {
   );
 }
 
-/* ---------- Why us ---------- */
-
-export function WhyUs() {
-  return (
-    <section id="de-ce" className={lp.section}>
-      <div className={lp.wrap}>
-        <SectionHead
-          eyebrow="De ce PovesteaNoastra"
-          title="Ce ne face diferiți"
-          lead="Nu suntem încă o aplicație de invitații. Suntem locul unde trăiește toată povestea."
-        />
-        <div className="mt-11 grid gap-4.5 md:grid-cols-2">
-          {WHY_US.map((w, i) => (
-            <div key={w.title} className={`flex gap-4 rounded-[18px] bg-surface p-6 ${lp.reveal}`} data-reveal>
-              <span className="shrink-0 font-display text-[30px] font-bold leading-none text-accent-text">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <div>
-                <h3 className="mb-1 text-[17px] font-bold">{w.title}</h3>
-                <p className="text-[14.5px] text-muted">{w.text}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ---------- How to start ---------- */
 
 export function HowToStart() {
@@ -508,26 +457,6 @@ export function Faq() {
               <p className="px-1 pb-5.5 text-[15px] leading-relaxed text-muted">{item.a}</p>
             </details>
           ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- Final CTA + footer ---------- */
-
-export function FinalCta({ startHref }: { startHref: string }) {
-  return (
-    <section className={lp.section}>
-      <div className={lp.wrap}>
-        <div className={`rounded-[28px] px-6 py-16 text-center text-white sm:px-10 ${lp.gradBg} ${lp.reveal}`} data-reveal>
-          <h2 className="font-display text-[clamp(30px,4vw,46px)] font-bold">Evenimentul tău merită o poveste întreagă</h2>
-          <p className="mx-auto mb-7.5 mt-3.5 max-w-[520px] text-lg opacity-95">
-            Creează-ți pagina în câteva minute. Gratuit până trimiți prima invitație.
-          </p>
-          <Link href={startHref} className={`${ui.buttonGold} bg-white! px-8.5 py-4 text-[#2A211C]!`}>
-            Începe acum
-          </Link>
         </div>
       </div>
     </section>

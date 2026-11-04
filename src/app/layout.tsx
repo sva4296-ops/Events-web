@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Instrument_Sans, Lora } from "next/font/google";
 
+import { AmbientBackground } from "@/components/AmbientBackground";
+
 import "./globals.css";
 
 const instrument = Instrument_Sans({
@@ -25,14 +27,17 @@ export const viewport: Viewport = {
   initialScale: 1,
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#EEE5D9" },
-    { media: "(prefers-color-scheme: dark)", color: "#111827" },
+    { media: "(prefers-color-scheme: dark)", color: "#15110F" },
   ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ro" className={`${instrument.variable} ${bricolage.variable} ${lora.variable} scroll-smooth antialiased`}>
-      <body>{children}</body>
+      <body>
+        <AmbientBackground />
+        {children}
+      </body>
     </html>
   );
 }

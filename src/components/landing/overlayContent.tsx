@@ -1,24 +1,26 @@
 import {
   Baby,
-  Building,
   Cake,
+  Check,
+  ChevronLeft,
   CreditCard,
   Files,
-  Flower,
   Gem,
   HandHeart,
   LayoutDashboard,
   Megaphone,
   Palette,
+  Send,
   ShieldCheck,
-  Sparkles,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 
 import { BrandMark } from "@/components/BrandMark";
+import { EventCover } from "@/components/EventCover";
 import { ui } from "@/components/ui/styles";
 
-import { FeedScreen, InviteScreen, LiveScreen, QrMark, RecapScreen } from "./mockups";
+import { FeedScreen, InviteScreen, LiveScreen, Phone, RecapScreen } from "./mockups";
 import { lp } from "./styles";
 
 /* ---------- Shared building blocks ---------- */
@@ -62,7 +64,7 @@ function Step({
         <div className="mb-4 flex items-center gap-3">
           <span
             className="flex size-[42px] shrink-0 items-center justify-center rounded-full text-lg font-bold text-white"
-            style={{ background: color, color: n === 1 ? "#2A211C" : undefined }}
+            style={{ background: color, color: n <= 2 ? "#2A211C" : undefined }}
           >
             {n}
           </span>
@@ -123,7 +125,7 @@ export function HowItWorksContent({ startHref }: { startHref: string }) {
         text="Patru etape simple. Tu construiești evenimentul, invitații îl trăiesc alături de tine. Iată exact ce se întâmplă la fiecare pas."
       />
       <div className={inner}>
-        <Step n={1} color="#FFD23F" label="Lansarea" title="Îți creezi pagina și trimiți invitația" visual={<InviteScreen />} flip={false}>
+        <Step n={1} color="#F5C36B" label="Lansarea" title="Îți creezi pagina și trimiți invitația" visual={<InviteScreen />} flip={false}>
           <Intro>
             În câteva minute ai o pagină a evenimentului, frumoasă și pe stilul tău. O trimiți printr-un link sau un cod QR — fără
             aplicații de instalat pentru nimeni.
@@ -137,7 +139,7 @@ export function HowItWorksContent({ startHref }: { startHref: string }) {
             </Role>
           </Roles>
         </Step>
-        <Step n={2} color="#FF9F45" label="Parcursul" title="Povestea crește, lună după lună" visual={<FeedScreen />} flip>
+        <Step n={2} color="#E8A25E" label="Parcursul" title="Povestea crește, lună după lună" visual={<FeedScreen />} flip>
           <Intro>
             Asta e inima platformei. Nu o invitație statică, ci un feed viu: postezi momente din pregătiri, iar invitații le
             urmăresc, reacționează și se simt parte din poveste — cu mult înainte de eveniment.
@@ -151,7 +153,7 @@ export function HowItWorksContent({ startHref }: { startHref: string }) {
             </Role>
           </Roles>
         </Step>
-        <Step n={3} color="#E8779E" label="Ziua X" title="Momentul culminant, trăit împreună" visual={<LiveScreen />} flip={false}>
+        <Step n={3} color="#C9744A" label="Ziua evenimentului" title="Momentul culminant, trăit împreună" visual={<LiveScreen />} flip={false}>
           <Intro>
             În ziua evenimentului, un ecran live în sală afișează pozele în timp real. Invitații scanează un cod QR și adaugă
             propriile fotografii — fără să descarce nimic. Toată lumea construiește albumul, împreună.
@@ -199,7 +201,7 @@ const PLANNER_STATS = [
 ];
 
 const PLANNER_EVENTS = [
-  { name: "Maria & Andrei · Nuntă", thumb: "linear-gradient(135deg,#FF9F45,#FF6B8A)", status: "peste 3 zile", tone: "bg-[#FFF3D6] text-[#A77B06]" },
+  { name: "Maria & Andrei · Nuntă", thumb: "linear-gradient(135deg,#E8A25E,#FF6B8A)", status: "peste 3 zile", tone: "bg-[#FFF3D6] text-[#A77B06]" },
   { name: "Botezul Sofiei · Botez", thumb: "linear-gradient(135deg,#8FD3FE,#5B8DEF)", status: "în pregătire", tone: "bg-[#EFE6FA] text-[#7B3FC4]" },
   { name: "Bal pentru Speranță · Gală", thumb: "linear-gradient(135deg,#1D9E75,#15815F)", status: "în pregătire", tone: "bg-[#EFE6FA] text-[#7B3FC4]" },
 ];
@@ -284,24 +286,190 @@ export function PlannerContent({ startHref }: { startHref: string }) {
 
 /* ---------- Create page ---------- */
 
-const EVENT_TYPES = [
-  { icon: Gem, name: "Nuntă", selected: true },
-  { icon: Baby, name: "Botez" },
-  { icon: Cake, name: "Aniversare" },
-  { icon: HandHeart, name: "Cauză" },
-  { icon: Building, name: "Corporate" },
-  { icon: Flower, name: "Comemorare" },
-  { icon: Sparkles, name: "Altul", muted: true },
+/** "Eveniment nou · Pasul 1 din 4 · Tipul", with the wizard's progress bar. */
+function WizardHeader({ step, name }: { step: number; name: string }) {
+  return (
+    <div className="shrink-0 px-3.5 pb-2 pt-9">
+      <div className="flex items-center gap-2">
+        <span className="flex size-6 items-center justify-center rounded-full border border-[#E0D4C4] bg-white">
+          <ChevronLeft size={13} />
+        </span>
+        <span className="flex flex-col">
+          <span className="text-[11px] leading-[13px] font-semibold">Eveniment nou</span>
+          <span className="text-[8.5px] leading-[11px] text-[#6A5E54]">
+            Pasul {step} din 4 · {name}
+          </span>
+        </span>
+      </div>
+      <div className="mt-2 flex gap-1">
+        {[1, 2, 3, 4].map((index) => (
+          <span key={index} className={`h-[3px] flex-1 rounded-full ${index <= step ? "bg-[#A54E36]" : "bg-[#E0D4C4]"}`} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function WizardButton({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="mt-auto shrink-0 px-3.5 pb-4 pt-2">
+      <div className="rounded-full bg-[#A54E36] py-2.5 text-center text-[11.5px] font-semibold text-white">{children}</div>
+    </div>
+  );
+}
+
+const WIZARD_TYPES = [
+  { type: "wedding" as const, icon: Gem, name: "Nuntă", text: "Cununie și petrecere", selected: true },
+  { type: "baptism" as const, icon: Baby, name: "Botez", text: "Primul capitol" },
+  { type: "birthday" as const, icon: Cake, name: "Aniversare", text: "Ani de sărbătorit" },
+  { type: "cause" as const, icon: HandHeart, name: "Cauză caritabilă", text: "Împreună pentru un scop" },
 ];
 
-const formBox = "rounded-2xl border border-[#E0D4C4] bg-white p-4.5 text-[#2A211C]";
-
-function FakeField({ label, value, tall = false }: { label: string; value: string; tall?: boolean }) {
+function TypeScreen() {
   return (
-    <div className="mb-3.5 last:mb-0">
-      <p className="mb-1.5 text-[13px] font-semibold">{label}</p>
-      <div className={`rounded-lg border border-[#E0D4C4] bg-[#EEE5D9] px-3.5 py-2.5 text-sm text-[#958879] ${tall ? "min-h-[54px]" : ""}`}>{value}</div>
-    </div>
+    <Phone>
+      <WizardHeader step={1} name="Tipul" />
+      <div className="flex min-h-0 flex-1 flex-col gap-2.5 overflow-hidden px-3.5">
+        <div>
+          <p className="font-display text-[20px] leading-6 font-semibold">Ce sărbătorim?</p>
+          <p className="text-[10px] text-[#6A5E54]">Alege tipul evenimentului.</p>
+        </div>
+        <div className="grid grid-cols-2 gap-x-2.5 gap-y-2">
+          {WIZARD_TYPES.map((item) => (
+            <div key={item.name} className="flex flex-col gap-1">
+              <div className={`rounded-[18px] border-2 p-0.5 ${item.selected === true ? "border-[#A54E36]" : "border-transparent"}`}>
+                <EventCover type={item.type} className="aspect-square rounded-[14px]">
+                  <div className="absolute inset-0 flex flex-col justify-between bg-linear-to-b from-transparent to-black/35 p-2 text-white">
+                    <item.icon size={15} strokeWidth={1.6} />
+                    <span className="font-theme text-[13px] leading-4">{item.name}</span>
+                  </div>
+                  {item.selected === true ? (
+                    <span className="absolute right-1.5 top-1.5 flex size-[18px] items-center justify-center rounded-full bg-[#A54E36] text-white">
+                      <Check size={10} strokeWidth={3} />
+                    </span>
+                  ) : null}
+                </EventCover>
+              </div>
+              <p className="truncate px-0.5 text-[8.5px] text-[#6A5E54]">{item.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <WizardButton>Continuă</WizardButton>
+    </Phone>
+  );
+}
+
+const COVER_THUMBS = [
+  { id: null, label: "Clasic" },
+  { id: "nunta", label: "Nuntă" },
+  { id: "trandafiri", label: "Trandafiri" },
+  { id: "arcada", label: "Arcadă" },
+];
+
+function InviteComposeScreen() {
+  return (
+    <Phone>
+      <WizardHeader step={2} name="Invitația" />
+      <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-hidden px-3.5">
+        <p className="font-display text-[20px] leading-6 font-semibold">Invitația ta</p>
+        <div className="overflow-hidden rounded-[18px] border border-[#E0D4C4] bg-white">
+          <EventCover type="wedding" className="h-[122px]">
+            <div className="absolute inset-0 flex flex-col justify-end gap-0.5 bg-linear-to-b from-transparent to-black/45 p-2.5 text-white">
+              <span className="mb-auto self-start rounded-full border border-white/70 px-2 py-0.5 text-[8px] font-semibold">Nuntă</span>
+              <span className="font-theme text-[20px] leading-6">Maria &amp; Andrei</span>
+              <span className="text-[9px] text-white/85">12 septembrie 2026 · Bușteni</span>
+            </div>
+          </EventCover>
+          <div className="p-2.5">
+            <p className="text-[10px] leading-[14px]">Ne-ar plăcea enorm să fii alături de noi în ziua noastră specială.</p>
+            <p className="mt-1 text-right text-[8px] text-[#958879]">67 / 140</p>
+          </div>
+        </div>
+        <p className="text-[9.5px] font-semibold text-[#6A5E54]">Temă</p>
+        <div className="flex gap-2">
+          {COVER_THUMBS.map((thumb) => (
+            <span key={thumb.label} className="flex w-[52px] flex-col gap-1">
+              <span className={`rounded-[13px] border-2 p-0.5 ${thumb.id === null ? "border-[#2A211C]" : "border-transparent"}`}>
+                <EventCover type="wedding" coverTheme={thumb.id} plain className="aspect-square rounded-[9px]" />
+              </span>
+              <span className="truncate text-center text-[8px] text-[#6A5E54]">{thumb.label}</span>
+            </span>
+          ))}
+        </div>
+        <p className="text-[9.5px] font-semibold text-[#6A5E54]">Detalii</p>
+        <div className="rounded-xl border border-[#E0D4C4] bg-white px-2.5 py-1.5 text-[10px]">Sâmbătă, 12 septembrie 2026</div>
+      </div>
+      <WizardButton>Continuă</WizardButton>
+    </Phone>
+  );
+}
+
+const WIZARD_PLANS = [
+  { name: "Esențial", price: "149", text: "Invitație, momente, album, până la 50 de invitați" },
+  { name: "Complet", price: "299", text: "Ecran live, chat și invitați nelimitați", highlighted: true },
+  { name: "Premium", price: "499", text: "Cazare, furnizori și suport prioritar" },
+];
+
+function PlanScreen() {
+  return (
+    <Phone>
+      <WizardHeader step={3} name="Planul" />
+      <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-hidden px-3.5">
+        <div>
+          <p className="font-display text-[20px] leading-6 font-semibold">Planuri și prețuri</p>
+          <p className="text-[10px] text-[#6A5E54]">Alege planul potrivit pentru Maria &amp; Andrei.</p>
+        </div>
+        {WIZARD_PLANS.map((plan) => (
+          <div
+            key={plan.name}
+            className={`rounded-2xl bg-white p-2.5 ${plan.highlighted === true ? "border-2 border-[#A54E36]" : "border border-[#E0D4C4]"}`}
+          >
+            <div className="flex items-baseline justify-between gap-2">
+              <span className="text-[12px] font-semibold">{plan.name}</span>
+              <span className="font-theme text-[20px] leading-6">
+                {plan.price} <span className="font-sans text-[9px] text-[#6A5E54]">lei</span>
+              </span>
+            </div>
+            <p className="text-[9.5px] leading-[13px] text-[#6A5E54]">{plan.text}</p>
+          </div>
+        ))}
+      </div>
+      <p className="shrink-0 pb-1 text-center text-[10px] font-semibold text-[#9A462F]">Sar peste, mai târziu</p>
+      <WizardButton>Alege</WizardButton>
+    </Phone>
+  );
+}
+
+function ShareScreen() {
+  return (
+    <Phone>
+      <div className="flex shrink-0 justify-end px-3.5 pt-9">
+        <span className="flex size-7 items-center justify-center rounded-full border border-[#E0D4C4] bg-white">
+          <X size={14} />
+        </span>
+      </div>
+      <div className="flex min-h-0 flex-1 flex-col justify-center gap-4 px-4">
+        <EventCover type="wedding" className="h-[210px] rounded-[20px]">
+          <div className="absolute inset-0 flex flex-col justify-end bg-linear-to-b from-transparent to-black/45 p-3.5 text-white">
+            <span className="font-theme text-[24px] leading-7">Maria &amp; Andrei</span>
+            <span className="text-[10px] text-white/85">12 septembrie 2026 · Bușteni</span>
+          </div>
+        </EventCover>
+        <div className="text-center">
+          <p className="font-display text-[22px] leading-7 font-semibold">Povestea a început!</p>
+          <p className="mt-1 text-[10.5px] leading-[15px] text-[#6A5E54]">
+            Trimite invitația celor dragi. Fiecare invitat primește un link personal.
+          </p>
+        </div>
+      </div>
+      <div className="flex shrink-0 flex-col gap-1 px-3.5 pb-4">
+        <div className="flex items-center justify-center gap-1.5 rounded-full bg-[#A54E36] py-2.5 text-[11.5px] font-semibold text-white">
+          <Send size={12} /> Invită oaspeți
+        </div>
+        <p className="py-1 text-center text-[10.5px] font-semibold text-[#9A462F]">Mai târziu</p>
+      </div>
+    </Phone>
   );
 }
 
@@ -312,116 +480,33 @@ export function CreateContent({ startHref }: { startHref: string }) {
         eyebrow="Creează-ți pagina"
         title="De la idee la invitație,"
         accent="în câteva minute"
-        text="Nu trebuie să fii tehnic. Patru pași simpli și pagina evenimentului tău e gata de trimis. Iată cum arată procesul."
+        text="Nu trebuie să fii tehnic. Patru pași simpli în aplicație și pagina evenimentului tău e gata de trimis. Iată cum arată."
       />
       <div className={inner}>
-        <Step
-          n={1}
-          color="#FFD23F"
-          label="Alege tipul"
-          title="Ce eveniment organizezi?"
-          flip={false}
-          visual={
-            <div className={formBox} aria-hidden="true">
-              <div className="grid grid-cols-4 gap-3">
-                {EVENT_TYPES.map((t) => (
-                  <div
-                    key={t.name}
-                    className={`rounded-xl border-[1.5px] px-2 py-4 text-center ${
-                      t.selected === true ? "border-accent bg-[#EEE5D9]" : "border-[#E0D4C4] bg-white"
-                    } ${t.muted === true ? "opacity-50" : ""}`}
-                  >
-                    <t.icon size={24} strokeWidth={1.8} className="mx-auto text-[#2A211C]" aria-hidden="true" />
-                    <p className="mt-1.5 text-[13px] font-semibold">{t.name}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          }
-        >
+        <Step n={1} color="#F5C36B" label="Tipul" title="Ce sărbătorim?" flip={false} visual={<TypeScreen />}>
           <Intro>
-            Pornești de la un model gata făcut, potrivit tipului tău de eveniment. Fiecare vine cu secțiunile și stilul potrivite
-            — nu construiești de la zero.
+            Alegi tipul evenimentului dintr-un catalog: nuntă, botez, aniversare, cauză, corporate, comemorare, ceva spontan sau o
+            seară la local. Fiecare vine cu tema și secțiunile potrivite.
           </Intro>
-          <Intro small>Nuntă, botez, aniversare, gală, corporate sau comemorare — alegi și restul se adaptează.</Intro>
+          <Intro small>Pentru o ieșire spontană, alegi și un model gata făcut: karaoke, petrecere, degustare.</Intro>
         </Step>
-        <Step
-          n={2}
-          color="#FF9F45"
-          label="Completează detaliile"
-          title="Cine, când și unde"
-          flip
-          visual={
-            <div className={formBox} aria-hidden="true">
-              <FakeField label="Numele evenimentului" value="Maria & Andrei" />
-              <FakeField label="Data" value="12 septembrie 2026" />
-              <FakeField label="Locația" value="Castelul Cantacuzino, Bușteni" />
-              <FakeField label="Mesaj de bun venit" value="Vino să fii parte din povestea noastră..." tall />
-            </div>
-          }
-        >
+        <Step n={2} color="#E8A25E" label="Invitația" title="Scrii direct pe invitație" flip visual={<InviteComposeScreen />}>
           <Intro>
-            Adaugi numele, data și locul. Atât. Pagina prinde formă instant, iar tu vezi în timp real cum va arăta invitația.
+            Nu completezi un formular: scrii numele și mesajul chiar pe invitație, exact unde le vor citi invitații. Alegi o temă de
+            copertă, apoi data și locul.
           </Intro>
-          <Intro small>Poți reveni oricând să schimbi orice — nimic nu e bătut în cuie.</Intro>
+          <Intro small>Ai nevoie de inspirație pentru mesaj? Te poate ajuta AI-ul din aplicație.</Intro>
         </Step>
-        <Step
-          n={3}
-          color="#E8779E"
-          label="Personalizează"
-          title="Pune-ți amprenta"
-          flip={false}
-          visual={
-            <div aria-hidden="true">
-              <div className={`rounded-2xl px-5 py-8 text-center text-white ${lp.gradBg}`}>
-                <p className="text-[10px] font-bold tracking-[0.2em] opacity-90">NUNTĂ</p>
-                <p className="mt-2 font-display text-[28px] font-bold">Maria &amp; Andrei</p>
-                <p className="mt-1 text-sm opacity-90">12 septembrie 2026</p>
-                <div className="mt-3.5 flex flex-wrap justify-center gap-1.5">
-                  {["Program", "Live", "Album"].map((chip) => (
-                    <span key={chip} className="rounded-full bg-white/25 px-3 py-1 text-[11px] font-semibold">
-                      {chip}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <p className="mt-3 text-center text-xs text-muted">Previzualizare în timp real</p>
-            </div>
-          }
-        >
-          <Intro>
-            Alegi o copertă, adaugi prima poză sau primul moment, activezi secțiunile pe care le vrei: program,
-            hartă, mese. Pagina e a ta.
-          </Intro>
-          <Intro small>Tot ce alegi se vede instant în previzualizare — exact ce vor vedea invitații.</Intro>
+        <Step n={3} color="#C9744A" label="Planul" title="Alegi cât îți trebuie" flip={false} visual={<PlanScreen />}>
+          <Intro>Plătești o dată, per eveniment, în funcție de câți invitați ai și de ce vrei să folosești în ziua lui.</Intro>
+          <Intro small>Nu te-ai hotărât? Poți sări peste pas și alege planul mai târziu.</Intro>
         </Step>
-        <Step
-          n={4}
-          color="#A54E36"
-          label="Trimite invitația"
-          title="Un link și gata"
-          flip
-          visual={
-            <div className={`${formBox} text-center`} aria-hidden="true">
-              <p className="mb-3 text-[13px] font-semibold">Pagina ta e gata de trimis</p>
-              <div className="mb-3.5 rounded-lg border border-[#E0D4C4] bg-[#EEE5D9] p-3 text-[13px] font-semibold text-accent-text">
-                povesteanoastra.ro/maria-andrei
-              </div>
-              <div className="mx-auto mb-3.5 size-[120px] rounded-xl border border-[#E0D4C4] bg-white p-3">
-                <QrMark className="size-full" />
-              </div>
-              <div className="flex justify-center gap-2">
-                <span className="rounded-full bg-accent-fill px-4.5 py-2 text-xs font-semibold text-on-accent">Copiază linkul</span>
-                <span className="rounded-full bg-gold px-4.5 py-2 text-xs font-semibold">Trimite pe WhatsApp</span>
-              </div>
-            </div>
-          }
-        >
+        <Step n={4} color="#A54E36" label="Partajare" title="Povestea a început!" flip visual={<ShareScreen />}>
           <Intro>
-            Pagina e gata. O trimiți printr-un link sau un cod QR — pe WhatsApp, prin mesaj, oriunde. Invitații o deschid și
-            confirmă cu un tap, fără să instaleze nimic.
+            Trimiți invitația pe WhatsApp, iar fiecare invitat primește un link personal. O deschide și răspunde cu un tap, fără să
+            instaleze nimic.
           </Intro>
-          <Intro small>Din acest moment, povestea ta a început. Poți posta primul moment chiar azi.</Intro>
+          <Intro small>Din acest moment, poți posta primul moment chiar azi.</Intro>
         </Step>
         <Final
           title="Gata să-ți începi povestea?"

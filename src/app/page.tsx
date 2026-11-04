@@ -5,8 +5,6 @@ import { RevealObserver } from "@/components/landing/RevealObserver";
 import {
   Faq,
   Features,
-  FinalCta,
-  ForWhom,
   Hero,
   HowToStart,
   LandingFooter,
@@ -16,7 +14,6 @@ import {
   ProblemSolution,
   Stages,
   Verticals,
-  WhyUs,
 } from "@/components/landing/sections";
 import { Tour } from "@/components/landing/Tour";
 import { getSessionUser } from "@/lib/auth";
@@ -36,15 +33,12 @@ export default async function LandingPage() {
         <Hero startHref={startHref} />
         <ProblemSolution />
         <Stages />
-        <Verticals />
         <Features />
-        <ForWhom />
+        <Verticals />
         <Planners />
-        <Pricing startHref={startHref} />
-        <WhyUs />
         <HowToStart />
         <Faq />
-        <FinalCta startHref={startHref} />
+        <Pricing startHref={startHref} />
       </main>
       <LandingFooter signedIn={signedIn} />
       <Tour />
