@@ -15,7 +15,7 @@ export function CoverArt({
   children,
 }: {
   theme: CoverTheme;
-  /** Pull the base colors 22% toward the accent, as the app's harmonizeCoverTheme does for picked themes. */
+  /** Pull the base colors 28% toward the theme's violet, as the app's harmonizeCoverTheme does for picked themes. */
   harmonize: boolean;
   /** Gradient and glows only: a decoration turns into a smudge at thumbnail size. */
   plain?: boolean;
@@ -24,7 +24,7 @@ export function CoverArt({
 }) {
   const id = useId();
   const stop = (color: string) =>
-    harmonize ? `color-mix(in srgb, ${color} 78%, var(--accent-fill))` : color;
+    harmonize ? `color-mix(in srgb, ${color} 72%, var(--cover-base))` : color;
   return (
     <div className={`relative overflow-hidden ${className ?? ""}`}>
       <svg

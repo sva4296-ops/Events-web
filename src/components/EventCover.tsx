@@ -27,7 +27,7 @@ function defaultCover(type: EventType): CoverTheme {
     ],
     decoration: TYPE_DECORATION[type] ?? "sparkles",
     ink: "var(--cover-ink)",
-    accent: "var(--accent-fill)",
+    accent: "var(--accent)",
     light: false,
   };
 }
@@ -59,7 +59,7 @@ export function EventCover({
 }) {
   const picked = getCoverTheme(coverTheme);
   if (thumbnail) {
-    const accent = picked?.accent ?? "var(--accent-fill)";
+    const accent = picked?.accent ?? "var(--accent)";
     return (
       <span
         className={`relative flex items-center justify-center overflow-hidden border border-surface-border bg-surface ${className ?? ""}`}

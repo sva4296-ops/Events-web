@@ -30,13 +30,13 @@ export function AmbientBackground() {
     if (!canvas || !ctx) return;
 
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const scheme = window.matchMedia("(prefers-color-scheme: dark)");
+    const isDark = () => document.documentElement.getAttribute("data-theme") !== "light";
     let width = 0;
     let height = 0;
     let frame = 0;
-    let accent = token("--accent");
-    let gold = token("--gold");
-    let dark = scheme.matches;
+    let accent = token("--ambient-a");
+    let gold = token("--ambient-b");
+    let dark = isDark();
     const dust = Array.from({ length: window.innerWidth < 768 ? 25 : 60 }, () => ({
       x: Math.random(),
       y: Math.random(),
@@ -48,12 +48,11 @@ export function AmbientBackground() {
 
     const draw = (now: number) => {
       const seconds = now / 1000;
-      const strength = dark ? 1 : 0.6;
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, width, height);
       const reach = Math.max(width, height);
-      glow(ctx, accent, width * (0.2 + Math.sin(seconds * 0.11) * 0.15), height * (0.2 + Math.cos(seconds * 0.09) * 0.15), reach * 0.55, 0.3 * strength);
-      glow(ctx, gold, width * (0.82 + Math.cos(seconds * 0.07) * 0.14), height * (0.75 + Math.sin(seconds * 0.1) * 0.18), reach * 0.42, 0.11 * strength);
+      glow(ctx, accent, width * (0.2 + Math.sin(seconds * 0.11) * 0.15), height * (0.2 + Math.cos(seconds * 0.09) * 0.15), reach * 0.55, dark ? 0.14 : 0.2);
+      glow(ctx, gold, width * (0.82 + Math.cos(seconds * 0.07) * 0.14), height * (0.75 + Math.sin(seconds * 0.1) * 0.18), reach * 0.42, dark ? 0.09 : 0.22);
 
       for (const speck of dust) {
         speck.x = (speck.x + speck.driftX + 1) % 1;
@@ -76,15 +75,15 @@ export function AmbientBackground() {
       if (still) draw(performance.now());
     };
     const onScheme = () => {
-      accent = token("--accent");
-      gold = token("--gold");
-      dark = scheme.matches;
+      accent = token("--ambient-a");
+      gold = token("--ambient-b");
+      dark = isDark();
       if (still) draw(performance.now());
     };
 
     resize();
     window.addEventListener("resize", resize);
-    scheme.addEventListener("change", onScheme);
+    window.addEventListener("pn-theme-change", onScheme);
     if (still) {
       draw(performance.now());
     } else {
@@ -94,7 +93,7 @@ export function AmbientBackground() {
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("resize", resize);
-      scheme.removeEventListener("change", onScheme);
+      window.removeEventListener("pn-theme-change", onScheme);
     };
   }, []);
 

@@ -2,6 +2,8 @@ import { ChevronLeft, UserRound } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { ThemeToggle } from "@/components/ThemeToggle";
+
 const PILL = "flex min-h-11 items-center rounded-full bg-surface text-sm font-semibold text-ink transition hover:brightness-95";
 
 function BackLink() {
@@ -15,10 +17,13 @@ function BackLink() {
 
 function AccountLink() {
   return (
-    <Link href="/account" className={`${PILL} gap-2 px-3.5`} aria-label="Cont">
-      <UserRound size={18} aria-hidden="true" />
-      <span className="hidden sm:inline">Cont</span>
-    </Link>
+    <div className="flex items-center gap-2">
+      <ThemeToggle className={`${PILL} w-11 justify-center`} />
+      <Link href="/account" className={`${PILL} gap-2 px-3.5`} aria-label="Cont">
+        <UserRound size={18} aria-hidden="true" />
+        <span className="hidden sm:inline">Cont</span>
+      </Link>
+    </div>
   );
 }
 

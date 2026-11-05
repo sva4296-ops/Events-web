@@ -2,6 +2,7 @@ import { CalendarHeart } from "lucide-react";
 import Link from "next/link";
 
 import { BrandHeader } from "@/components/BrandMark";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { getProfile, getSessionUser } from "@/lib/auth";
 
 const LINK = "flex min-h-11 items-center rounded-full text-sm font-semibold transition";
@@ -18,6 +19,8 @@ export async function SiteHeader({ active }: { active?: "events" | "account" }) 
         <Link href={user !== null ? "/events" : "/"} aria-label="PovesteaNoastra, acasă">
           <BrandHeader compact={user !== null} />
         </Link>
+        <div className="flex items-center gap-1 sm:gap-2">
+        <ThemeToggle />
         {user !== null ? (
           <nav className="flex items-center gap-1" aria-label="Cont">
             <Link
@@ -45,6 +48,7 @@ export async function SiteHeader({ active }: { active?: "events" | "account" }) 
             Intră în cont
           </Link>
         )}
+        </div>
       </div>
     </header>
   );

@@ -1,28 +1,67 @@
 @import "tailwindcss";
 
 /*
- * Mirrored from the app's utils/themeTokens.ts: light = the default theme
- * (Teracotă), dark = a warm charcoal of its own, not one of the app's themes.
- * Status tones come from the app's lightTheme/darkTheme base.
+ * The two themes of the design file povestea_pagina_completa.html: dark by default,
+ * light when <html data-theme="light"> (lib/theme.ts). Primary buttons are the text
+ * color on the background, like its .btn-light; the rose is the accent.
  */
 :root {
-  color-scheme: light;
-  --bg: #eee5d9;
-  --surface: #ffffff;
-  --surface-border: #e0d4c4;
-  --surface-2: #e2d5c3;
-  --surface-muted: #e2d5c3;
-  --ink: #2a211c;
-  --muted: #6a5e54;
-  --faint: #958879;
-  --accent: #a54e36;
-  --accent-fill: #a54e36;
-  --on-accent: #ffffff;
-  --accent-tint: #f3e2da;
-  --accent-text: #9a462f;
+  color-scheme: dark;
+  --bg: #14111d;
+  --surface: #1e1a30;
+  --surface-border: rgba(244, 239, 232, 0.1);
+  --surface-2: #272240;
+  --surface-muted: #1a1626;
+  --ink: #f4efe8;
+  --muted: #a79fb8;
+  --faint: #7f7892;
+  --accent: #ff6b8a;
+  --accent-fill: #f4efe8;
+  --on-accent: #14111d;
+  --accent-tint: #33223f;
+  --accent-text: #ff9db1;
   --accent-soft: var(--accent-tint);
-  --gold: #f5c36b;
-  --pink: #e8779e;
+  --gold: #ffd23f;
+  --pink: #ff6b8a;
+  --danger: #e8726e;
+  --danger-soft: #3a2229;
+  --confirmed: #6dd3a0;
+  --confirmed-soft: #1f3b30;
+  --pending: #ffd23f;
+  --pending-soft: #3e3322;
+  --declined: #ff9db1;
+  --declined-soft: #45263a;
+  --card-shadow: none;
+  --accent-shadow: none;
+  /* The default cover: deep shades of the violet, so white text sits on it directly. */
+  --cover-base: #9b5de5;
+  /* The backdrop's two glows: hex, the canvas appends its own alpha. */
+  --ambient-a: #9b5de5;
+  --ambient-b: #ff6b8a;
+  --cover-a: color-mix(in srgb, var(--cover-base) 45%, black);
+  --cover-b: color-mix(in srgb, var(--cover-base) 70%, black);
+  --cover-c: color-mix(in srgb, var(--cover-base) 28%, black);
+  --cover-glow: #ff6b8a;
+  --cover-ink: color-mix(in srgb, var(--cover-base) 30%, white);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f7f3ec;
+  --surface: #ffffff;
+  --surface-border: rgba(35, 30, 51, 0.1);
+  --surface-2: #f1ebe1;
+  --surface-muted: #efe8dc;
+  --ink: #231e33;
+  --muted: #6e6680;
+  --faint: #938ba3;
+  --accent: #e0456a;
+  --accent-fill: #231e33;
+  --on-accent: #f7f3ec;
+  --accent-tint: #f7e6ea;
+  --accent-text: #a64c70;
+  --gold: #d9a400;
+  --pink: #e0456a;
   --danger: #d9534f;
   --danger-soft: #fcedec;
   --confirmed: #1f7a51;
@@ -31,47 +70,13 @@
   --pending-soft: #fdf1dc;
   --declined: #b5335f;
   --declined-soft: #fce6ee;
-  /* shadowColor #2B2740 at the themes' 0.05, offset 6, RN radius 10. */
-  --card-shadow: 0 6px 20px rgba(43, 39, 64, 0.05);
-  --accent-shadow: 0 8px 20px color-mix(in srgb, var(--accent-fill) 28%, transparent);
-  /* The default cover: deep shades of the accent, so white text sits on it directly. */
-  --cover-a: color-mix(in srgb, var(--accent-fill) 55%, black);
-  --cover-b: color-mix(in srgb, var(--accent-fill) 85%, black);
-  --cover-c: color-mix(in srgb, var(--accent-fill) 38%, black);
-  --cover-glow: color-mix(in srgb, var(--accent-fill) 60%, white);
-  --cover-ink: color-mix(in srgb, var(--accent-fill) 30%, white);
+  --card-shadow: 0 6px 20px rgba(35, 30, 51, 0.05);
+  --cover-base: #7b3fc4;
+  --ambient-a: #e0456a;
+  --ambient-b: #d9a400;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --bg: #15110f;
-    --surface: #211a17;
-    --surface-border: #3a2f2a;
-    --surface-2: #2c2420;
-    --surface-muted: #2c2420;
-    --ink: #f5eee8;
-    --muted: #bbaea3;
-    --faint: #8f8278;
-    --accent: #e07a62;
-    --accent-fill: #e07a62;
-    --on-accent: #1a1210;
-    --accent-tint: #3a2620;
-    --accent-text: #ee927c;
-    --gold: #f5c36b;
-    --pink: #f08fb3;
-    --danger: #e8726e;
-    --danger-soft: #3a2229;
-    --confirmed: #6dd3a0;
-    --confirmed-soft: #1f3b30;
-    --pending: #f5c36b;
-    --pending-soft: #3e3322;
-    --declined: #f08fb3;
-    --declined-soft: #45263a;
-    --card-shadow: none;
-    --accent-shadow: none;
-  }
-}
+@custom-variant dark (&:where(:root:not([data-theme="light"]) *));
 
 /* Inside an event with a picked cover theme: the accent follows the cover
    (the app's utils/eventAccent.ts). Background, cards and text stay the theme's.
@@ -86,12 +91,10 @@
   --accent-shadow: 0 8px 20px color-mix(in srgb, var(--event-accent) 28%, transparent);
 }
 
-@media (prefers-color-scheme: dark) {
-  .event-accent {
-    --accent-tint: color-mix(in srgb, var(--event-accent) 25%, var(--bg));
-    --accent-text: color-mix(in srgb, var(--event-accent) 65%, white);
-    --accent-shadow: none;
-  }
+:root:not([data-theme="light"]) .event-accent {
+  --accent-tint: color-mix(in srgb, var(--event-accent) 25%, var(--bg));
+  --accent-text: color-mix(in srgb, var(--event-accent) 65%, white);
+  --accent-shadow: none;
 }
 
 @theme inline {
@@ -122,22 +125,24 @@
   --shadow-card: var(--card-shadow);
   --shadow-accent: var(--accent-shadow);
 
-  /* Bricolage Grotesque 600 for titles and big numbers, Instrument Sans for the
-     rest, Lora for the slots where the app uses the theme's own display font
-     (Home's greeting and event names). */
-  --font-sans: var(--font-instrument), system-ui, sans-serif;
-  --font-display: var(--font-bricolage), system-ui, sans-serif;
-  --font-theme: var(--font-lora), Georgia, serif;
-  /* No 700 file is loaded, same as the app: its bold slot maps to 600. */
-  --font-weight-bold: 600;
-  --font-weight-extrabold: 600;
+  /* Fraunces for titles, names and big numbers, Inter for the rest. */
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-theme: var(--font-fraunces), Georgia, serif;
 
   /* themeRadius: rounded-xl = sm (12), rounded-2xl = md (16), these two = xl, xxl. */
   --radius-3xl: 22px;
   --radius-4xl: 26px;
 }
 
+/* Fraunces reads best light: titles are regular weight, whatever their other classes say. */
+.font-display,
+.font-theme {
+  font-weight: 400;
+}
+
 body {
+  transition: background-color 0.4s, color 0.4s;
   min-height: 100dvh;
   background: var(--bg);
   color: var(--ink);
@@ -161,55 +166,4 @@ body {
 .full-bleed {
   width: 100vw;
   margin-inline: calc(50% - 50vw);
-}
-
-/* The landing's mockups show the app in its default theme, whatever the mode. */
-.phone-light {
-  --accent: #a54e36;
-  --accent-fill: #a54e36;
-  --on-accent: #ffffff;
-  --accent-tint: #f3e2da;
-  --accent-text: #9a462f;
-  --cover-a: #5b2b1e;
-  --cover-b: #8c432e;
-  --cover-c: #3f1e15;
-  --cover-glow: #d7a08f;
-  --cover-ink: #e4cac3;
-}
-
-/* The hero's story thread draws itself once, then its nodes appear. */
-.thread-draw {
-  stroke-dasharray: 1;
-  animation: thread-draw 2.4s ease-out both;
-}
-
-.thread-node {
-  animation: thread-node 0.5s ease-out both;
-}
-
-@keyframes thread-draw {
-  from {
-    stroke-dashoffset: 1;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes thread-node {
-  from {
-    opacity: 0;
-    transform: scale(0.4);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .thread-draw,
-  .thread-node {
-    animation: none;
-  }
 }

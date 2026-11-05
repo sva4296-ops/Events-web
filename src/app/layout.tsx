@@ -1,21 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Instrument_Sans, Lora } from "next/font/google";
+import { Fraunces, Inter } from "next/font/google";
 
-import { AmbientBackground } from "@/components/AmbientBackground";
+import { THEME_DARK_COLOR, THEME_INIT_SCRIPT } from "@/lib/theme";
 
 import "./globals.css";
 
-const instrument = Instrument_Sans({
-  variable: "--font-instrument",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin", "latin-ext"],
   weight: ["400", "500", "600"],
 });
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin", "latin-ext"],
-  weight: "600",
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
 });
-const lora = Lora({ variable: "--font-lora", subsets: ["latin", "latin-ext"], weight: "400" });
 
 export const metadata: Metadata = {
   title: "PovesteaNoastra",
@@ -25,19 +25,17 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#EEE5D9" },
-    { media: "(prefers-color-scheme: dark)", color: "#15110F" },
-  ],
+  themeColor: THEME_DARK_COLOR,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ro" className={`${instrument.variable} ${bricolage.variable} ${lora.variable} scroll-smooth antialiased`}>
-      <body>
-        <AmbientBackground />
-        {children}
-      </body>
+    <html lang="ro" className={`${inter.variable} ${fraunces.variable} scroll-smooth antialiased`} suppressHydrationWarning>
+      <head>
+        {/* A constant, needed before first paint. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
+      <body>{children}</body>
     </html>
   );
 }
