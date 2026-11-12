@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getEventContext } from "@/lib/data/eventContext";
 import { getGuestsPageData } from "@/lib/data/guests";
 
+import { GuestsLive } from "./GuestsLive";
 import { GuestsManager } from "./GuestsManager";
 
 export default async function GuestsPage({ params }: PageProps<"/event/[id]/guests">) {
@@ -11,5 +12,10 @@ export default async function GuestsPage({ params }: PageProps<"/event/[id]/gues
   if (!event.isOwner) redirect(`/event/${id}`);
 
   const { guests, messageEvent } = await getGuestsPageData(id);
-  return <GuestsManager eventId={id} guests={guests} messageEvent={messageEvent} maxGuests={capabilities.maxGuests} />;
+  return (
+    <>
+      <GuestsLive eventId={id} />
+      <GuestsManager eventId={id} guests={guests} messageEvent={messageEvent} maxGuests={capabilities.maxGuests} />
+    </>
+  );
 }

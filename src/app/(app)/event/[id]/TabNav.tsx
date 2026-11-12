@@ -6,13 +6,16 @@ import { usePathname } from "next/navigation";
 
 import { FUND_ENABLED } from "@/lib/features";
 
+/** `prefetch`: light tabs (a few small selects) are loaded fully in the background when the
+ * event opens, so even the first switch to them is instant. Live and Album sign a URL for
+ * every photo, so they keep the default (only the loading shell is prefetched). */
 const ALL_TABS = [
-  { segment: "", label: "Acasă", icon: House },
-  { segment: "details", label: "Plan", icon: ClipboardList },
-  { segment: "guests", label: "Invitați", icon: Users, ownerOnly: true },
-  { segment: "fund", label: "Fond", icon: Gift },
-  { segment: "live", label: "Live", icon: Radio },
-  { segment: "album", label: "Album", icon: Images },
+  { segment: "", label: "Acasă", icon: House, prefetch: true },
+  { segment: "details", label: "Plan", icon: ClipboardList, prefetch: true },
+  { segment: "guests", label: "Invitați", icon: Users, ownerOnly: true, prefetch: true },
+  { segment: "fund", label: "Fond", icon: Gift, prefetch: false },
+  { segment: "live", label: "Live", icon: Radio, prefetch: false },
+  { segment: "album", label: "Album", icon: Images, prefetch: false },
 ] as const;
 
 const TABS = ALL_TABS.filter((tab) => FUND_ENABLED || tab.segment !== "fund");
@@ -41,12 +44,13 @@ export function TabNav({ eventId, isOwner }: { eventId: string; isOwner: boolean
           aria-label="Secțiunile evenimentului"
           className="mx-auto flex max-w-[1240px] gap-2 overflow-x-auto px-8 text-[15px] font-semibold"
         >
-          {tabs.map(({ segment, label }) => {
+          {tabs.map(({ segment, label, prefetch }) => {
             const active = isActive(segment);
             return (
               <Link
                 key={label}
                 href={segment === "" ? base : `${base}/${segment}`}
+                prefetch={prefetch ? true : "auto"}
                 aria-current={active ? "page" : undefined}
                 className={`flex min-h-14 items-center whitespace-nowrap px-3.5 transition focus-visible:-outline-offset-2 ${
                   active ? "text-accent-text shadow-[inset_0_-2px_0_var(--accent)]" : "text-muted hover:text-ink"
@@ -64,12 +68,13 @@ export function TabNav({ eventId, isOwner }: { eventId: string; isOwner: boolean
         className="fixed inset-x-0 bottom-0 z-40 flex justify-between border-t border-surface-border bg-surface px-1.5 pt-2 md:hidden"
         style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
       >
-        {tabs.map(({ segment, label, icon: Icon }) => {
+        {tabs.map(({ segment, label, icon: Icon, prefetch }) => {
           const active = isActive(segment);
           return (
             <Link
               key={label}
               href={segment === "" ? base : `${base}/${segment}`}
+              prefetch={prefetch ? true : "auto"}
               aria-current={active ? "page" : undefined}
               className="flex flex-1 flex-col items-center gap-[3px] text-[11px]"
             >
