@@ -3,13 +3,15 @@
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
+import { CountrySelect } from "@/components/CountrySelect";
 import { ui } from "@/components/ui/styles";
 import { COUNTRY_CODES, DEFAULT_COUNTRY, toE164 } from "@/lib/phone";
 import { getBrowserClient } from "@/lib/supabase/browser";
 
 export function PhoneForm({ nextPath }: { nextPath: string }) {
   const router = useRouter();
-  const [dialCode, setDialCode] = useState(DEFAULT_COUNTRY.dialCode);
+  const [country, setCountry] = useState(DEFAULT_COUNTRY.iso);
+  const dialCode = (COUNTRY_CODES.find((c) => c.iso === country) ?? DEFAULT_COUNTRY).dialCode;
   const [localNumber, setLocalNumber] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -44,18 +46,7 @@ export function PhoneForm({ nextPath }: { nextPath: string }) {
       <label className="flex flex-col gap-2">
         <span className={ui.label}>Număr de telefon</span>
         <div className="flex gap-2">
-          <select
-            value={dialCode}
-            onChange={(e) => setDialCode(e.target.value)}
-            className={`${ui.input.replace("w-full", "w-28")} shrink-0 px-3`}
-            aria-label="Prefixul țării"
-          >
-            {COUNTRY_CODES.map((country) => (
-              <option key={country.iso} value={country.dialCode}>
-                {country.iso} {country.dialCode}
-              </option>
-            ))}
-          </select>
+          <CountrySelect iso={country} onChange={setCountry} />
           <input
             type="tel"
             inputMode="tel"

@@ -56,13 +56,14 @@
 .pn-landing .link:hover{border-color:var(--rose)}
 .pn-landing header{position:sticky;top:0;z-index:40;background:var(--hdr);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .3s}
 .pn-landing header.scrolled{border-color:var(--line)}
-.pn-landing nav{display:flex;align-items:center;justify-content:space-between;height:68px}
-.pn-landing .logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:20px;letter-spacing:-.01em}
-.pn-landing .logo svg{width:34px;height:18px}
-.pn-landing .links{display:flex;gap:26px;font-size:14px;color:var(--muted)}
+.pn-landing nav{display:flex;align-items:center;justify-content:space-between;gap:32px;height:68px}
+.pn-landing .logo{display:flex;align-items:center;gap:9px;flex-shrink:0;white-space:nowrap;font-family:var(--serif);font-size:20px;letter-spacing:-.01em}
+.pn-landing .logo svg{width:36px;height:24px;flex-shrink:0;color:var(--g2)}
+.pn-landing .logo-text span{color:var(--g2)}
+.pn-landing .links{display:flex;gap:24px;font-size:14px;color:var(--muted)}
 .pn-landing .links a,.pn-landing .links button{color:var(--muted);font-size:14px}
 .pn-landing .links a:hover,.pn-landing .links button:hover{color:var(--text)}
-.pn-landing .nav-cta{display:flex;gap:6px;align-items:center}
+.pn-landing .nav-cta{display:flex;gap:10px;align-items:center;flex-shrink:0}
 .pn-landing .nav-cta .btn{padding:10px 18px;font-size:14px}
 .pn-landing section{position:relative;padding:110px 0}
 .pn-landing .sec-head{max-width:640px;margin-bottom:52px}
@@ -522,7 +523,7 @@
 }
 /* The links don't fit next to the buttons below this width. */
 .pn-landing .links a,.pn-landing .links button{white-space:nowrap}
-@media (max-width:1180px){.pn-landing nav .links{display:none}}
+@media (max-width:1240px){.pn-landing nav .links{display:none}}
 /* The whole phone in the first screen, and the thread's first label on the text's edge. */
 @media (min-width:1021px){
 .pn-landing .hero-grid{align-items:start}

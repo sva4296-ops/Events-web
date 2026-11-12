@@ -1,6 +1,6 @@
 "use client";
 
-import { ClipboardList, Gift, House, Images, Radio } from "lucide-react";
+import { ClipboardList, Gift, House, Images, Radio, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -9,12 +9,16 @@ import { FUND_ENABLED } from "@/lib/features";
 const ALL_TABS = [
   { segment: "", label: "Acasă", icon: House },
   { segment: "details", label: "Plan", icon: ClipboardList },
+  { segment: "guests", label: "Invitați", icon: Users, ownerOnly: true },
   { segment: "fund", label: "Fond", icon: Gift },
   { segment: "live", label: "Live", icon: Radio },
   { segment: "album", label: "Album", icon: Images },
 ] as const;
 
 const TABS = ALL_TABS.filter((tab) => FUND_ENABLED || tab.segment !== "fund");
+
+/** The guest list is the organizer's tool, like the app's guests screen. */
+const tabsFor = (isOwner: boolean) => TABS.filter((tab) => isOwner || !("ownerOnly" in tab));
 
 function useTabs(eventId: string) {
   const pathname = usePathname();
@@ -26,8 +30,9 @@ function useTabs(eventId: string) {
 
 /** From tablet up: a tab row across the window, sticking to the top under the cover.
  * Phone: a bottom bar docked to the edge, same as the app's tab bar. */
-export function TabNav({ eventId }: { eventId: string }) {
+export function TabNav({ eventId, isOwner }: { eventId: string; isOwner: boolean }) {
   const { base, isActive } = useTabs(eventId);
+  const tabs = tabsFor(isOwner);
 
   return (
     <>
@@ -36,7 +41,7 @@ export function TabNav({ eventId }: { eventId: string }) {
           aria-label="Secțiunile evenimentului"
           className="mx-auto flex max-w-[1240px] gap-2 overflow-x-auto px-8 text-[15px] font-semibold"
         >
-          {TABS.map(({ segment, label }) => {
+          {tabs.map(({ segment, label }) => {
             const active = isActive(segment);
             return (
               <Link
@@ -59,7 +64,7 @@ export function TabNav({ eventId }: { eventId: string }) {
         className="fixed inset-x-0 bottom-0 z-40 flex justify-between border-t border-surface-border bg-surface px-1.5 pt-2 md:hidden"
         style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
       >
-        {TABS.map(({ segment, label, icon: Icon }) => {
+        {tabs.map(({ segment, label, icon: Icon }) => {
           const active = isActive(segment);
           return (
             <Link

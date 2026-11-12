@@ -42,7 +42,7 @@ export default async function EventLayout({ children, params }: LayoutProps<"/ev
         }
       />
 
-      <TabNav eventId={id} />
+      <TabNav eventId={id} isOwner={event.isOwner} />
 
       <div className="flex flex-col gap-6 pt-6 md:pt-10">{children}</div>
 
