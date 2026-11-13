@@ -32,7 +32,7 @@ export const getMoments = cache(
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("moments")
-      .select("id, title, photo_url, created_at, moment_reactions(user_id, reaction_type)")
+      .select("id, title, photo_url, icon, organizer_id, created_at, moment_reactions(user_id, reaction_type)")
       .eq("event_id", eventId)
       .order("created_at", { ascending: false });
     if (error) throw error;
@@ -41,6 +41,8 @@ export const getMoments = cache(
       id: string;
       title: string;
       photo_url: string | null;
+      icon: string | null;
+      organizer_id: string;
       created_at: string;
       moment_reactions: { user_id: string; reaction_type: ReactionType }[];
     };
@@ -69,6 +71,8 @@ export const getMoments = cache(
             ? row.photo_url
             : null,
         createdAt: row.created_at,
+        icon: row.icon,
+        authorId: row.organizer_id,
       })),
       reactions: rows.flatMap((row) =>
         row.moment_reactions.map((r) => ({ momentId: row.id, userId: r.user_id, type: r.reaction_type })),
@@ -147,23 +151,36 @@ export interface Details {
   schedule: ScheduleItem[];
   venue: Venue;
   menuOptions: MenuOption[];
+  /** menu.choice_deadline_days: the app's default is 2. */
+  menuDeadlineDays: number;
   seatingTables: SeatingTable[];
   accommodations: Accommodation[];
   vendors: Vendor[];
 }
 
+function scheduleMinutes(time: string): number {
+  const match = /^(\d{1,2}):(\d{2})/.exec(time.trim());
+  return match === null ? Number.MAX_SAFE_INTEGER : Number(match[1]) * 60 + Number(match[2]);
+}
+
+/** The day's program in clock order, like the app's sortScheduleByTime (stable for equal times). */
+function sortScheduleByTime<T extends { time: string }>(items: T[]): T[] {
+  return [...items].sort((a, b) => scheduleMinutes(a.time) - scheduleMinutes(b.time));
+}
+
 export const getDetails = cache(async (eventId: string): Promise<Details> => {
   const supabase = await createClient();
-  const [schedule, venue, fund, menuOptions, seating, accommodations, vendors] = await Promise.all([
+  const [schedule, venue, fund, menu, menuOptions, seating, accommodations, vendors] = await Promise.all([
     supabase.from("schedule_items").select("*").eq("event_id", eventId).order("sort_order"),
     supabase.from("venue_info").select("*").eq("event_id", eventId).maybeSingle(),
     supabase.from("fund").select("*").eq("event_id", eventId).maybeSingle(),
+    supabase.from("menu").select("choice_deadline_days").eq("event_id", eventId).maybeSingle(),
     supabase.from("menu_options").select("*").eq("event_id", eventId).order("sort_order"),
     supabase.from("seating_tables").select("*").eq("event_id", eventId).order("sort_order"),
     supabase.from("accommodations").select("*").eq("event_id", eventId).order("sort_order"),
     supabase.from("vendors").select("*").eq("event_id", eventId).order("sort_order"),
   ]);
-  for (const res of [schedule, venue, fund, menuOptions, seating, accommodations, vendors]) {
+  for (const res of [schedule, venue, fund, menu, menuOptions, seating, accommodations, vendors]) {
     if (res.error) throw res.error;
   }
 
@@ -200,12 +217,14 @@ export const getDetails = cache(async (eventId: string): Promise<Details> => {
             currency: fund.data.currency,
           },
     contributorCount,
-    schedule: (schedule.data ?? []).map((row) => ({
-      id: row.id,
-      time: row.time,
-      title: row.title,
-      location: row.location ?? "",
-    })),
+    schedule: sortScheduleByTime(
+      (schedule.data ?? []).map((row) => ({
+        id: row.id,
+        time: row.time,
+        title: row.title,
+        location: row.location ?? "",
+      })),
+    ),
     venue: {
       name: venue.data?.name ?? "",
       address: venue.data?.address ?? "",
@@ -221,22 +240,26 @@ export const getDetails = cache(async (eventId: string): Promise<Details> => {
                 name: typeof course.name === "string" ? course.name : "",
                 dish: course.dish,
                 photoUrl: typeof course.photo_path === "string" ? (coursePhotoUrl.get(course.photo_path) ?? null) : null,
+                photoPath: typeof course.photo_path === "string" ? course.photo_path : null,
               },
             ]
           : [],
       ),
     })),
+    menuDeadlineDays: (menu.data?.choice_deadline_days as number | null | undefined) ?? 2,
     seatingTables: (seating.data ?? []).map((row) => ({
       id: row.id,
       name: row.name,
       label: row.label ?? "",
       seatCount: row.seat_count,
+      shape: row.shape === "rect" ? "rect" : "round",
     })),
     accommodations: (accommodations.data ?? []).map((row) => ({
       id: row.id,
       name: row.name,
       detailLine: row.detail_line ?? "",
       priceLine: row.price_line ?? "",
+      location: row.location ?? "",
     })),
     vendors: (vendors.data ?? []).map((row) => ({
       id: row.id,

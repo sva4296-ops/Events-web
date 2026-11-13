@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { MomentCard } from "@/components/event/MomentCard";
+import { NewMomentButton } from "@/components/event/MomentComposer";
 import { StoryStages } from "@/components/event/StoryTimeline";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ui } from "@/components/ui/styles";
@@ -32,20 +33,26 @@ export default async function AcasaPage({ params }: PageProps<"/event/[id]">) {
   return (
     <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-12">
       <section className="flex min-w-0 flex-col gap-6" aria-labelledby="moments-title">
-        <h2 id="moments-title" className={ui.title1}>
-          Povestea noastră
-        </h2>
+        <div className="flex items-center justify-between gap-3">
+          <h2 id="moments-title" className={ui.title1}>
+            Povestea noastră
+          </h2>
+          {event.isOwner && moments.length > 0 ? <NewMomentButton eventId={id} compact /> : null}
+        </div>
         {moments.length === 0 ? (
           <EmptyState
-            message={
-              event.isOwner
-                ? "Niciun moment postat încă. Postarea momentelor se face deocamdată din aplicație."
-                : "Organizatorii nu au postat încă niciun moment."
-            }
+            message="Niciun moment încă."
+            action={event.isOwner ? <NewMomentButton eventId={id} /> : undefined}
           />
         ) : (
           moments.map((moment) => (
-            <MomentCard key={moment.id} eventId={id} moment={moment} reactions={stateFor(moment.id)} />
+            <MomentCard
+              key={moment.id}
+              eventId={id}
+              moment={moment}
+              reactions={stateFor(moment.id)}
+              canEdit={event.isPrimaryOwner || (event.isOwner && moment.authorId === user.id)}
+            />
           ))
         )}
       </section>

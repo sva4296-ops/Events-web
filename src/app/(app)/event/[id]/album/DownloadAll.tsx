@@ -3,8 +3,6 @@
 import { Download } from "lucide-react";
 import { useState } from "react";
 
-import { ui } from "@/components/ui/styles";
-
 /** Downloads every full-size photo, one file at a time (signed URLs are
  * cross-origin, so each is fetched to a blob first to force a download). */
 export function DownloadAll({ urls, eventName }: { urls: string[]; eventName: string }) {
@@ -31,9 +29,14 @@ export function DownloadAll({ urls, eventName }: { urls: string[]; eventName: st
   };
 
   return (
-    <button type="button" onClick={() => void run()} disabled={done !== null} className={`${ui.buttonPrimary} w-full`}>
-      <Download size={18} aria-hidden="true" />
-      {done !== null ? `Se descarcă ${done}/${urls.length}…` : "Descarcă toate pozele"}
+    <button
+      type="button"
+      onClick={() => void run()}
+      disabled={done !== null}
+      className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full bg-accent-fill px-4 text-sm font-semibold text-on-accent shadow-accent transition hover:brightness-105 disabled:opacity-60"
+    >
+      <Download size={16} aria-hidden="true" />
+      {done !== null ? `${done}/${urls.length}…` : "Descarcă tot"}
     </button>
   );
 }

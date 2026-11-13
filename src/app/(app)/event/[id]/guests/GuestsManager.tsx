@@ -49,11 +49,14 @@ export function GuestsManager({
   guests,
   messageEvent,
   maxGuests,
+  canManageRoles,
 }: {
   eventId: string;
   guests: ManagedGuest[];
   messageEvent: InviteMessageEvent;
   maxGuests: number | null;
+  /** Primary owner only: co-organizers can't change roles (event_members RLS). */
+  canManageRoles: boolean;
 }) {
   const toSendCount = guests.filter(isToSend).length;
   const [filter, setFilter] = useState<Filter>(toSendCount > 0 ? "toSend" : "all");
@@ -165,6 +168,7 @@ export function GuestsManager({
                 guest={guest}
                 messageEvent={messageEvent}
                 highlighted={guest.id === justAdded}
+                canManageRoles={canManageRoles}
               />
             ))}
           </ul>
@@ -188,11 +192,13 @@ function GuestRow({
   guest,
   messageEvent,
   highlighted,
+  canManageRoles,
 }: {
   eventId: string;
   guest: ManagedGuest;
   messageEvent: InviteMessageEvent;
   highlighted: boolean;
+  canManageRoles: boolean;
 }) {
   const router = useRouter();
   const [asking, setAsking] = useState(false);
@@ -308,7 +314,10 @@ function GuestRow({
         </p>
       ) : null}
       {editing ? (
-        <GuestEditDialog eventId={eventId} eventName={messageEvent.name} guest={guest} onClose={() => setEditing(false)} />
+        <GuestEditDialog eventId={eventId} eventName={messageEvent.name} guest={guest}
+          canManageRoles={canManageRoles}
+          onClose={() => setEditing(false)}
+        />
       ) : null}
     </li>
   );

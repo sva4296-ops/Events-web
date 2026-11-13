@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { AppEvent, EventRow, MyEvent, PlanCapabilities } from "@/lib/types";
 
 const SELECT_WITH_GUESTS =
-  "id, organizer_id, type, name, event_date, location, welcome_message, plan_tier, album_status, cover_theme, cover_photo_path, event_guests(id, event_id, guest_user_id, guest_phone, guest_name, rsvp_status, dietary_preferences, table_id)";
+  "id, organizer_id, type, name, event_date, location, welcome_message, plan_tier, album_status, cover_theme, cover_photo_path, event_guests(id, event_id, guest_user_id, guest_phone, guest_name, rsvp_status, dietary_preferences, table_id, menu_option_id), event_members(user_id, role)";
 
 /** Same bucket and TTL as the app's fetchEventCoverUrl. */
 async function signCoverPhotos(rows: EventRow[]): Promise<Map<string, string>> {
@@ -31,14 +31,21 @@ function mapEvent(row: EventRow, coverPhotos: Map<string, string>): AppEvent {
     coverTheme: row.cover_theme,
     coverPhotoUrl: row.cover_photo_path !== null ? (coverPhotos.get(row.cover_photo_path) ?? null) : null,
     guests: row.event_guests,
+    coOrganizerIds: (row.event_members ?? [])
+      .filter((member) => member.role === "co_organizer" && member.user_id !== null)
+      .map((member) => member.user_id as string),
   };
 }
 
 function toMyEvent(event: AppEvent, userId: string): MyEvent {
-  const isOwner = event.ownerId === userId;
+  // Same rule as the app's useEvents: co-organizers manage the event too
+  // (guests, plan); only the primary owner keeps plan/fund/co-organizer rights.
+  const isPrimaryOwner = event.ownerId === userId;
+  const isOwner = isPrimaryOwner || event.coOrganizerIds.includes(userId);
   return {
     ...event,
     isOwner,
+    isPrimaryOwner,
     // RLS scopes a non-owner's event_guests to their own row (same as the app's
     // `event.guests[0]`), but match on the user id anyway to be explicit.
     myGuest: isOwner

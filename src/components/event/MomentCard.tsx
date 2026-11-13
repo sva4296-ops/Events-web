@@ -1,11 +1,13 @@
 "use client";
 
-import { Heart, ImageIcon, MessageCircle, Star } from "lucide-react";
+import { Heart, MessageCircle, Sparkles, Star } from "lucide-react";
 import Link from "next/link";
 import { useOptimistic, useTransition } from "react";
 
+import { MomentMenu } from "@/components/event/MomentComposer";
 import { toggleReaction } from "@/lib/actions/content";
 import { timeAgo } from "@/lib/format";
+import { isMomentIconId, MomentIcon } from "@/lib/momentIcons";
 import type { Moment, ReactionType } from "@/lib/types";
 
 interface ReactionState {
@@ -17,11 +19,15 @@ export function MomentCard({
   eventId,
   moment,
   reactions,
+  canEdit = false,
 }: {
   eventId: string;
   moment: Moment;
   reactions: ReactionState;
+  /** Own moment, or any moment for the primary owner (moments RLS). */
+  canEdit?: boolean;
 }) {
+  const icon = isMomentIconId(moment.icon) ? moment.icon : null;
   const [, startTransition] = useTransition();
   const [optimistic, applyToggle] = useOptimistic(reactions, (state, type: ReactionType) => ({
     ...state,
@@ -44,16 +50,24 @@ export function MomentCard({
       {moment.photoUrl !== null ? (
         // eslint-disable-next-line @next/next/no-img-element -- remote user photo, arbitrary host
         <img src={moment.photoUrl} alt="" className="aspect-[16/10] max-h-[480px] w-full rounded-[18px] bg-surface-2 object-cover" />
-      ) : (
-        <div className="flex aspect-[16/7] flex-col items-center justify-center gap-2 rounded-[18px] bg-surface-2 text-muted">
-          <ImageIcon size={28} aria-hidden="true" />
-          <span className="text-[13px]">Fără fotografie</span>
-        </div>
-      )}
+      ) : null}
 
-      <header className="flex flex-col gap-0.5">
-        <h3 className="font-theme text-[26px] leading-[34px]">{moment.title}</h3>
-        <p className="text-[13px] text-muted">{timeAgo(moment.createdAt)}</p>
+      <header className="flex items-start gap-3">
+        {moment.photoUrl === null ? (
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-accent-tint text-accent-text">
+            {icon !== null ? <MomentIcon icon={icon} size={24} /> : <Sparkles size={22} aria-hidden="true" />}
+          </span>
+        ) : null}
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <h3 className="flex items-center gap-2 font-theme text-[24px] leading-[32px]">
+            {moment.photoUrl !== null && icon !== null ? (
+              <MomentIcon icon={icon} size={20} className="shrink-0 text-accent-text" />
+            ) : null}
+            <span className="min-w-0">{moment.title}</span>
+          </h3>
+          <p className="text-[13px] text-muted">{timeAgo(moment.createdAt)}</p>
+        </div>
+        {canEdit ? <MomentMenu eventId={eventId} moment={moment} /> : null}
       </header>
 
       <footer className="flex items-center gap-2">

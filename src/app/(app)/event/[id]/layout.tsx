@@ -21,7 +21,7 @@ export default async function EventLayout({ children, params }: LayoutProps<"/ev
   const meta = [
     formatEventDate(event.date) ?? "Data va fi anunțată",
     event.location,
-    event.isOwner ? "Organizator" : null,
+    event.isPrimaryOwner ? "Organizator" : event.isOwner ? "Co-organizator" : null,
   ]
     .filter((part) => part !== null)
     .join(" · ");

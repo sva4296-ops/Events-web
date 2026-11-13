@@ -18,12 +18,17 @@ export interface GuestActionResult {
 const LIMIT_MESSAGE =
   "Ai atins numărul maxim de invitați pentru planul acestui eveniment. Schimbă planul din aplicație ca să adaugi mai mulți.";
 
-/** Same gate as the app's add-guest screens: only the organizer edits the list (RLS checks it too). */
-async function assertOwner(eventId: string): Promise<string | null> {
+/**
+ * Same gate as the app's add-guest screens: the organizer and co-organizers edit
+ * the list (RLS checks it too). `primary` = events.organizer_id only, for what
+ * event_members RLS (is_event_owner) keeps from co-organizers: changing roles.
+ */
+async function assertOwner(eventId: string, primary = false): Promise<string | null> {
   const user = await getSessionUser();
   if (user === null) return "Sesiunea a expirat. Intră din nou în cont.";
   const event = await getMyEvent(eventId, user.id);
-  if (event === null || !event.isOwner) return "Doar organizatorul poate adăuga invitați.";
+  if (event === null || !event.isOwner) return "Doar organizatorii pot gestiona invitații.";
+  if (primary && !event.isPrimaryOwner) return "Doar organizatorul principal poate schimba co-organizatorii.";
   return null;
 }
 
@@ -129,7 +134,7 @@ export async function updateGuest(
 
 /** The app's removeGuestRow; a co-organizer loses that role too, or the guest row would come back. */
 export async function removeGuest(eventId: string, guestId: string, memberId: string | null): Promise<GuestActionResult> {
-  const denied = await assertOwner(eventId);
+  const denied = await assertOwner(eventId, memberId !== null);
   if (denied !== null) return { error: denied };
 
   const supabase = await createClient();
@@ -161,7 +166,7 @@ export async function setGuestRole(
   role: "guest" | "co_organizer",
   memberId: string | null,
 ): Promise<GuestActionResult> {
-  const denied = await assertOwner(eventId);
+  const denied = await assertOwner(eventId, true);
   if (denied !== null) return { error: denied };
   const supabase = await createClient();
 

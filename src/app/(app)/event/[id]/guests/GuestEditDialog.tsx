@@ -31,11 +31,14 @@ export function GuestEditDialog({
   eventId,
   eventName,
   guest,
+  canManageRoles,
   onClose,
 }: {
   eventId: string;
   eventName: string;
   guest: ManagedGuest;
+  /** Primary owner only (app's canChangeRole): roles, and removing a co-organizer. */
+  canManageRoles: boolean;
   onClose: () => void;
 }) {
   const router = useRouter();
@@ -168,6 +171,7 @@ export function GuestEditDialog({
               </div>
             </label>
 
+            {canManageRoles ? (
             <fieldset className="flex flex-col gap-2">
               <legend className={`${ui.label} mb-2`}>Rol</legend>
               {ROLES.map(({ key, label, hint, icon: Icon }) => (
@@ -199,6 +203,9 @@ export function GuestEditDialog({
                 <p className="text-sm text-muted">Rămâne pe listă ca invitat confirmat, dar nu mai poate gestiona evenimentul.</p>
               ) : null}
             </fieldset>
+            ) : guest.role === "co_organizer" ? (
+              <p className="text-sm text-muted">Co-organizator · doar organizatorul principal îi poate schimba rolul.</p>
+            ) : null}
 
             {error !== null ? (
               <p role="alert" className="text-sm text-danger">
@@ -210,6 +217,7 @@ export function GuestEditDialog({
               {pending && !confirmDelete ? "Se salvează…" : "Salvează"}
             </button>
 
+            {canManageRoles || guest.role !== "co_organizer" ? (
             <div className="border-t border-surface-border pt-4">
               {confirmDelete ? (
                 <div className="flex flex-col gap-3">
@@ -238,6 +246,7 @@ export function GuestEditDialog({
                 </button>
               )}
             </div>
+            ) : null}
           </form>
         )}
       </div>

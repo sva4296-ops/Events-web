@@ -38,6 +38,8 @@ export interface EventRow {
   cover_theme: string | null;
   cover_photo_path: string | null;
   event_guests: GuestRow[];
+  /** RLS: the owner and co-organizers see every row, a guest sees none. */
+  event_members?: { user_id: string | null; role: "co_organizer" | "restaurant" }[];
 }
 
 export interface AppEvent {
@@ -56,11 +58,16 @@ export interface AppEvent {
   coverPhotoUrl: string | null;
   /** Owner: every guest. Guest: RLS limits this to their own single row. */
   guests: GuestRow[];
+  /** Signed-in co-organizers (event_members, role co_organizer). */
+  coOrganizerIds: string[];
 }
 
 /** An event seen from the signed-in user's side. */
 export interface MyEvent extends AppEvent {
+  /** Organizer or co-organizer: manages the event (app's isOwner). */
   isOwner: boolean;
+  /** events.organizer_id only: fund, plan, co-organizer roles (app's isPrimaryOwner). */
+  isPrimaryOwner: boolean;
   /** The caller's own guest row; null for the owner. */
   myGuest: GuestRow | null;
 }
@@ -70,6 +77,10 @@ export interface Moment {
   title: string;
   photoUrl: string | null;
   createdAt: string;
+  /** moments.icon (see lib/momentIcons). */
+  icon: string | null;
+  /** moments.organizer_id: who posted it. */
+  authorId: string;
 }
 
 export interface MomentReaction {
@@ -122,14 +133,17 @@ export interface MenuOption {
   id: string;
   name: string;
   /** In serving order (menu_options.courses jsonb). */
-  courses: { name: string; dish: string; photoUrl: string | null }[];
+  courses: { name: string; dish: string; photoUrl: string | null; photoPath: string | null }[];
 }
+
+export type TableShape = "round" | "rect";
 
 export interface SeatingTable {
   id: string;
   name: string;
   label: string;
   seatCount: number;
+  shape: TableShape;
 }
 
 export interface Accommodation {
@@ -137,6 +151,7 @@ export interface Accommodation {
   name: string;
   detailLine: string;
   priceLine: string;
+  location: string;
 }
 
 export interface Vendor {

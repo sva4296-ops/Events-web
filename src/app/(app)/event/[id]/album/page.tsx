@@ -1,3 +1,5 @@
+import { Images } from "lucide-react";
+
 import { PhotoGrid } from "@/components/event/PhotoGrid";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ui } from "@/components/ui/styles";
@@ -11,31 +13,23 @@ export default async function AlbumPage({ params }: PageProps<"/event/[id]/album
   const { id } = await params;
   const [{ user, event }, photos] = await Promise.all([getEventContext(id), getPhotos(id)]);
   const fullUrls = photos.map((photo) => photo.fullUrl).filter((url): url is string => url !== null);
-  // Only the owner's session can see every guest row (RLS), so only they get a real count.
-  const attendees = event.isOwner ? event.guests.filter((guest) => guest.rsvp_status === "confirmed").length : null;
+  const canDownload = event.albumStatus === "ready" && fullUrls.length > 0;
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-end justify-between gap-6">
-        <div className="flex flex-col gap-1">
-          <p className={ui.eyebrow}>Povestea s-a întâmplat</p>
-          <h2 className="font-theme text-[34px] leading-[42px] tracking-[-0.5px] md:text-[44px] md:leading-[52px]">A fost minunat</h2>
-          <p className="text-[15px] text-muted">
+    <div className="flex flex-col gap-5">
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-col">
+          <h2 className={ui.title1}>Album</h2>
+          <p className="text-[13px] text-muted">
             {photos.length} {pluralRo(photos.length, "poză", "poze", "de poze")}
-            {attendees !== null ? ` · ${attendees} ${pluralRo(attendees, "invitat prezent", "invitați prezenți", "de invitați prezenți")}` : ""}
+            {event.albumStatus !== "ready" && photos.length > 0 ? " · descărcare după eveniment" : ""}
           </p>
         </div>
-        {event.albumStatus !== "ready" ? (
-          <p className="max-w-xs text-sm text-muted">Albumul complet va putea fi descărcat la 3 zile după eveniment.</p>
-        ) : fullUrls.length > 0 ? (
-          <div className="w-full sm:w-auto">
-            <DownloadAll urls={fullUrls} eventName={event.name} />
-          </div>
-        ) : null}
+        {canDownload ? <DownloadAll urls={fullUrls} eventName={event.name} /> : null}
       </div>
 
       {photos.length === 0 ? (
-        <EmptyState message="Nicio poză încă. Pozele adăugate în Live apar aici." />
+        <EmptyState icon={Images} message="Nicio poză încă." />
       ) : (
         <PhotoGrid
           eventId={id}

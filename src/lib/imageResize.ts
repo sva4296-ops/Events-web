@@ -26,3 +26,8 @@ export async function processEventPhoto(file: File): Promise<{ thumb: Blob; full
   const [thumb, full] = await Promise.all([resize(file, 400, 0.65), resize(file, 2800, 0.9)]);
   return { thumb, full };
 }
+
+/** One JPEG, longest edge capped (menu course photos). */
+export function resizeToJpeg(file: File, longestEdge: number, quality: number): Promise<Blob> {
+  return resize(file, longestEdge, quality);
+}

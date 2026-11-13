@@ -15,7 +15,9 @@ export default async function GuestsPage({ params }: PageProps<"/event/[id]/gues
   return (
     <>
       <GuestsLive eventId={id} />
-      <GuestsManager eventId={id} guests={guests} messageEvent={messageEvent} maxGuests={capabilities.maxGuests} />
+      <GuestsManager eventId={id} guests={guests} messageEvent={messageEvent} maxGuests={capabilities.maxGuests}
+        canManageRoles={event.isPrimaryOwner}
+      />
     </>
   );
 }

@@ -16,7 +16,8 @@ export default async function FondPage({ params }: PageProps<"/event/[id]/fund">
     getEventContext(id),
     getDetails(id),
   ]);
-  const owner = event.isOwner;
+  // Fund is primary-owner only, like the app's fund screen.
+  const owner = event.isPrimaryOwner;
 
   if (!capabilities.contributionsEnabled) {
     return <LockedFeature owner={owner} message="Fondul de contribuții nu este inclus în planul curent al acestui eveniment." />;
