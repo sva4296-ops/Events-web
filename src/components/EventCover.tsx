@@ -14,6 +14,8 @@ const TYPE_DECORATION: Record<EventType, CoverDecoration> = {
   corporate: "grid",
   memorial: "line",
   other: "sparkles",
+  spontaneous: "disco",
+  venue: "table",
 };
 
 /** Default cover when the organizer didn't pick a theme: deep shades of the accent (see --cover-* in globals.css). */

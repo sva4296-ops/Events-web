@@ -7,7 +7,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { ui } from "@/components/ui/styles";
 import { getProfile, getSessionUser } from "@/lib/auth";
 import { getMyEvents } from "@/lib/data/events";
-import { compareEventsByDate, daysUntilEvent, formatEventDate, pluralRo, todayLabel } from "@/lib/format";
+import { compareEventsByDate, daysUntilEvent, formatEventDate, todayLabel } from "@/lib/format";
 import type { MyEvent } from "@/lib/types";
 
 export const metadata = { title: "Evenimentele mele · PovesteaNoastra" };
@@ -34,6 +34,7 @@ function toAgendaItem(event: MyEvent): AgendaItem {
     coverTheme: event.coverTheme,
     coverPhotoUrl: event.coverPhotoUrl,
     isOwner: event.isOwner,
+    isCoOrganizer: event.isOwner && !event.isPrimaryOwner,
     status: event.myGuest?.rsvp_status ?? null,
   };
 }
@@ -54,18 +55,6 @@ export default async function EventsPage() {
   const past = sorted.filter(isPast);
   const hasRail = toAnswer.length > 0 || past.length > 0;
 
-  // At a glance, for organizers only: a guest sees just their own row, so has nothing to add up.
-  const ownedComing = coming.filter((event) => event.isOwner);
-  const guests = ownedComing.flatMap((event) => event.guests);
-  const confirmed = guests.filter((guest) => guest.rsvp_status === "confirmed").length;
-  const pending = guests.filter((guest) => guest.rsvp_status === "pending").length;
-  const stats = [
-    { value: ownedComing.length, label: pluralRo(ownedComing.length, "eveniment viitor", "evenimente viitoare", "de evenimente viitoare") },
-    { value: guests.length, label: pluralRo(guests.length, "invitat în total", "invitați în total", "de invitați în total") },
-    { value: confirmed, label: pluralRo(confirmed, "invitat confirmat", "invitați confirmați", "de invitați confirmați") },
-    { value: pending, label: "în așteptare" },
-  ];
-
   return (
     <div className="flex flex-col gap-10 lg:gap-12">
       <SiteHeader active="events" />
@@ -79,16 +68,6 @@ export default async function EventsPage() {
 
       {next !== undefined ? <NextEventCard event={next} href={eventHref(next)} /> : null}
 
-      {ownedComing.length > 0 ? (
-        <section aria-label="Evenimentele tale, pe scurt" className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {stats.map((stat) => (
-            <div key={stat.label} className={`${ui.cardPadded} flex flex-col gap-1`}>
-              <span className="font-theme text-[44px] leading-[52px] tracking-[-0.5px]">{stat.value}</span>
-              <span className="text-sm text-muted">{stat.label}</span>
-            </div>
-          ))}
-        </section>
-      ) : null}
 
       <div className={`grid items-start gap-10 lg:gap-12 ${hasRail ? "lg:grid-cols-[minmax(0,1fr)_340px]" : ""}`}>
         <EventAgenda

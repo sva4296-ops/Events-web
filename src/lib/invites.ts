@@ -10,7 +10,11 @@ export type EventType =
   | "cause"
   | "corporate"
   | "memorial"
-  | "other";
+  | "other"
+  /** Karaoke, party, tasting (the app's spontaneous wizard). */
+  | "spontaneous"
+  /** A bar/restaurant night customers book. */
+  | "venue";
 
 /** Row shape of get_invite_by_token(text). */
 interface InviteRow {

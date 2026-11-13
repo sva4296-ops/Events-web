@@ -1,4 +1,4 @@
-import { Baby, Building, Cake, Flower, Gem, HandHeart, Sparkles, type LucideIcon } from "lucide-react";
+import { Baby, Building, Cake, Flower, Gem, HandHeart, Sparkles, Store, Zap, type LucideIcon } from "lucide-react";
 
 import type { EventType } from "@/lib/types";
 
@@ -11,6 +11,8 @@ export const EVENT_TYPE_ICONS: Record<EventType, LucideIcon> = {
   corporate: Building,
   memorial: Flower,
   other: Sparkles,
+  spontaneous: Zap,
+  venue: Store,
 };
 
 export function EventTypeIcon({

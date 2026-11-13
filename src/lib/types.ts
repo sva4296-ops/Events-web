@@ -8,7 +8,11 @@ export type EventType =
   | "cause"
   | "corporate"
   | "memorial"
-  | "other";
+  | "other"
+  /** Karaoke, party, tasting (the app's spontaneous wizard). */
+  | "spontaneous"
+  /** A bar/restaurant night customers book. */
+  | "venue";
 export type ReactionType = "love" | "celebrate";
 export type AlbumStatus = "not_started" | "generating" | "ready";
 

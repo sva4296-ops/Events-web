@@ -31,6 +31,11 @@ export default async function AcasaPage({ params }: PageProps<"/event/[id]">) {
   };
 
   return (
+    <div className="flex flex-col gap-8">
+    {/* The app's story timeline, right under the cover's countdown. */}
+    <nav aria-label="Etapele poveștii" className="w-full max-w-[560px]">
+      <StoryStages days={daysUntilEvent(event.date)} type={event.type} />
+    </nav>
     <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-12">
       <section className="flex min-w-0 flex-col gap-6" aria-labelledby="moments-title">
         <div className="flex items-center justify-between gap-3">
@@ -61,13 +66,6 @@ export default async function AcasaPage({ params }: PageProps<"/event/[id]">) {
         {event.welcomeMessage !== null ? (
           <blockquote className="font-theme text-[22px] leading-8">„{event.welcomeMessage}”</blockquote>
         ) : null}
-
-        <section aria-labelledby="stages-title" className="flex flex-col">
-          <h2 id="stages-title" className={`${ui.eyebrow} mb-2`}>
-            Etapele poveștii
-          </h2>
-          <StoryStages days={daysUntilEvent(event.date)} type={event.type} />
-        </section>
 
         {details.schedule.length > 0 ? (
           <section aria-labelledby="schedule-title" className="flex flex-col">
@@ -101,6 +99,7 @@ export default async function AcasaPage({ params }: PageProps<"/event/[id]">) {
           </div>
         ) : null}
       </aside>
+    </div>
     </div>
   );
 }

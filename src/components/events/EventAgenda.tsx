@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarHeart, Mail } from "lucide-react";
+import { CalendarHeart, Crown, Mail, Users } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -20,6 +20,8 @@ export interface AgendaItem {
   coverTheme: string | null;
   coverPhotoUrl: string | null;
   isOwner: boolean;
+  /** Manages it through event_members, not as events.organizer_id. */
+  isCoOrganizer: boolean;
   status: RsvpStatus | null;
 }
 
@@ -44,12 +46,13 @@ function AgendaRow({ item }: { item: AgendaItem }) {
         <span className="font-theme text-[28px] leading-9 sm:text-[32px]">{parts?.day ?? "–"}</span>
         <span className="text-xs text-muted">{parts?.weekday}</span>
       </span>
+      {/* The app's list square (EventCover thumbnail): the type's icon on a tint, or the cover photo. */}
       <EventCover
         type={item.type}
         coverTheme={item.coverTheme}
         photoUrl={item.coverPhotoUrl}
-        plain
-        className="hidden h-[68px] w-[92px] shrink-0 rounded-2xl sm:block"
+        thumbnail
+        className="hidden size-14 shrink-0 rounded-xl sm:flex"
       />
       <span className="flex min-w-0 flex-1 flex-col gap-0.5">
         <span className="truncate font-theme text-[19px] leading-7 transition group-hover:text-accent-text sm:text-[21px]">
@@ -59,8 +62,17 @@ function AgendaRow({ item }: { item: AgendaItem }) {
       </span>
       {item.status !== null ? (
         <span className={`${BADGE} ${STATUS[item.status].className}`}>{STATUS[item.status].label}</span>
+      ) : item.isCoOrganizer ? (
+        // Same badges as the app's home list (DashboardCards RolePill).
+        <span className={`${BADGE} inline-flex items-center gap-1 border border-surface-border bg-surface-2 text-ink`}>
+          <Users size={12} aria-hidden="true" className="text-muted" />
+          Co-organizator
+        </span>
       ) : item.isOwner ? (
-        <span className={`${BADGE} bg-accent-tint text-accent-text`}>Organizezi</span>
+        <span className={`${BADGE} inline-flex items-center gap-1 border border-transparent bg-accent-tint text-accent-text`}>
+          <Crown size={12} aria-hidden="true" />
+          Organizator
+        </span>
       ) : null}
     </Link>
   );

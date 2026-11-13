@@ -13,6 +13,8 @@ const EVENT_TYPES: Record<EventType, EventTypeMeta> = {
   corporate: { label: "Eveniment corporate" },
   memorial: { label: "Comemorare" },
   other: { label: "Eveniment" },
+  spontaneous: { label: "Spontan" },
+  venue: { label: "Local" },
 };
 
 export function getEventTypeMeta(type: EventType): EventTypeMeta {
